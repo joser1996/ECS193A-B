@@ -10,6 +10,7 @@ import UIKit
 import ARKit
 
 class ViewController: UIViewController {
+    //MARK: Properties
     @IBOutlet weak var sceneView: ARSCNView!
     
     override func viewWillAppear(_ animated: Bool){
