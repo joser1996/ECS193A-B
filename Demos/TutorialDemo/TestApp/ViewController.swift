@@ -12,6 +12,8 @@ import ARKit
 class ViewController: UIViewController {
     @IBOutlet weak var sceneView: ARSCNView!
     
+    let mcService = MultipeerService()
+    
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         let configuration = ARWorldTrackingConfiguration()
