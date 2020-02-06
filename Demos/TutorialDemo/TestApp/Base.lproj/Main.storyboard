@@ -20,6 +20,10 @@
                                 <subviews>
                                     <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="Main" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-WQ-vey">
                                         <rect key="frame" x="0.0" y="0.0" width="627" height="335"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="ceU-H4-zm3" appends="YES" id="wbE-Ot-AhA"/>
+                                        </connections>
                                     </arscnView>
                                 </subviews>
                             </stackView>
@@ -38,6 +42,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="ceU-H4-zm3">
+                    <connections>
+                        <action selector="handleSceneTap:" destination="BYZ-38-t0r" id="Teh-yZ-skx"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="136.28185907046478" y="125.59999999999999"/>
         </scene>
