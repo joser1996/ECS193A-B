@@ -47,6 +47,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         // Set a delegate to track the number of plane anchors for providing UI feedback.
         sceneView.session.delegate = self
+        
         // Show orange dots(Feature Points)
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         //Don't want app to sleep

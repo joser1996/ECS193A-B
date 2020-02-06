@@ -22,6 +22,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="627" height="335"/>
                                         <gestureRecognizers/>
                                         <connections>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="g9g-f3-h1b"/>
                                             <outletCollection property="gestureRecognizers" destination="ceU-H4-zm3" appends="YES" id="wbE-Ot-AhA"/>
                                         </connections>
                                     </arscnView>
