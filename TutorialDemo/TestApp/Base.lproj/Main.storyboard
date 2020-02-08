@@ -59,6 +59,7 @@
                                         </constraints>
                                         <state key="normal" title="Multiplayer"/>
                                         <connections>
+                                            <action selector="go_to_game:" destination="37G-nl-Lok" eventType="touchUpInside" id="DeQ-Jy-kzr"/>
                                             <segue destination="BYZ-38-t0r" kind="presentation" id="Uij-0p-GhU"/>
                                         </connections>
                                     </button>
@@ -69,6 +70,7 @@
                                         </constraints>
                                         <state key="normal" title="Back"/>
                                         <connections>
+                                            <action selector="go_back:" destination="37G-nl-Lok" eventType="touchUpInside" id="YKA-wj-QmL"/>
                                             <segue destination="8Xi-Gj-NVn" kind="presentation" id="zh3-d4-Cl8"/>
                                         </connections>
                                     </button>
@@ -84,6 +86,7 @@
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K5d-uQ-iJW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="37G-nl-Lok" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="149.77511244377811" y="831.20000000000005"/>
         </scene>
@@ -102,6 +105,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="74" height="30"/>
                                         <state key="normal" title="Play Game"/>
                                         <connections>
+                                            <action selector="go_to_next:" destination="dFX-cG-llC" eventType="touchUpInside" id="eRZ-rc-Zhg"/>
                                             <segue destination="m4S-rY-Xn0" kind="presentation" id="LbF-QR-eat"/>
                                         </connections>
                                     </button>
@@ -120,6 +124,7 @@
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nja-8o-62h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="dFX-cG-llC" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-492" y="333.28335832083962"/>
         </scene>
