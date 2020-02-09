@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="landscape" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GgU-3N-hbx">
+                                <rect key="frame" x="20" y="20" width="627" height="335"/>
+                                <subviews>
+                                    <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="Main" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-WQ-vey">
+                                        <rect key="frame" x="0.0" y="0.0" width="627" height="286"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="g9g-f3-h1b"/>
+                                            <outletCollection property="gestureRecognizers" destination="ceU-H4-zm3" appends="YES" id="wbE-Ot-AhA"/>
+                                        </connections>
+                                    </arscnView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VhT-h9-FGV">
+                                        <rect key="frame" x="0.0" y="286" width="627" height="49"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="buttonHandler:" destination="BYZ-38-t0r" eventType="touchUpInside" id="AC7-1A-agI"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="GgU-3N-hbx" secondAttribute="bottom" constant="20" id="1iv-29-rAe"/>
+                            <constraint firstItem="GgU-3N-hbx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="dVs-VV-IK4"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="GgU-3N-hbx" secondAttribute="trailing" constant="20" id="lJe-p6-EZi"/>
+                            <constraint firstItem="GgU-3N-hbx" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="nyX-4i-FUD"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="button" destination="VhT-h9-FGV" id="Qay-Xf-Kv3"/>
+                        <outlet property="sceneView" destination="B0d-WQ-vey" id="gBF-CB-fOM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="ceU-H4-zm3">
+                    <connections>
+                        <action selector="handleSceneTap:" destination="BYZ-38-t0r" id="Teh-yZ-skx"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="136.28185907046478" y="125.59999999999999"/>
+        </scene>
+    </scenes>
+</document>
