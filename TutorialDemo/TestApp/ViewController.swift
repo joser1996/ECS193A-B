@@ -54,7 +54,16 @@ class ViewController: UIViewController {
     
     @objc func didTap(withGestureRecognizer recognizer: UIGestureRecognizer){
         //let tapLoc = recognizer.location(in: sceneView)
-        let center: CGPoint = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height / 2)
+        var viewRect: CGRect
+        if self.view.frame.width > self.view.frame.height {
+            viewRect = CGRect(x: 0, y: 0, width: self.view.frame.width - 100, height: self.view.frame.height - 50)
+        } else {
+            viewRect = CGRect(x: 0, y: 0, width: self.view.frame.width - 40, height: self.view.frame.height - 40)
+        }
+
+        let center = CGPoint(x: viewRect.midX, y: viewRect.midY)
+        //print(center)
+        //print(tapLoc)
         let hitTestResults = sceneView.hitTest(center)
         guard let node = hitTestResults.first?.node else {
             let hitTestResultsWithFeatPts = sceneView.hitTest(center, types: .featurePoint)
