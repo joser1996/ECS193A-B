@@ -8,22 +8,24 @@
 
 import UIKit
 import ARKit
+import MultipeerConnectivity
 
 class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     // MARK: Outlets
     @IBOutlet weak var sceneView: ARSCNView!
+    @IBOutlet weak var button: UIButton!
     
     
     
     // MARK: Multipeer Implementation
-    let mcService = MultipeerService()
-    
-    
+    var mcService : MultipeerSession!
     
     //MARK: View Life Cycle
     //View Life Cycle modeled after AR Multipeer Demo
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mcService = MultipeerSession(receivedDataHandler: receivedData)
         //Start MultiPeer Service once view loads
         //addBox()
         //addTapGestureToSceneView()
@@ -52,7 +54,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         //Don't want app to sleep
         UIApplication.shared.isIdleTimerDisabled = true
-        
     }
 
     
@@ -77,25 +78,67 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     //Inform View of changes in quality of device position tracking
     //code to update in this case goes in this functon
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
-        //Update Session Info Label of Status
+        
+        // Update the UI to provide feedback on the state of the AR experience.
+        let trackingState = camera.trackingState
+        //let frame = session.currentFrame!
+        switch trackingState {
+            
+        case .normal where !mcService.connectedPeers.isEmpty && mapProvider == nil:
+            let peerNames = mcService.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
+            print("Connected with \(peerNames).")
+            
+//        case .notAvailable:
+//            message = "Tracking unavailable."
+//
+//        case .limited(.excessiveMotion):
+//            message = "Tracking limited - Move the device more slowly."
+//
+//        case .limited(.insufficientFeatures):
+//            message = "Tracking limited - Point the device at an area with visible surface detail, or improve lighting conditions."
+            
+        case .limited(.initializing) where mapProvider != nil,
+             .limited(.relocalizing) where mapProvider != nil:
+            print("Received map from \(mapProvider!.displayName).")
+            
+        case .limited(.relocalizing):
+            print("Resuming session — move to where you were when the session was interrupted.")
+            
+        case .limited(.initializing):
+            print("Initializing AR session.")
+        
+        default:
+            print("default")
+        }
     }
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        print("TRACKING STATE CHANGED: \(frame.worldMappingStatus.rawValue)")
         switch frame.worldMappingStatus {
         case .notAvailable, .limited:
             //Don't want to send data to each other if mapping status is limited or N/A
-            //sendMapButton.isEnabled = false
+            button.isEnabled = false
             print("MappingStatus: NA or Limited")
         case .extending:
             //has mapped some areas but is currently mapping aournd current position
-            //sendMapButton.isEnabled = !multipeerSession.connectedPeers.isEmpty
+            button.isEnabled = true //!mcService.connectedPeers.isEmpty
             print("MappingStatus: Extending")
         case .mapped:
             //Mapped enough of the visible area
-            //sendMapButton.isEnabled = !multipeerSession.connectedPeers.isEmpty
+            button.isEnabled = true //!mcService.connectedPeers.isEmpty
             print("MappingStatus: Mapped")
         @unknown default:
             print("Unknown worldMappingStatus")
+        }
+    }
+    
+    @IBAction func buttonHandler(_ sender: UIButton) {
+        sceneView.session.getCurrentWorldMap { worldMap, error in
+            guard let map = worldMap
+                else { print("Error: \(error!.localizedDescription)"); return }
+            guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+                else { fatalError("can't encode map") }
+            self.mcService.sendToAllPeers(data)
         }
     }
     
@@ -170,8 +213,35 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     }
     
-    // TODO: ADD Functionality to share the World Map data
+    var mapProvider: MCPeerID?
     
+    // TODO: ADD Functionality to share the World Map data
+    /// - Tag: ReceiveData
+    func receivedData(_ data: Data, from peer: MCPeerID) {
+        print("Data received from \(peer)")
+        do {
+            if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
+                // Run the session with the received world map.
+                let configuration = ARWorldTrackingConfiguration()
+                configuration.planeDetection = .horizontal
+                configuration.initialWorldMap = worldMap
+                sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+
+                // Remember who provided the map for showing UI feedback.
+                mapProvider = peer
+            }
+            else
+            if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
+                // Add anchor to the session, ARSCNView delegate adds visible content.
+                sceneView.session.add(anchor: anchor)
+            }
+            else {
+                print("unknown data recieved from \(peer)")
+            }
+        } catch {
+            print("can't decode data recieved from \(peer)")
+        }
+    }
     
     // TODO: Functionality to recieve map data
     
