@@ -66,10 +66,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     // MARK: - SCNView Delegates
     //this function isn't being called
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        print("rederer: attempting to add cube")
         if let name = anchor.name, name.hasPrefix("cube") {
             node.addChildNode(loadCube())
-            print("Added Cube Node")
         }
     }
     
@@ -113,7 +111,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        print("TRACKING STATE CHANGED: \(frame.worldMappingStatus.rawValue)")
         switch frame.worldMappingStatus {
         case .notAvailable, .limited:
             //Don't want to send data to each other if mapping status is limited or N/A
@@ -129,6 +126,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             print("MappingStatus: Mapped")
         @unknown default:
             print("Unknown worldMappingStatus")
+            button.isEnabled = false
         }
     }
     
@@ -221,6 +219,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         print("Data received from \(peer)")
         do {
             if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
+                print("Getting worldmap")
                 // Run the session with the received world map.
                 let configuration = ARWorldTrackingConfiguration()
                 configuration.planeDetection = .horizontal
@@ -232,6 +231,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             }
             else
             if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
+                print("Getting anchor")
                 // Add anchor to the session, ARSCNView delegate adds visible content.
                 sceneView.session.add(anchor: anchor)
             }
