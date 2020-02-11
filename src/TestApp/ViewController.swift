@@ -207,6 +207,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     let anchor = ARAnchor(name: "cube", transform: hitTestResult.worldTransform)
     sceneView.session.add(anchor: anchor)
     print("handleSceneTap: added anchor")
+        
+    guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
+        else { fatalError("can't encode anchor") }
+    self.mcService.sendToAllPeers(data)
     // TODO: Add code that sends Anchor infor to other peers here for now.
     
     }
