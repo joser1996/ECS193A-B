@@ -15,7 +15,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     @IBOutlet weak var sceneView: ARSCNView!
     @IBOutlet weak var button: UIButton!
     
-    
+    @IBOutlet weak var connectionLabel: UILabel!
+    @IBOutlet weak var mappingStatusLabel: UILabel!
+    var mapFlag = false
     
     // MARK: Multipeer Implementation
     var mcService : MultipeerSession!
@@ -111,21 +113,31 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        if (!mcService.connectedPeers.isEmpty && mapProvider == nil) {
+            let peerNames = mcService.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
+            print("Connected with \(peerNames).")
+            connectionLabel.text = "\(peerNames)"
+        }
+        
         switch frame.worldMappingStatus {
         case .notAvailable, .limited:
             //Don't want to send data to each other if mapping status is limited or N/A
             button.isEnabled = false
             print("MappingStatus: NA or Limited")
+            mappingStatusLabel.text = "NA/Limited"
         case .extending:
             //has mapped some areas but is currently mapping aournd current position
             button.isEnabled = true //!mcService.connectedPeers.isEmpty
             print("MappingStatus: Extending")
+            mappingStatusLabel.text = "Extending"
         case .mapped:
             //Mapped enough of the visible area
             button.isEnabled = true //!mcService.connectedPeers.isEmpty
             print("MappingStatus: Mapped")
+            mappingStatusLabel.text = "Mapped"
         @unknown default:
             print("Unknown worldMappingStatus")
+            mappingStatusLabel.text = "Unknown"
             button.isEnabled = false
         }
     }
@@ -196,23 +208,33 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     // MARK: - Common View Stuff
     @IBAction func handleSceneTap(_ sender: UITapGestureRecognizer) {
-    print("Handling Scene Tap")
-    // Hit test to find a place for a virtual object.
-    guard let hitTestResult = sceneView
-        .hitTest(sender.location(in: sceneView), types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
-        .first
-        else { return }
-    
-    // Place an anchor for a virtual character. The model appears in renderer(_:didAdd:for:).
-    let anchor = ARAnchor(name: "cube", transform: hitTestResult.worldTransform)
-    sceneView.session.add(anchor: anchor)
-    print("handleSceneTap: added anchor")
         
-    guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
-        else { fatalError("can't encode anchor") }
-    self.mcService.sendToAllPeers(data)
-    // TODO: Add code that sends Anchor infor to other peers here for now.
-    
+//        let tapLoc = sender.location(in: sceneView)
+//        let hitBox = sceneView.hitTest(tapLoc)
+//        let cube = hitBox.first?.node
+//
+//        if(cube != nil) {
+//            cube?.removeFromParentNode()
+//        }
+
+        //else {
+            print("Handling Scene Tap")
+            // Hit test to find a place for a virtual object.
+            guard let hitTestResult = sceneView
+                .hitTest(sender.location(in: sceneView), types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
+                .first
+                else { return }
+            
+            // Place an anchor for a virtual character. The model appears in renderer(_:didAdd:for:).
+            let anchor = ARAnchor(name: "cube", transform: hitTestResult.worldTransform)
+            sceneView.session.add(anchor: anchor)
+            print("handleSceneTap: added anchor")
+                
+            guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
+                else { fatalError("can't encode anchor") }
+            self.mcService.sendToAllPeers(data)
+            // TODO: Add code that sends Anchor infor to other peers here for now.
+        //}
     }
     
     var mapProvider: MCPeerID?
@@ -222,8 +244,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     func receivedData(_ data: Data, from peer: MCPeerID) {
         print("Data received from \(peer)")
         do {
-            if let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
+            if  mapFlag == false, let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
                 print("Getting worldmap")
+                mapFlag = true
                 // Run the session with the received world map.
                 let configuration = ARWorldTrackingConfiguration()
                 configuration.planeDetection = .horizontal
@@ -233,8 +256,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 // Remember who provided the map for showing UI feedback.
                 mapProvider = peer
             }
-            else
-            if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
+            else if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
                 print("Getting anchor")
                 // Add anchor to the session, ARSCNView delegate adds visible content.
                 sceneView.session.add(anchor: anchor)
