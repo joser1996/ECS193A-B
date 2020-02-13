@@ -158,6 +158,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         let boxNode = SCNNode()
         boxNode.geometry = box
+        boxNode.name = "boxNode"
         return boxNode
     }
     
@@ -209,14 +210,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     // MARK: - Common View Stuff
     @IBAction func handleSceneTap(_ sender: UITapGestureRecognizer) {
         
-//        let tapLoc = sender.location(in: sceneView)
-//        let hitBox = sceneView.hitTest(tapLoc)
-//        let cube = hitBox.first?.node
-//
-//        if(cube != nil) {
-//            cube?.removeFromParentNode()
-//        }
-
+        let tapLoc = sender.location(in: sceneView)
+        let objects = sceneView.hitTest(tapLoc)
+        for element in objects {
+            print("Element: \(element)")
+        }
+        let box = objects.first?.node
+        if box?.name == "boxNode" {
+            box?.removeFromParentNode()
+            return
+        }
+        
         //else {
             print("Handling Scene Tap")
             // Hit test to find a place for a virtual object.
