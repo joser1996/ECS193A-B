@@ -24,12 +24,7 @@ class ViewController: UIViewController {
         sceneView.session.pause()
     }
     
-    @IBAction func go_to_next(_ sender: Any) {
-    }
-    @IBAction func go_back(_ sender: Any) {
-    }
-    @IBAction func go_to_game(_ sender: Any) {
-    }
+
     func addBox(x: Float = 0, y: Float = 0, z: Float = -0.6){
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         

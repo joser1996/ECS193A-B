@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8Xi-Gj-NVn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SRH-zQ-hXw">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
@@ -10,21 +10,21 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" id="BYZ-38-t0r" customClass="ViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GgU-3N-hbx">
-                                <rect key="frame" x="20" y="12" width="335" height="607"/>
+                                <rect key="frame" x="20" y="12" width="335" height="627"/>
                                 <subviews>
                                     <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="Main" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-WQ-vey">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="607"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="627"/>
                                     </arscnView>
                                 </subviews>
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="viewfinder" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="fCO-dx-tt6">
-                                <rect key="frame" x="165" y="302" width="45" height="42.5"/>
+                                <rect key="frame" x="165" y="312" width="45" height="42.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="GuG-84-T1J"/>
                                     <constraint firstAttribute="width" constant="45" id="nks-Lj-feB"/>
@@ -48,18 +48,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.28185907046478" y="125.59999999999999"/>
+            <point key="canvasLocation" x="1074.4000000000001" y="125.4872563718141"/>
         </scene>
-        <!--View Controller-->
+        <!--New View Controller-->
         <scene sceneID="WuV-Hh-qYb">
             <objects>
-                <viewController id="m4S-rY-Xn0" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="NewViewController" id="m4S-rY-Xn0" customClass="NewViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kKv-eH-46x">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="83" translatesAutoresizingMaskIntoConstraints="NO" id="E9P-Tx-6QE">
-                                <rect key="frame" x="137.5" y="252" width="100" height="143"/>
+                                <rect key="frame" x="137.5" y="262" width="100" height="143"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jPu-Fg-8KY">
                                         <rect key="frame" x="0.0" y="0.0" width="100" height="30"/>
@@ -69,7 +69,7 @@
                                         <state key="normal" title="Multiplayer"/>
                                         <connections>
                                             <action selector="go_to_game:" destination="37G-nl-Lok" eventType="touchUpInside" id="DeQ-Jy-kzr"/>
-                                            <segue destination="BYZ-38-t0r" kind="presentation" id="Uij-0p-GhU"/>
+                                            <action selector="go_to_the_game:" destination="m4S-rY-Xn0" eventType="touchUpInside" id="g5K-EC-G20"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YEY-2b-JIn">
@@ -80,7 +80,8 @@
                                         <state key="normal" title="Back"/>
                                         <connections>
                                             <action selector="go_back:" destination="37G-nl-Lok" eventType="touchUpInside" id="YKA-wj-QmL"/>
-                                            <segue destination="8Xi-Gj-NVn" kind="presentation" id="zh3-d4-Cl8"/>
+                                            <action selector="go_back:" destination="m4S-rY-Xn0" eventType="touchUpInside" id="etY-31-IuM"/>
+                                            <segue destination="SRH-zQ-hXw" kind="presentation" id="zh3-d4-Cl8"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -93,16 +94,17 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="JrL-Jp-KjS"/>
                     </view>
+                    <navigationItem key="navigationItem" id="RjO-bL-uN7"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K5d-uQ-iJW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="37G-nl-Lok" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="149.77511244377811" y="831.20000000000005"/>
+            <point key="canvasLocation" x="1088.8" y="830.73463268365822"/>
         </scene>
-        <!--View Controller-->
+        <!--First View Controller-->
         <scene sceneID="PFX-3O-RhJ">
             <objects>
-                <viewController id="8Xi-Gj-NVn" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FirstViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8Xi-Gj-NVn" customClass="FirstViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eaP-wx-Yic">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -114,8 +116,8 @@
                                         <rect key="frame" x="0.0" y="0.0" width="74" height="30"/>
                                         <state key="normal" title="Play Game"/>
                                         <connections>
+                                            <action selector="go_to_new_view_controller:" destination="8Xi-Gj-NVn" eventType="touchUpInside" id="Si4-Tb-Xhe"/>
                                             <action selector="go_to_next:" destination="dFX-cG-llC" eventType="touchUpInside" id="eRZ-rc-Zhg"/>
-                                            <segue destination="m4S-rY-Xn0" kind="presentation" id="LbF-QR-eat"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -131,9 +133,28 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="zcq-EU-yrl"/>
                     </view>
+                    <navigationItem key="navigationItem" id="uVv-nW-4G3"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nja-8o-62h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="dFX-cG-llC" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="223" y="333"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="oB6-c4-Cio">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="SRH-zQ-hXw" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="V1e-nD-aQB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="8Xi-Gj-NVn" kind="relationship" relationship="rootViewController" id="834-Va-nK8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WhP-Jd-vhJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-492" y="333.28335832083962"/>
         </scene>
