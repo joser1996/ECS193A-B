@@ -25,15 +25,21 @@ class ViewController: UIViewController {
     }
     
 
-    func addBox(x: Float = 0, y: Float = 0, z: Float = -0.6){
+    func addBox(x: Float = 0, y: Float = 0, z: Float = 0, isZombie: Bool){
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         
         let boxNode = SCNNode()
         boxNode.geometry = box
+    
+        if isZombie { boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+            
+            let moveAction = SCNAction.move(to: SCNVector3(0, -0.4, 0), duration: 10)
+            
+            boxNode.runAction(moveAction)
+        }
+        
         boxNode.position = SCNVector3(x,y,z)
-        
-        sceneView.scene.rootNode.addChildNode(boxNode)
-        
+         sceneView.scene.rootNode.addChildNode(boxNode)
     }
     
     func addTapGestureToSceneView(){
@@ -43,29 +49,26 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addBox()
+        addBox(x: 0, y: 0, z: 0, isZombie: false)
         addTapGestureToSceneView()
+        
+        Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { timer in
+            let angle = Float.random(in: 0 ..< 360)
+            let distance = Float.random(in: 1.5 ..< 2)
+            
+            let position = float3(x: distance * cos(angle * Float.pi / 180), y: -0.4, z: distance * sin(angle * Float.pi / 180))
+            
+            self.addBox(x: 0, y: -0.4, z: -1, isZombie: true)
+        }
     }
     
     @objc func didTap(withGestureRecognizer recognizer: UIGestureRecognizer){
-        //let tapLoc = recognizer.location(in: sceneView)
-        var viewRect: CGRect
-        if self.view.frame.width > self.view.frame.height {
-            viewRect = CGRect(x: 0, y: 0, width: self.view.frame.width - 100, height: self.view.frame.height - 50)
-        } else {
-            viewRect = CGRect(x: 0, y: 0, width: self.view.frame.width - 40, height: self.view.frame.height - 40)
-        }
-
-        let center = CGPoint(x: viewRect.midX, y: viewRect.midY)
-        //print(center)
-        //print(tapLoc)
+        let tapLoc = recognizer.location(in: sceneView)
+        let center = self.view.center
+        print(center)
+        print(tapLoc)
         let hitTestResults = sceneView.hitTest(center)
         guard let node = hitTestResults.first?.node else {
-            let hitTestResultsWithFeatPts = sceneView.hitTest(center, types: .featurePoint)
-            if let hitTestResultsWithFeatPts = hitTestResultsWithFeatPts.first{
-                let translation = hitTestResultsWithFeatPts.worldTransform.translation
-                addBox(x: translation.x, y: translation.y, z: translation.z)
-            }
             return
             
         }

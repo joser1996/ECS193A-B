@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		78A4BA5423E618AC00BA2505 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A4BA5323E618AC00BA2505 /* State.swift */; };
+		78EDCAC523F8C9D400C6AF41 /* SyncViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78EDCAC423F8C9D400C6AF41 /* SyncViewController.swift */; };
 		93C74FA623D91CFE003BF585 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C74FA523D91CFE003BF585 /* AppDelegate.swift */; };
 		93C74FA823D91CFE003BF585 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C74FA723D91CFE003BF585 /* SceneDelegate.swift */; };
 		93C74FAA23D91CFE003BF585 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C74FA923D91CFE003BF585 /* ViewController.swift */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		78A4BA5323E618AC00BA2505 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
+		78EDCAC423F8C9D400C6AF41 /* SyncViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncViewController.swift; sourceTree = "<group>"; };
 		93C74FA223D91CFE003BF585 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C74FA523D91CFE003BF585 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93C74FA723D91CFE003BF585 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				93C74FB023D91D01003BF585 /* LaunchScreen.storyboard */,
 				93C74FB323D91D01003BF585 /* Info.plist */,
 				78A4BA5323E618AC00BA2505 /* State.swift */,
+				78EDCAC423F8C9D400C6AF41 /* SyncViewController.swift */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -274,6 +277,7 @@
 				E09688DB23F7E77A006F9CBF /* NewViewController.swift in Sources */,
 				93C74FA823D91CFE003BF585 /* SceneDelegate.swift in Sources */,
 				78A4BA5423E618AC00BA2505 /* State.swift in Sources */,
+				78EDCAC523F8C9D400C6AF41 /* SyncViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,13 +451,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3BM743GJUH;
+				DEVELOPMENT_TEAM = Y22R9B98H2;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = BigD.TestApp;
+				PRODUCT_BUNDLE_IDENTIFIER = Zombie.TestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -465,13 +469,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3BM743GJUH;
+				DEVELOPMENT_TEAM = Y22R9B98H2;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Daytona520.TestApp;
+				PRODUCT_BUNDLE_IDENTIFIER = Zombie.TestApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

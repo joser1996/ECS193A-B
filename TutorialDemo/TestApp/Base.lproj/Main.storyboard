@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SRH-zQ-hXw">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -12,19 +12,19 @@
             <objects>
                 <viewController storyboardIdentifier="ViewController" id="BYZ-38-t0r" customClass="ViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GgU-3N-hbx">
-                                <rect key="frame" x="20" y="12" width="335" height="627"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GgU-3N-hbx">
+                                <rect key="frame" x="64" y="20" width="768" height="353"/>
                                 <subviews>
                                     <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="Main" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-WQ-vey">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="627"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="768" height="353"/>
                                     </arscnView>
                                 </subviews>
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="viewfinder" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="fCO-dx-tt6">
-                                <rect key="frame" x="165" y="312" width="45" height="42.5"/>
+                                <rect key="frame" x="425.5" y="185.5" width="45" height="42.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="GuG-84-T1J"/>
                                     <constraint firstAttribute="width" constant="45" id="nks-Lj-feB"/>
@@ -48,18 +48,67 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1074.4000000000001" y="125.4872563718141"/>
+            <point key="canvasLocation" x="1087" y="-562"/>
+        </scene>
+        <!--Sync View Controller-->
+        <scene sceneID="0Tb-6X-Kq1">
+            <objects>
+                <viewController storyboardIdentifier="SyncViewController" id="Pgq-Ri-dPd" customClass="SyncViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yMn-io-ONf">
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="Main" translatesAutoresizingMaskIntoConstraints="NO" id="Wqz-XM-s3w">
+                                <rect key="frame" x="64" y="30" width="768" height="354"/>
+                            </arscnView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the center of the square to sync your crosshairs" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nje-64-BRE">
+                                <rect key="frame" x="135" y="275.5" width="626" height="78.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="viewfinder" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Vam-tE-qu0">
+                                <rect key="frame" x="425.5" y="185.5" width="45" height="42.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="J4c-xV-xTT"/>
+                                    <constraint firstAttribute="height" constant="45" id="oDA-vb-drS"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Vam-tE-qu0" firstAttribute="centerY" secondItem="Wqz-XM-s3w" secondAttribute="centerY" id="0fz-QH-Fwd"/>
+                            <constraint firstItem="nje-64-BRE" firstAttribute="top" secondItem="Vam-tE-qu0" secondAttribute="bottom" constant="46" id="CVi-aD-s59"/>
+                            <constraint firstItem="Vam-tE-qu0" firstAttribute="centerX" secondItem="Wqz-XM-s3w" secondAttribute="centerX" id="J62-nE-ZeC"/>
+                            <constraint firstItem="nje-64-BRE" firstAttribute="centerX" secondItem="Wqz-XM-s3w" secondAttribute="centerX" id="LUM-Ic-ulW"/>
+                            <constraint firstItem="ihd-Nl-jL6" firstAttribute="bottom" secondItem="nje-64-BRE" secondAttribute="bottom" constant="39" id="O0S-Sb-vvg"/>
+                            <constraint firstItem="Vam-tE-qu0" firstAttribute="centerX" secondItem="yMn-io-ONf" secondAttribute="centerX" id="Pkt-eO-fTB"/>
+                            <constraint firstItem="Vam-tE-qu0" firstAttribute="centerY" secondItem="yMn-io-ONf" secondAttribute="centerY" id="TYA-TG-YfC"/>
+                            <constraint firstItem="Wqz-XM-s3w" firstAttribute="top" secondItem="ihd-Nl-jL6" secondAttribute="top" constant="30" id="Ur2-zU-u7i"/>
+                            <constraint firstItem="nje-64-BRE" firstAttribute="centerX" secondItem="yMn-io-ONf" secondAttribute="centerX" id="cxH-bC-XmZ"/>
+                            <constraint firstItem="nje-64-BRE" firstAttribute="leading" secondItem="ihd-Nl-jL6" secondAttribute="leading" constant="91" id="dGy-Hb-SDX"/>
+                            <constraint firstItem="Wqz-XM-s3w" firstAttribute="leading" secondItem="ihd-Nl-jL6" secondAttribute="leading" constant="20" id="rnx-c0-rL8"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ihd-Nl-jL6"/>
+                    </view>
+                    <connections>
+                        <outlet property="sceneView" destination="Wqz-XM-s3w" id="pWq-Se-wGp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UkJ-Eu-KWD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1085.4910714285713" y="126.08695652173914"/>
         </scene>
         <!--New View Controller-->
         <scene sceneID="WuV-Hh-qYb">
             <objects>
                 <viewController storyboardIdentifier="NewViewController" id="m4S-rY-Xn0" customClass="NewViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kKv-eH-46x">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="83" translatesAutoresizingMaskIntoConstraints="NO" id="E9P-Tx-6QE">
-                                <rect key="frame" x="137.5" y="262" width="100" height="143"/>
+                                <rect key="frame" x="398" y="135.5" width="100" height="143"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jPu-Fg-8KY">
                                         <rect key="frame" x="0.0" y="0.0" width="100" height="30"/>
@@ -106,11 +155,11 @@
             <objects>
                 <viewController storyboardIdentifier="FirstViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8Xi-Gj-NVn" customClass="FirstViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eaP-wx-Yic">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pLH-Uc-scS">
-                                <rect key="frame" x="160" y="308.5" width="74" height="30"/>
+                                <rect key="frame" x="420.5" y="192" width="74" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w6C-lv-xPS">
                                         <rect key="frame" x="0.0" y="0.0" width="74" height="30"/>
@@ -146,7 +195,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="SRH-zQ-hXw" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="V1e-nD-aQB">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -155,6 +204,16 @@
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WhP-Jd-vhJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" id="4J7-a8-eUj">
+                    <rect key="frame" x="0.0" y="0.0" width="627" height="335"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="Main" translatesAutoresizingMaskIntoConstraints="NO" id="ZWp-lE-xNL">
+                            <rect key="frame" x="0.0" y="0.0" width="627" height="335"/>
+                        </arscnView>
+                    </subviews>
+                    <viewLayoutGuide key="safeArea" id="lpW-7o-S3V"/>
+                </stackView>
             </objects>
             <point key="canvasLocation" x="-492" y="333.28335832083962"/>
         </scene>
