@@ -58,7 +58,7 @@ class ViewController: UIViewController {
             
             let position = float3(x: distance * cos(angle * Float.pi / 180), y: -0.4, z: distance * sin(angle * Float.pi / 180))
             
-            self.addBox(x: 0, y: -0.4, z: -1, isZombie: true)
+            self.addBox(x: position.x, y: -0.4, z: position.z, isZombie: true)
         }
     }
     
