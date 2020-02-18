@@ -12,8 +12,8 @@ import MultipeerConnectivity
 
 class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     // MARK: Outlets
-    @IBOutlet weak var sceneView: ARSCNView!
     
+    @IBOutlet weak var sceneView: ARSCNView!
     @IBOutlet weak var userInstructions: UILabel!
     @IBOutlet weak var shareMapButton: UIButton!
     @IBOutlet weak var connectionLabel: UILabel!

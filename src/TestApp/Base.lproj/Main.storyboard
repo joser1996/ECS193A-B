@@ -20,6 +20,7 @@
                                 <subviews>
                                     <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="Main" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-WQ-vey">
                                         <rect key="frame" x="0.0" y="0.0" width="335" height="627"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <gestureRecognizers/>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="hXf-UC-l5r" appends="YES" id="cLB-MQ-elm"/>
@@ -57,7 +58,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1074.4000000000001" y="125.4872563718141"/>
+            <point key="canvasLocation" x="2054" y="71"/>
         </scene>
         <!--New View Controller-->
         <scene sceneID="WuV-Hh-qYb">
@@ -108,7 +109,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K5d-uQ-iJW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="37G-nl-Lok" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1088.8" y="830.73463268365822"/>
+            <point key="canvasLocation" x="1188" y="859"/>
         </scene>
         <!--First View Controller-->
         <scene sceneID="PFX-3O-RhJ">
@@ -125,8 +126,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="74" height="30"/>
                                         <state key="normal" title="Play Game"/>
                                         <connections>
-                                            <action selector="go_to_new_view_controller:" destination="8Xi-Gj-NVn" eventType="touchUpInside" id="Si4-Tb-Xhe"/>
-                                            <action selector="go_to_next:" destination="dFX-cG-llC" eventType="touchUpInside" id="eRZ-rc-Zhg"/>
+                                            <segue destination="jhw-e7-mNE" kind="show" id="9YQ-07-kc7"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -145,9 +145,8 @@
                     <navigationItem key="navigationItem" id="uVv-nW-4G3"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nja-8o-62h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <exit id="dFX-cG-llC" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="223" y="333"/>
+            <point key="canvasLocation" x="495" y="71"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="oB6-c4-Cio">
@@ -165,14 +164,14 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WhP-Jd-vhJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-492" y="333.28335832083962"/>
+            <point key="canvasLocation" x="-591" y="71"/>
         </scene>
         <!--Base Placement Controller-->
         <scene sceneID="n8V-ly-4X5">
             <objects>
-                <viewController storyboardIdentifier="Base Placement" id="jhw-e7-mNE" customClass="BasePlacementController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Base Placement" id="jhw-e7-mNE" customClass="BasePlacementController" customModule="TestApp" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Toh-5N-3rn">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="otw-he-EVd">
@@ -209,8 +208,10 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="8af-Hr-fgO"/>
                     </view>
+                    <navigationItem key="navigationItem" id="oN7-sR-fLL"/>
                     <connections>
                         <outlet property="connectionLabel" destination="JAl-3S-OJD" id="7Oo-5p-Iz2"/>
+                        <outlet property="sceneView" destination="otw-he-EVd" id="RAQ-A4-WyM"/>
                         <outlet property="shareMapButton" destination="nDD-cf-33C" id="Wdc-Kd-Rvr"/>
                         <outlet property="userInstructions" destination="2Hj-fT-P7q" id="M7G-Dy-lk5"/>
                     </connections>
@@ -222,7 +223,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="221.59999999999999" y="1073.6131934032985"/>
+            <point key="canvasLocation" x="1284" y="71"/>
         </scene>
     </scenes>
     <resources>

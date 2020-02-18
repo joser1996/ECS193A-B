@@ -16,12 +16,12 @@ class FirstViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func go_to_new_view_controller(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "NewViewController") as! NewViewController
-        self.navigationController!.pushViewController(vc, animated: true)
-    }
-    
+//    @IBAction func go_to_new_view_controller(_ sender: Any) {
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let vc = storyboard.instantiateViewController(withIdentifier: "NewViewController") as! NewViewController
+//        self.navigationController!.pushViewController(vc, animated: true)
+//    }
+//
     /*
     // MARK: - Navigation
 
@@ -32,4 +32,6 @@ class FirstViewController: UIViewController {
     }
     */
 
+    
+    
 }
