@@ -31,7 +31,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         print("View Loaded?")
         mcService = MultipeerSession(receivedDataHandler: receivedData)
         sceneView.delegate = self
-        userInstructions.text = "Move camera to map your surroundings\nTap on a flat surface to place your base"
+        //userInstructions.text = "Move camera to map your surroundings\nTap on a flat surface to place your base"
         shareMapButton.isEnabled = false
         connectionLabel.text = "Searching for peers..."
     }
@@ -131,14 +131,14 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
             //userInstructions.text = "NA/Limited"
         case .extending:
             //has mapped some areas but is currently mapping aournd current position
-            shareMapButton.isEnabled = baseNode != nil && !mcService.connectedPeers.isEmpty
+            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
             print("MappingStatus: Extending")
-            userInstructions.text = "Point all device cameras at the base location and tap the button to share your map!"
+            //.text = "Point all device cameras at the base location and tap the button to share your map!"
         case .mapped:
             //Mapped enough of the visible area
-            shareMapButton.isEnabled = baseNode != nil && !mcService.connectedPeers.isEmpty
+            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
             print("MappingStatus: Mapped")
-            userInstructions.text = "Point all device cameras at the base location and tap the button to share your map!"
+            //userInstructions.text = "Point all device cameras at the base location and tap the button to share your map!"
         @unknown default:
             print("Unknown worldMappingStatus")
             //userInstructions.text = "Unknown"
@@ -231,16 +231,15 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         sceneView.session.add(anchor: anchor)
         print("handleSceneTap: added anchor")
             
-        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
-            else { fatalError("can't encode anchor") }
-        print("Attempting to send to all peers\n")
-        self.mcService.sendToAllPeers(data)
+//        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
+//            else { fatalError("can't encode anchor") }
+       // print("Attempting to send to all peers\n")
+       // self.mcService.sendToAllPeers(data)
         // TODO: Add code that sends Anchor infor to other peers here for now.
     }
     
     var mapProvider: MCPeerID?
     
-    // TODO: ADD Functionality to share the World Map data
     /// - Tag: ReceiveData
     func receivedData(_ data: Data, from peer: MCPeerID) {
         print("Data received from \(peer)")
@@ -279,14 +278,20 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
             self.mcService.sendToAllPeers(data)
         }
         
-        go_to_new_view_controller()
+//        go_to_new_view_controller()
     }
     
-    func go_to_new_view_controller() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "ViewController") as! ViewController
-        self.navigationController!.pushViewController(vc, animated: true)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let gameVC = segue.destination as? GameViewController {
+            print("Preparing SceneView for GameViewController")
+            sceneView.session.pause()
+            gameVC.tempSceneView.session = sceneView.session
+            gameVC.tempSceneView.scene = sceneView.scene
+            gameVC.mcService = mcService
+            
+            print("Moving on...")
+        }
     }
-
+    
 
 }

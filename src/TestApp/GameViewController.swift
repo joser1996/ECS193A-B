@@ -10,13 +10,28 @@ import UIKit
 import ARKit
 import MultipeerConnectivity
 
-class ViewController: UIViewController {
+class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate{
     //MARK: Properties
     @IBOutlet weak var sceneView: ARSCNView!
     
     // MARK: Multipeer Implementation
     var mcService : MultipeerSession!
+    var tempSceneView: ARSCNView = ARSCNView.init()
     
+    @IBOutlet weak var sceneViewGame: ARSCNView!
+    
+    override func viewDidLoad() {
+        print("In View Did Load")
+        super.viewDidLoad()
+        print("attempting to set scene view")
+        sceneViewGame = tempSceneView
+        //update so now this controller is the delegate
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = .horizontal
+        sceneViewGame.session.run(configuration)
+        sceneViewGame.delegate = self
+        print("Did it work?")
+    }
 //    //MARK: View Life Cycle
 //    //View Life Cycle modeled after AR Multipeer Demo
 //    override func viewDidLoad() {
@@ -152,12 +167,12 @@ class ViewController: UIViewController {
 //        }
 //    }
     
-    //Connect this function to reset button
-    func resetTracking(_ sender: UIButton?) {
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = .horizontal
-        sceneView.session.run(configuration, options:[.resetTracking, .removeExistingAnchors])
-    }
+//    //Connect this function to reset button
+//    func resetTracking(_ sender: UIButton?) {
+//        let configuration = ARWorldTrackingConfiguration()
+//        configuration.planeDetection = .horizontal
+//        sceneView.session.run(configuration, options:[.resetTracking, .removeExistingAnchors])
+//    }
     
     // MARK: - Session Observer
     func sessionWasInterrupted(_ session: ARSession) {
@@ -166,7 +181,7 @@ class ViewController: UIViewController {
     
     func sessionInterruptionEnded(_ session: ARSession) {
         // Session Interruption is over. Might have to reset tracking and Anchors here
-        resetTracking(nil)
+        //resetTracking(nil)
         print("ViewController.sessionInterruptionEnded()")
     }
     

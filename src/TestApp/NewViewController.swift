@@ -22,7 +22,7 @@ class NewViewController: UIViewController {
     
     @IBAction func go_to_the_game(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "ViewController") as! GameViewController
         self.navigationController!.pushViewController(vc, animated: true)
     }
     /*
