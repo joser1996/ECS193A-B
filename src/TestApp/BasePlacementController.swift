@@ -28,15 +28,12 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     //View Life Cycle modeled after AR Multipeer Demo
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("View Loaded?")
         mcService = MultipeerSession(receivedDataHandler: receivedData)
-        
+        sceneView.delegate = self
         userInstructions.text = "Move camera to map your surroundings\nTap on a flat surface to place your base"
         shareMapButton.isEnabled = false
         connectionLabel.text = "Searching for peers..."
-        //Start MultiPeer Service once view loads
-        //addBox()
-        //addTapGestureToSceneView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -236,6 +233,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
             
         guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
             else { fatalError("can't encode anchor") }
+        print("Attempting to send to all peers\n")
         self.mcService.sendToAllPeers(data)
         // TODO: Add code that sends Anchor infor to other peers here for now.
     }
