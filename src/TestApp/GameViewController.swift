@@ -5,33 +5,38 @@
 //  Created by Jose Torres on 1/22/20.
 //  Copyright © 2020 Senior Design. All rights reserved.
 //
-
+//try passing the config
 import UIKit
 import ARKit
 import MultipeerConnectivity
 
 class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate{
     //MARK: Properties
-    @IBOutlet weak var sceneView: ARSCNView!
-    
+    var initMap:ARWorldMap!
     // MARK: Multipeer Implementation
     var mcService : MultipeerSession!
-    var tempSceneView: ARSCNView = ARSCNView.init()
+    //var delegate:MapSharing?
+    var conf = ARWorldTrackingConfiguration()
     
     @IBOutlet weak var sceneViewGame: ARSCNView!
+    
+    
     
     override func viewDidLoad() {
         print("In View Did Load")
         super.viewDidLoad()
-        print("attempting to set scene view")
-        sceneViewGame = tempSceneView
-        //update so now this controller is the delegate
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = .horizontal
-        sceneViewGame.session.run(configuration)
-        sceneViewGame.delegate = self
-        print("Did it work?")
+        print("trying to get Session")
+        //sceneViewGame.session = (delegate?.getARSession())!
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("Did appear")
+        sceneViewGame.delegate = self
+        sceneViewGame.session.run(conf)
+    }
+
+
 //    //MARK: View Life Cycle
 //    //View Life Cycle modeled after AR Multipeer Demo
 //    override func viewDidLoad() {
@@ -70,7 +75,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        sceneView.session.pause()
+        sceneViewGame.session.pause()
     }
     
 //    //MARK: - AR Session Delegate
@@ -198,7 +203,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         let center = CGPoint(x: viewRect.midX, y: viewRect.midY)
         //print(center)
         //print(tapLoc)
-        let hitTestResults = sceneView.hitTest(center)
+        let hitTestResults = sceneViewGame.hitTest(center)
         
         let node = hitTestResults.first?.node
         node?.removeFromParentNode()
@@ -225,7 +230,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 let configuration = ARWorldTrackingConfiguration()
                 configuration.planeDetection = .horizontal
                 configuration.initialWorldMap = worldMap
-                sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+                sceneViewGame.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
 
                 // Remember who provided the map for showing UI feedback.
                 mapProvider = peer
@@ -233,7 +238,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             else if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
                 print("Getting anchor")
                 // Add anchor to the session, ARSCNView delegate adds visible content.
-                sceneView.session.add(anchor: anchor)
+                sceneViewGame.session.add(anchor: anchor)
             }
             else {
                 print("unknown data recieved from \(peer)")

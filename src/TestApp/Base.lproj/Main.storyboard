@@ -10,23 +10,11 @@
         <!--Game View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="ViewController" id="BYZ-38-t0r" customClass="GameViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameVC" id="BYZ-38-t0r" customClass="GameViewController" customModule="TestApp" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="GgU-3N-hbx">
-                                <rect key="frame" x="20" y="12" width="627" height="303"/>
-                                <subviews>
-                                    <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="Main" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-WQ-vey">
-                                        <rect key="frame" x="0.0" y="0.0" width="627" height="303"/>
-                                        <gestureRecognizers/>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="hXf-UC-l5r" appends="YES" id="cLB-MQ-elm"/>
-                                        </connections>
-                                    </arscnView>
-                                </subviews>
-                            </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="viewfinder" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="fCO-dx-tt6">
                                 <rect key="frame" x="311" y="166" width="45" height="42.5"/>
                                 <constraints>
@@ -34,21 +22,24 @@
                                     <constraint firstAttribute="width" constant="45" id="nks-Lj-feB"/>
                                 </constraints>
                             </imageView>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" sceneName="Main" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-WQ-vey">
+                                <rect key="frame" x="0.0" y="36" width="667" height="339"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="hXf-UC-l5r" appends="YES" id="cLB-MQ-elm"/>
+                                </connections>
+                            </arscnView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="GgU-3N-hbx" secondAttribute="bottom" constant="20" id="1iv-29-rAe"/>
                             <constraint firstItem="fCO-dx-tt6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DLZ-pj-mDV"/>
-                            <constraint firstItem="GgU-3N-hbx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="dVs-VV-IK4"/>
                             <constraint firstItem="fCO-dx-tt6" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="hei-1A-ZNm"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="GgU-3N-hbx" secondAttribute="trailing" constant="20" id="lJe-p6-EZi"/>
-                            <constraint firstItem="GgU-3N-hbx" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="nyX-4i-FUD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="KB3-0j-2dN"/>
                     <connections>
-                        <outlet property="sceneView" destination="B0d-WQ-vey" id="gBF-CB-fOM"/>
                         <outlet property="sceneViewGame" destination="B0d-WQ-vey" id="T0L-Hz-CKv"/>
                     </connections>
                 </viewController>

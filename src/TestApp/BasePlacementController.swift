@@ -10,6 +10,8 @@ import UIKit
 import ARKit
 import MultipeerConnectivity
 
+
+
 class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     // MARK: Outlets
     
@@ -69,7 +71,6 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     
  
     // MARK: - SCNView Delegates
-    //this function isn't being called
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if let name = anchor.name, name.hasPrefix("cube") {
             baseNode = loadCube()
@@ -131,12 +132,12 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
             //userInstructions.text = "NA/Limited"
         case .extending:
             //has mapped some areas but is currently mapping aournd current position
-            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
+            shareMapButton.isEnabled = (baseNode != nil) || (!mcService.connectedPeers.isEmpty)
             print("MappingStatus: Extending")
             //.text = "Point all device cameras at the base location and tap the button to share your map!"
         case .mapped:
             //Mapped enough of the visible area
-            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
+            shareMapButton.isEnabled = (baseNode != nil) || (!mcService.connectedPeers.isEmpty)
             print("MappingStatus: Mapped")
             //userInstructions.text = "Point all device cameras at the base location and tap the button to share your map!"
         @unknown default:
@@ -283,15 +284,27 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let gameVC = segue.destination as? GameViewController {
-            print("Preparing SceneView for GameViewController")
-            sceneView.session.pause()
-            gameVC.tempSceneView.session = sceneView.session
-            gameVC.tempSceneView.scene = sceneView.scene
-            gameVC.mcService = mcService
-            
-            print("Moving on...")
+            print("Attempting to save Map")
+            sceneView.session.getCurrentWorldMap {
+                worldMap, error in
+                guard let map = worldMap else{return}
+                gameVC.sceneViewGame = self.sceneView
+                gameVC.sceneViewGame.session = self.sceneView.session
+                
+                let config = ARWorldTrackingConfiguration()
+                config.planeDetection = .horizontal
+                config.initialWorldMap = map
+                //
+                gameVC.conf = config
+                print("Moving on...")
+            }
+
+
         }
+        
     }
+    
+
     
 
 }
