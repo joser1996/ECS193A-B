@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SRH-zQ-hXw">
-    <device id="retina4_7" orientation="landscape" appearance="light"/>
+    <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -12,24 +12,24 @@
             <objects>
                 <viewController storyboardIdentifier="GameVC" id="BYZ-38-t0r" customClass="GameViewController" customModule="TestApp" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="viewfinder" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="fCO-dx-tt6">
-                                <rect key="frame" x="311" y="166" width="45" height="42.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="GuG-84-T1J"/>
-                                    <constraint firstAttribute="width" constant="45" id="nks-Lj-feB"/>
-                                </constraints>
-                            </imageView>
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" sceneName="Main" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-WQ-vey">
-                                <rect key="frame" x="0.0" y="36" width="667" height="339"/>
+                                <rect key="frame" x="0.0" y="44" width="896" height="370"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="hXf-UC-l5r" appends="YES" id="cLB-MQ-elm"/>
                                 </connections>
                             </arscnView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="viewfinder" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="fCO-dx-tt6">
+                                <rect key="frame" x="425.5" y="185.5" width="45" height="42.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="GuG-84-T1J"/>
+                                    <constraint firstAttribute="width" constant="45" id="nks-Lj-feB"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -50,18 +50,18 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2053.223388305847" y="69.599999999999994"/>
+            <point key="canvasLocation" x="2053.125" y="69.565217391304358"/>
         </scene>
         <!--New View Controller-->
         <scene sceneID="WuV-Hh-qYb">
             <objects>
                 <viewController storyboardIdentifier="NewViewController" id="m4S-rY-Xn0" customClass="NewViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kKv-eH-46x">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="83" translatesAutoresizingMaskIntoConstraints="NO" id="E9P-Tx-6QE">
-                                <rect key="frame" x="283.5" y="116" width="100" height="143"/>
+                                <rect key="frame" x="398" y="135.5" width="100" height="143"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jPu-Fg-8KY">
                                         <rect key="frame" x="0.0" y="0.0" width="100" height="30"/>
@@ -108,11 +108,11 @@
             <objects>
                 <viewController storyboardIdentifier="FirstViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8Xi-Gj-NVn" customClass="FirstViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eaP-wx-Yic">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pLH-Uc-scS">
-                                <rect key="frame" x="306" y="172.5" width="74" height="30"/>
+                                <rect key="frame" x="420.5" y="192" width="74" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w6C-lv-xPS">
                                         <rect key="frame" x="0.0" y="0.0" width="74" height="30"/>
@@ -143,10 +143,9 @@
         <!--Navigation Controller-->
         <scene sceneID="oB6-c4-Cio">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="SRH-zQ-hXw" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="SRH-zQ-hXw" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="V1e-nD-aQB">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="32"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -163,11 +162,11 @@
             <objects>
                 <viewController storyboardIdentifier="Base Placement" id="jhw-e7-mNE" customClass="BasePlacementController" customModule="TestApp" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Toh-5N-3rn">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="otw-he-EVd">
-                                <rect key="frame" x="0.0" y="0.0" width="684" height="375"/>
+                                <rect key="frame" x="0.0" y="44" width="883" height="351"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -181,8 +180,15 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAl-3S-OJD">
+                                <rect key="frame" x="328" y="88" width="227" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nDD-cf-33C">
-                                <rect key="frame" x="278" y="314" width="109" height="41"/>
+                                <rect key="frame" x="387" y="311" width="109" height="41"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Share Map"/>
                                 <connections>
@@ -190,13 +196,6 @@
                                     <segue destination="BYZ-38-t0r" kind="show" id="tfG-Xy-HjU"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JAl-3S-OJD">
-                                <rect key="frame" x="221" y="93" width="227" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="8af-Hr-fgO"/>
@@ -216,7 +215,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1283.2083958020989" y="69.599999999999994"/>
+            <point key="canvasLocation" x="1283.0357142857142" y="69.565217391304358"/>
         </scene>
     </scenes>
     <resources>

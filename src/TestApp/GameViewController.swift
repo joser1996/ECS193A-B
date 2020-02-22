@@ -15,8 +15,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var initMap:ARWorldMap!
     // MARK: Multipeer Implementation
     var mcService : MultipeerSession!
-    //var delegate:MapSharing?
-    var conf = ARWorldTrackingConfiguration()
+    var bpVC: BasePlacementController!
     
     @IBOutlet weak var sceneViewGame: ARSCNView!
     
@@ -25,15 +24,28 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     override func viewDidLoad() {
         print("In View Did Load")
         super.viewDidLoad()
-        print("trying to get Session")
-        //sceneViewGame.session = (delegate?.getARSession())!
+        sceneViewGame.delegate = self
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("Did appear")
-        sceneViewGame.delegate = self
-        sceneViewGame.session.run(conf)
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = .horizontal
+        
+        let op: ARSession.RunOptions = [.resetTracking, .removeExistingAnchors]
+        
+        if let worldMap = bpVC.worldMap {
+            configuration.initialWorldMap = worldMap
+            print("The map has been set")
+        }
+        
+        
+        
+        
+        sceneViewGame.session.run(configuration, options: op)
+        sceneViewGame.session.delegate = self
     }
 
 

@@ -22,6 +22,9 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     
     var mapFlag = false
     var baseNode: SCNNode!
+    var anchorPoint: ARAnchor!
+    
+    var worldMap: ARWorldMap!
     
     // MARK: Multipeer Implementation
     var mcService : MultipeerSession!
@@ -226,10 +229,11 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
             else { return }
         
         baseNode?.removeFromParentNode()  // Only allow one base to be placed at a time
-        
-        // Place an anchor for a virtual character. The model appears in renderer(_:didAdd:for:).
-        let anchor = ARAnchor(name: "cube", transform: hitTestResult.worldTransform)
-        sceneView.session.add(anchor: anchor)
+        if anchorPoint != nil{
+            sceneView.session.remove(anchor: anchorPoint)
+        }// Place an anchor for a virtual character. The model appears in renderer(_:didAdd:for:).
+        anchorPoint = ARAnchor(name: "cube", transform: hitTestResult.worldTransform)
+        sceneView.session.add(anchor: anchorPoint)
         print("handleSceneTap: added anchor")
             
 //        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
@@ -284,22 +288,19 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let gameVC = segue.destination as? GameViewController {
-            print("Attempting to save Map")
-            sceneView.session.getCurrentWorldMap {
-                worldMap, error in
-                guard let map = worldMap else{return}
-                gameVC.sceneViewGame = self.sceneView
-                gameVC.sceneViewGame.session = self.sceneView.session
+            sceneView.session.getCurrentWorldMap {worldMap, error in
+                guard let map = worldMap
+                    else {return}
                 
-                let config = ARWorldTrackingConfiguration()
-                config.planeDetection = .horizontal
-                config.initialWorldMap = map
-                //
-                gameVC.conf = config
-                print("Moving on...")
+//                //adding snapshot anchor
+//                guard let snapShotAnchor = SnapshotAnchor(capturing: self.sceneView)
+//                    else { fatalError("Can't take snapshot")}
+//                map.anchors.append(snapShotAnchor)
+                self.worldMap = map
             }
-
-
+            
+            gameVC.bpVC = self
+            print("Passing self to next controller")
         }
         
     }
