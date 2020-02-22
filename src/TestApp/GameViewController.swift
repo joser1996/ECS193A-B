@@ -26,6 +26,16 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         super.viewDidLoad()
         sceneViewGame.delegate = self
         
+        Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { timer in
+            let angle = Float.random(in: 0 ..< 360)
+            let distance = Float.random(in: 1.5 ..< 2)
+            
+            let position = (x: distance * cos(angle * Float.pi / 180), y: -0.4, z: distance * sin(angle * Float.pi / 180))
+            
+            let zombie = self.loadCube(position.x, -0.4, position.z, true)
+            self.sceneViewGame.scene.rootNode.addChildNode(zombie)
+        }
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -258,11 +268,21 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     
     // MARK: - AR session management
-    private func loadCube() -> SCNNode {
+    private func loadCube(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false) -> SCNNode {
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         let boxNode = SCNNode()
         boxNode.geometry = box
         boxNode.name = "boxNode"
+        
+        if isZombie { boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+            
+            let moveAction = SCNAction.move(to: SCNVector3(0, -0.4, 0), duration: 10)
+            
+            boxNode.runAction(moveAction)
+        }
+        
+        boxNode.position = SCNVector3(x,y,z)
+        
         return boxNode
     }
     
