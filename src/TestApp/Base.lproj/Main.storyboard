@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" sceneName="Main" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-WQ-vey">
-                                <rect key="frame" x="0.0" y="44" width="896" height="370"/>
+                                <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -166,7 +166,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="otw-he-EVd">
-                                <rect key="frame" x="0.0" y="44" width="883" height="351"/>
+                                <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -193,7 +193,7 @@
                                 <state key="normal" title="Share Map"/>
                                 <connections>
                                     <action selector="handleShareMap:" destination="jhw-e7-mNE" eventType="touchUpInside" id="vqw-fL-eus"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="tfG-Xy-HjU"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="BaseToGame" id="tfG-Xy-HjU"/>
                                 </connections>
                             </button>
                         </subviews>

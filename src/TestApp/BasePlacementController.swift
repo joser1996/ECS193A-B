@@ -20,7 +20,6 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     @IBOutlet weak var shareMapButton: UIButton!
     @IBOutlet weak var connectionLabel: UILabel!
     
-    var mapFlag = false
     var baseNode: SCNNode!
     var anchorPoint: ARAnchor!
     
@@ -130,23 +129,27 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         switch frame.worldMappingStatus {
         case .notAvailable, .limited:
             //Don't want to send data to each other if mapping status is limited or N/A
-            shareMapButton.isEnabled = false
+            shareMapButton.isEnabled = (baseNode != nil) && (mapProvider != nil)
             print("MappingStatus: NA or Limited")
             //userInstructions.text = "NA/Limited"
         case .extending:
             //has mapped some areas but is currently mapping aournd current position
-            shareMapButton.isEnabled = (baseNode != nil) || (!mcService.connectedPeers.isEmpty)
+            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
             print("MappingStatus: Extending")
             //.text = "Point all device cameras at the base location and tap the button to share your map!"
         case .mapped:
             //Mapped enough of the visible area
-            shareMapButton.isEnabled = (baseNode != nil) || (!mcService.connectedPeers.isEmpty)
+            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
             print("MappingStatus: Mapped")
             //userInstructions.text = "Point all device cameras at the base location and tap the button to share your map!"
         @unknown default:
             print("Unknown worldMappingStatus")
             //userInstructions.text = "Unknown"
-            shareMapButton.isEnabled = false
+            shareMapButton.isEnabled = (baseNode != nil) && (mapProvider != nil)
+        }
+        
+        if mapProvider != nil {
+            shareMapButton.setTitle("Map Received! Proceed to game...", for: UIControl.State.normal)
         }
     }
     
@@ -236,10 +239,10 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         sceneView.session.add(anchor: anchorPoint)
         print("handleSceneTap: added anchor")
             
-//        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
-//            else { fatalError("can't encode anchor") }
-       // print("Attempting to send to all peers\n")
-       // self.mcService.sendToAllPeers(data)
+//        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchorPoint!, requiringSecureCoding: true)
+//              else { fatalError("can't encode anchor") }
+//        print("Attempting to send to all peers\n")
+//        self.mcService.sendToAllPeers(data)
         // TODO: Add code that sends Anchor infor to other peers here for now.
     }
     
@@ -249,23 +252,23 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     func receivedData(_ data: Data, from peer: MCPeerID) {
         print("Data received from \(peer)")
         do {
-            if  mapFlag == false, let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
+            if let sharedWorldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
                 print("Getting worldmap")
-                mapFlag = true
+                worldMap = sharedWorldMap
                 // Run the session with the received world map.
                 let configuration = ARWorldTrackingConfiguration()
                 configuration.planeDetection = .horizontal
                 configuration.initialWorldMap = worldMap
                 sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-
+                
                 // Remember who provided the map for showing UI feedback.
                 mapProvider = peer
             }
-            else if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
-                print("Getting anchor")
-                // Add anchor to the session, ARSCNView delegate adds visible content.
-                sceneView.session.add(anchor: anchor)
-            }
+//            else if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
+//                print("Getting anchor")
+//                // Add anchor to the session, ARSCNView delegate adds visible content.
+//                sceneView.session.add(anchor: anchor)
+//            }
             else {
                 print("unknown data recieved from \(peer)")
             }
@@ -275,15 +278,15 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     }
     
     @IBAction func handleShareMap(_ sender: Any) {
-        sceneView.session.getCurrentWorldMap { worldMap, error in
-            guard let map = worldMap
-                else { print("Error: \(error!.localizedDescription)"); return }
-            guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
-                else { fatalError("can't encode map") }
-            self.mcService.sendToAllPeers(data)
+        if mapProvider == nil {
+            sceneView.session.getCurrentWorldMap { worldMap, error in
+                guard let map = worldMap
+                    else { print("Error: \(error!.localizedDescription)"); return }
+                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+                    else { fatalError("can't encode map") }
+                self.mcService.sendToAllPeers(data)
+            }
         }
-        
-//        go_to_new_view_controller()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -299,7 +302,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
                 self.worldMap = map
             }
             
-            gameVC.bpVC = self
+            gameVC.previousViewController = self
             print("Passing self to next controller")
         }
         

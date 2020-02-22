@@ -15,7 +15,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var initMap:ARWorldMap!
     // MARK: Multipeer Implementation
     var mcService : MultipeerSession!
-    var bpVC: BasePlacementController!
+    var previousViewController: BasePlacementController!
     
     @IBOutlet weak var sceneViewGame: ARSCNView!
     
@@ -36,13 +36,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         
         let op: ARSession.RunOptions = [.resetTracking, .removeExistingAnchors]
         
-        if let worldMap = bpVC.worldMap {
+        if let worldMap = previousViewController.worldMap {
             configuration.initialWorldMap = worldMap
             print("The map has been set")
         }
-        
-        
-        
         
         sceneViewGame.session.run(configuration, options: op)
         sceneViewGame.session.delegate = self
@@ -129,12 +126,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
 //    }
 //        
 //    func session(_ session: ARSession, didUpdate frame: ARFrame) {
-//        if (!mcService.connectedPeers.isEmpty && mapProvider == nil) {
-//            let peerNames = mcService.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
-//            print("Connected with \(peerNames).")
-//            connectionLabel.text = "\(peerNames)"
+//        if (!previousViewController.mcService.connectedPeers.isEmpty) {
+//            let peerNames = previousViewController.mcService.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
+//            print("Game VC: Connected with \(peerNames).")
+//            //connectionLabel.text = "\(peerNames)"
 //        }
-//        
+//
 //        switch frame.worldMappingStatus {
 //        case .notAvailable, .limited:
 //            //Don't want to send data to each other if mapping status is limited or N/A
@@ -155,7 +152,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
 //            print("Unknown worldMappingStatus")
 //            mappingStatusLabel.text = "Unknown"
 //            button.isEnabled = false
-//        }
 //    }
 //    
 //    // Let the View know that the session ended because of some error
