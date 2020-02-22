@@ -16,6 +16,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     // MARK: Multipeer Implementation
     var mcService : MultipeerSession!
     var previousViewController: BasePlacementController!
+    var didSyncCrosshair = false
+    var center = CGPoint(x: 0, y: 0)
     
     @IBOutlet weak var sceneViewGame: ARSCNView!
     
@@ -200,17 +202,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     @IBAction func handleSceneTap(_ sender: UITapGestureRecognizer) {
         
-        //let tapLoc = recognizer.location(in: sceneView)
-        var viewRect: CGRect
-        if self.view.frame.width > self.view.frame.height {
-            viewRect = CGRect(x: 0, y: 0, width: self.view.frame.width - 100, height: self.view.frame.height - 50)
-        } else {
-            viewRect = CGRect(x: 0, y: 0, width: self.view.frame.width - 40, height: self.view.frame.height - 40)
+        if !didSyncCrosshair {
+            let tapLoc = sender.location(in: sceneViewGame)
+            center = tapLoc
+            didSyncCrosshair = true
         }
-
-        let center = CGPoint(x: viewRect.midX, y: viewRect.midY)
-        //print(center)
-        //print(tapLoc)
+        
         let hitTestResults = sceneViewGame.hitTest(center)
         
         let node = hitTestResults.first?.node
