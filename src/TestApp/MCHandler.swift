@@ -18,7 +18,7 @@ class MultipeerSession: NSObject {
     private var serviceAdvertiser: MCNearbyServiceAdvertiser!
     private var serviceBrowser: MCNearbyServiceBrowser!
     
-    private let receivedDataHandler: (Data, MCPeerID) -> Void
+    var receivedDataHandler: (Data, MCPeerID) -> Void
     
     /// - Tag: MultipeerSetup
     init(receivedDataHandler: @escaping (Data, MCPeerID) -> Void ) {

@@ -303,6 +303,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
             }
             
             gameVC.previousViewController = self
+            gameVC.isMaster = (mapProvider == nil)
             print("Passing self to next controller")
         }
         
