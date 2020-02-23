@@ -20,10 +20,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var previousViewController: BasePlacementController!
     var didSyncCrosshair = false
     var center = CGPoint(x: 0, y: 0)
+    var baseNode: SCNNode!
     
     @IBOutlet weak var sceneViewGame: ARSCNView!
     @IBOutlet weak var userPrompts: UILabel!
-    
     
     
     func spawnZombie() {
@@ -41,7 +41,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     }
     
     override func viewDidLoad() {
-        print("In View Did Load")
         super.viewDidLoad()
         sceneViewGame.delegate = self
         mcService = previousViewController.mcService
@@ -124,7 +123,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("Did appear")
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
         
@@ -132,7 +130,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         
         if let worldMap = previousViewController.worldMap {
             configuration.initialWorldMap = worldMap
-            print("The map has been set")
         }
         
         sceneViewGame.session.run(configuration, options: op)
@@ -213,7 +210,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             center = tapLoc
             didSyncCrosshair = true
             updatePromptLabel(prompt: "Aim and Tap to shoot cubes!")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 self.userPrompts.isHidden = true
             }
         }
@@ -227,10 +224,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     }
     
     // MARK: - SCNView Delegates
-    //this function isn't being called
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if let name = anchor.name, name.hasPrefix("cube") {
-            node.addChildNode(loadCube())
+            baseNode = loadCube()
+            node.addChildNode(baseNode)
         }
     }
     
@@ -262,7 +259,9 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         if isZombie { boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
             
             boxNode.name = "boxNode"
-            let moveAction = SCNAction.move(to: SCNVector3(0, -0.4, 0), duration: 10)
+            
+            let basePosition = SCNVector3(x: baseNode.position.x, y: baseNode.position.y, z: baseNode.position.z)
+            let moveAction = SCNAction.move(to: basePosition, duration: 10)
             
             boxNode.runAction(moveAction)
         }
