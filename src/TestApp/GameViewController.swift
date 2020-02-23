@@ -20,7 +20,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var previousViewController: BasePlacementController!
     var didSyncCrosshair = false
     var center = CGPoint(x: 0, y: 0)
-    var baseNode: SCNNode!
     
     @IBOutlet weak var sceneViewGame: ARSCNView!
     @IBOutlet weak var userPrompts: UILabel!
@@ -226,8 +225,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     // MARK: - SCNView Delegates
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if let name = anchor.name, name.hasPrefix("cube") {
-            baseNode = loadCube()
-            node.addChildNode(baseNode)
+            node.addChildNode(loadCube())
         }
     }
     
@@ -260,7 +258,11 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             
             boxNode.name = "boxNode"
             
-            let basePosition = SCNVector3(x: baseNode.position.x, y: baseNode.position.y, z: baseNode.position.z)
+            let basePosition = SCNVector3(
+                previousViewController.anchorPoint.transform.columns.3.x,
+                previousViewController.anchorPoint.transform.columns.3.y,
+                previousViewController.anchorPoint.transform.columns.3.z
+            )
             let moveAction = SCNAction.move(to: basePosition, duration: 10)
             
             boxNode.runAction(moveAction)
