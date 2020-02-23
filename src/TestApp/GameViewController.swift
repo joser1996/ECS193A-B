@@ -22,8 +22,23 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var center = CGPoint(x: 0, y: 0)
     
     @IBOutlet weak var sceneViewGame: ARSCNView!
+    @IBOutlet weak var userPrompts: UILabel!
     
     
+    
+    func spawnZombie() {
+        let angle = Float.random(in: 0 ..< 360)
+        let distance = Float.random(in: 1.5 ..< 2)
+        let position = (x: distance * cos(angle * Float.pi / 180), y: -0.4, z: distance * sin(angle * Float.pi / 180))
+        let zombie = loadCube(position.x, -0.4, position.z, true)
+        
+        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: zombie, requiringSecureCoding: true)
+              else { fatalError("can't encode zombie") }
+        print("Zombie type: \(type(of: zombie))")
+        self.mcService.sendToAllPeers(data)
+        
+        self.sceneViewGame.scene.rootNode.addChildNode(zombie)
+    }
     
     override func viewDidLoad() {
         print("In View Did Load")
@@ -33,20 +48,76 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         mcService.receivedDataHandler = receivedData
         
         if isMaster {   // Only master generates game data, sends to slave
-            Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { timer in
-                let angle = Float.random(in: 0 ..< 360)
-                let distance = Float.random(in: 1.5 ..< 2)
-                
-                let position = (x: distance * cos(angle * Float.pi / 180), y: -0.4, z: distance * sin(angle * Float.pi / 180))
-                
-                let zombie = self.loadCube(position.x, -0.4, position.z, true)
-                
-                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: zombie, requiringSecureCoding: true)
-                      else { fatalError("can't encode zombie") }
-                print("Zombie type: \(type(of: zombie))")
-                self.mcService.sendToAllPeers(data)
-                
-                self.sceneViewGame.scene.rootNode.addChildNode(zombie)
+
+            var wave = 1
+            var zombieCount = 0
+            var timerOne = 5
+            var sleep = 7
+            
+            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                if zombieCount == 0 && sleep != 0 {
+                    sleep -= 1
+                }
+                else if zombieCount == 10 + wave * 10 {
+                    if sleep == 0 {
+                        for _ in 1...(10 + wave * 10) {
+                            self.spawnZombie()
+                        }
+                        wave += 1
+                        zombieCount = 0
+                        timerOne = 0
+                        sleep = 20
+                    }
+                    else {
+                        sleep -= 1
+                    }
+                }
+                else if timerOne == 0 {
+                    // Zombie spawn code
+                    self.spawnZombie()
+                    zombieCount += 1
+                    
+                    // Reset timer
+                    if zombieCount < (10 + wave * 10)/4 {
+                        if wave < 3 {
+                            timerOne = Int.random(in: 4...6)
+                        }
+                        else if wave < 5 {
+                            timerOne = Int.random(in: 3...5)
+                        }
+                        else if wave < 10 {
+                            timerOne = Int.random(in: 2...4)
+                        }
+                        else {
+                            timerOne = Int.random(in: 1...3)
+                        }
+                    }
+                    else if zombieCount < (10 + wave * 10)/2 {
+                        if wave < 5 {
+                            timerOne = Int.random(in: 3...5)
+                        }
+                        else if wave < 10 {
+                            timerOne = Int.random(in: 2...4)
+                        }
+                        else {
+                            timerOne = Int.random(in: 1...3)
+                        }
+                    }
+                    else if zombieCount < 3 * (10 + wave * 10)/4 {
+                        if wave < 10 {
+                            timerOne = Int.random(in: 2...4)
+                        }
+                        else {
+                            timerOne = Int.random(in: 1...3)
+                        }
+                    }
+                    else {
+                        timerOne = Int.random(in: 1...3)
+                    }
+                }
+                else {
+                    timerOne -= 1
+                }
             }
         }
     }
@@ -66,6 +137,13 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         
         sceneViewGame.session.run(configuration, options: op)
         sceneViewGame.session.delegate = self
+        
+        updatePromptLabel(prompt: "Tap on the crosshair")
+    }
+
+
+    func updatePromptLabel( prompt: String) {
+        userPrompts.text = prompt
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -134,12 +212,18 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             let tapLoc = sender.location(in: sceneViewGame)
             center = tapLoc
             didSyncCrosshair = true
+            updatePromptLabel(prompt: "Aim and Tap to shoot cubes!")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
+                self.userPrompts.isHidden = true
+            }
         }
         
         let hitTestResults = sceneViewGame.hitTest(center)
-        
         let node = hitTestResults.first?.node
-        node?.removeFromParentNode()
+        
+        if node?.name != "baseNode" {
+            node?.removeFromParentNode()
+        }
     }
     
     // MARK: - SCNView Delegates
@@ -173,10 +257,11 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         let boxNode = SCNNode()
         boxNode.geometry = box
-        boxNode.name = "boxNode"
+        boxNode.name = "baseNode"
         
         if isZombie { boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
             
+            boxNode.name = "boxNode"
             let moveAction = SCNAction.move(to: SCNVector3(0, -0.4, 0), duration: 10)
             
             boxNode.runAction(moveAction)
