@@ -10,10 +10,16 @@ import UIKit
 
 class PlayerSession: UIViewController {
 
+    @IBOutlet weak var playerTableView: UITableView!
+    
+    var players: [Player] = []
     var previousVC: BasePlacementController!
+    var mpService: MultipeerSession!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        mpService = previousVC.mcService
+        players = makePlayerArray()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -21,4 +27,19 @@ class PlayerSession: UIViewController {
         
     }
 
+    
+    func makePlayerArray() -> [Player] {
+        var tempArr: [Player] = []
+        
+        //populate array here
+        let peers = mpService.connectedPeers
+        if !peers.isEmpty {
+            for peer in peers {
+                tempArr.append(Player(name: peer))
+            }
+        }
+        
+        return tempArr
+    }
 }
+

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SRH-zQ-hXw">
-    <device id="retina6_1" orientation="landscape" appearance="dark"/>
+    <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -76,18 +76,52 @@
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hello  World" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ey1-oa-2uF">
-                                <rect key="frame" x="55" y="66" width="815" height="236"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="U6l-ja-hUC">
+                                <rect key="frame" x="44" y="0.0" width="808" height="393"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Rjm-je-1VY" customClass="PlayerCell" customModule="TestApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="808" height="90"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rjm-je-1VY" id="c21-ih-RbW">
+                                            <rect key="frame" x="0.0" y="0.0" width="808" height="90"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fX-pv-NSa">
+                                                    <rect key="frame" x="10" y="10" width="788" height="70"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="1fX-pv-NSa" firstAttribute="leading" secondItem="c21-ih-RbW" secondAttribute="leading" constant="10" id="7gH-ax-lW8"/>
+                                                <constraint firstAttribute="trailing" secondItem="1fX-pv-NSa" secondAttribute="trailing" constant="10" id="dvF-ZD-nhk"/>
+                                                <constraint firstAttribute="bottom" secondItem="1fX-pv-NSa" secondAttribute="bottom" constant="10" id="yJS-0E-20F"/>
+                                                <constraint firstItem="1fX-pv-NSa" firstAttribute="top" secondItem="c21-ih-RbW" secondAttribute="top" constant="10" id="zgV-hz-vL6"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="playerLabel" destination="1fX-pv-NSa" id="aCn-os-mMu"/>
+                                            <outlet property="playerNme" destination="1fX-pv-NSa" id="4g2-5P-JZg"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="3hq-G1-jZJ" firstAttribute="bottom" secondItem="U6l-ja-hUC" secondAttribute="bottom" id="19B-RA-0Qf"/>
+                            <constraint firstItem="U6l-ja-hUC" firstAttribute="top" secondItem="3hq-G1-jZJ" secondAttribute="top" id="BAx-uA-KYK"/>
+                            <constraint firstItem="3hq-G1-jZJ" firstAttribute="trailing" secondItem="U6l-ja-hUC" secondAttribute="trailing" id="gLa-Tb-2IX"/>
+                            <constraint firstItem="U6l-ja-hUC" firstAttribute="leading" secondItem="3hq-G1-jZJ" secondAttribute="leading" id="y8T-hd-Ljs"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="3hq-G1-jZJ"/>
                     </view>
                     <navigationItem key="navigationItem" id="EsE-Wy-brb"/>
+                    <connections>
+                        <outlet property="playerTableView" destination="U6l-ja-hUC" id="wHS-hP-a3D"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rda-PF-JzR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
