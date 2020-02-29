@@ -63,6 +63,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         //Don't want app to sleep
         UIApplication.shared.isIdleTimerDisabled = true
+        
     }
 
     
@@ -129,23 +130,23 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         switch frame.worldMappingStatus {
         case .notAvailable, .limited:
             //Don't want to send data to each other if mapping status is limited or N/A
-            shareMapButton.isEnabled = (baseNode != nil) && (mapProvider != nil)
+            shareMapButton.isEnabled = (baseNode != nil) || (mapProvider != nil)
             print("MappingStatus: NA or Limited")
             //userInstructions.text = "NA/Limited"
         case .extending:
             //has mapped some areas but is currently mapping aournd current position
-            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
+            shareMapButton.isEnabled = (baseNode != nil) || (!mcService.connectedPeers.isEmpty)
             print("MappingStatus: Extending")
             //.text = "Point all device cameras at the base location and tap the button to share your map!"
         case .mapped:
             //Mapped enough of the visible area
-            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
+            shareMapButton.isEnabled = (baseNode != nil) || (!mcService.connectedPeers.isEmpty)
             print("MappingStatus: Mapped")
             //userInstructions.text = "Point all device cameras at the base location and tap the button to share your map!"
         @unknown default:
             print("Unknown worldMappingStatus")
             //userInstructions.text = "Unknown"
-            shareMapButton.isEnabled = (baseNode != nil) && (mapProvider != nil)
+            shareMapButton.isEnabled = (baseNode != nil) || (mapProvider != nil)
         }
         
         if mapProvider != nil {
@@ -290,22 +291,31 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let gameVC = segue.destination as? GameViewController {
-            sceneView.session.getCurrentWorldMap {worldMap, error in
-                guard let map = worldMap
-                    else {return}
+//        var who: String = ""
+//        if let button = sender as? UIButton {
+//            who = button.accessibilityIdentifier ?? ""
+//
+//        }
+        
+        //if who == "shareMapButton"{
+            if let gameVC = segue.destination as? GameViewController {
+                sceneView.session.getCurrentWorldMap {worldMap, error in
+                    guard let map = worldMap
+                        else {return}
+                    
+                    self.worldMap = map
+                }
                 
-//                //adding snapshot anchor
-//                guard let snapShotAnchor = SnapshotAnchor(capturing: self.sceneView)
-//                    else { fatalError("Can't take snapshot")}
-//                map.anchors.append(snapShotAnchor)
-                self.worldMap = map
+                gameVC.previousViewController = self
+                gameVC.isMaster = (mapProvider == nil)
+                print("Passing self to next controller")
             }
-            
-            gameVC.previousViewController = self
-            gameVC.isMaster = (mapProvider == nil)
-            print("Passing self to next controller")
-        }
+        //}
+        //else if who == "playerButton" {
+            else if let playerVC = segue.destination as? PlayerSession {
+                playerVC.previousVC = self
+            }
+        //}
         
     }
     
