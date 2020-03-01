@@ -284,5 +284,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         return boxNode
     }
     
+    @IBOutlet weak var Heart1: UIImageView!
+    @IBOutlet weak var Heart2: UIImageView!
+    @IBOutlet weak var Heart3: UIImageView!
 }
 
