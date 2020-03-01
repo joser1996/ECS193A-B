@@ -10,10 +10,12 @@ import Foundation
 
 class Player {
     var name: String
+    var isSelected: Bool
     //Any other Plaer Attributes Here
     
     init(name: String) {
         self.name = name
+        self.isSelected = false
     }
     
 }

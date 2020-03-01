@@ -10,7 +10,18 @@ import UIKit
 
 class PlayerCell: UITableViewCell {
 
-    @IBOutlet weak var playerNme: UILabel!
+    @IBOutlet weak var playerName: UILabel!
     
+    func setName(name: String) {
+        playerName.text = name
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        //
+        accessoryType = selected ? .checkmark : .none
+        
+    }
 
 }

@@ -80,7 +80,7 @@
                                 <rect key="frame" x="44" y="0.0" width="808" height="393"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Rjm-je-1VY" customClass="PlayerCell" customModule="TestApp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="playerCell" id="Rjm-je-1VY" customClass="PlayerCell" customModule="TestApp">
                                         <rect key="frame" x="0.0" y="28" width="808" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rjm-je-1VY" id="c21-ih-RbW">
@@ -102,8 +102,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="playerLabel" destination="1fX-pv-NSa" id="aCn-os-mMu"/>
-                                            <outlet property="playerNme" destination="1fX-pv-NSa" id="4g2-5P-JZg"/>
+                                            <outlet property="playerName" destination="1fX-pv-NSa" id="4g2-5P-JZg"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -121,6 +120,7 @@
                     <navigationItem key="navigationItem" id="EsE-Wy-brb"/>
                     <connections>
                         <outlet property="playerTableView" destination="U6l-ja-hUC" id="wHS-hP-a3D"/>
+                        <outlet property="tableView" destination="U6l-ja-hUC" id="2nJ-WA-xzA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rda-PF-JzR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
