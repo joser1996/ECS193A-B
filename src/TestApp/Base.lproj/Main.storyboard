@@ -77,7 +77,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="U6l-ja-hUC">
-                                <rect key="frame" x="44" y="0.0" width="808" height="393"/>
+                                <rect key="frame" x="44" y="0.0" width="808" height="363"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="playerCell" id="Rjm-je-1VY" customClass="PlayerCell" customModule="TestApp">
@@ -107,25 +107,36 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdw-rX-Hwn">
+                                <rect key="frame" x="44" y="363" width="808" height="30"/>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <action selector="finishedSelecting:" destination="Jb1-PM-ZIC" eventType="touchUpInside" id="yzK-b0-3uc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="3hq-G1-jZJ" firstAttribute="bottom" secondItem="U6l-ja-hUC" secondAttribute="bottom" id="19B-RA-0Qf"/>
+                            <constraint firstItem="vdw-rX-Hwn" firstAttribute="trailing" secondItem="3hq-G1-jZJ" secondAttribute="trailing" id="0CB-1o-Yjf"/>
+                            <constraint firstItem="vdw-rX-Hwn" firstAttribute="leading" secondItem="3hq-G1-jZJ" secondAttribute="leading" id="2T6-sl-uYi"/>
                             <constraint firstItem="U6l-ja-hUC" firstAttribute="top" secondItem="3hq-G1-jZJ" secondAttribute="top" id="BAx-uA-KYK"/>
+                            <constraint firstItem="vdw-rX-Hwn" firstAttribute="top" secondItem="U6l-ja-hUC" secondAttribute="bottom" id="FTD-GC-ZEj"/>
                             <constraint firstItem="3hq-G1-jZJ" firstAttribute="trailing" secondItem="U6l-ja-hUC" secondAttribute="trailing" id="gLa-Tb-2IX"/>
+                            <constraint firstItem="3hq-G1-jZJ" firstAttribute="bottom" secondItem="vdw-rX-Hwn" secondAttribute="bottom" id="rcN-Bh-Mf5"/>
                             <constraint firstItem="U6l-ja-hUC" firstAttribute="leading" secondItem="3hq-G1-jZJ" secondAttribute="leading" id="y8T-hd-Ljs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="3hq-G1-jZJ"/>
                     </view>
                     <navigationItem key="navigationItem" id="EsE-Wy-brb"/>
                     <connections>
+                        <outlet property="doneButton" destination="vdw-rX-Hwn" id="1N8-Vh-oan"/>
                         <outlet property="playerTableView" destination="U6l-ja-hUC" id="wHS-hP-a3D"/>
                         <outlet property="tableView" destination="U6l-ja-hUC" id="2nJ-WA-xzA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rda-PF-JzR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1282" y="-925"/>
+            <point key="canvasLocation" x="1281.6964285714284" y="-926.08695652173924"/>
         </scene>
         <!--First View Controller-->
         <scene sceneID="PFX-3O-RhJ">

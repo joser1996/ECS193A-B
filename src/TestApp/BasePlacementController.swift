@@ -24,6 +24,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     var anchorPoint: ARAnchor!
     
     var worldMap: ARWorldMap!
+    var activePlayers: [Player]!
     
     // MARK: Multipeer Implementation
     var mcService : MultipeerSession!
@@ -285,7 +286,8 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
                     else { print("Error: \(error!.localizedDescription)"); return }
                 guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
                     else { fatalError("can't encode map") }
-                self.mcService.sendToAllPeers(data)
+                //self.mcService.sendToAllPeers(data)
+                self.mcService.sendToConnectedPeers(data, self.activePlayers)
             }
         }
     }

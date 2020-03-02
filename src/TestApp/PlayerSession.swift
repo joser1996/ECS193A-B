@@ -12,6 +12,7 @@ class PlayerSession: UIViewController {
 
     @IBOutlet weak var playerTableView: UITableView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var doneButton: UIButton!
     
     var players: [Player] = []
     var previousVC: BasePlacementController!
@@ -33,6 +34,15 @@ class PlayerSession: UIViewController {
         
     }
 
+    
+    @IBAction func finishedSelecting(_ sender: UIButton) {
+        print("Button was pressed!")
+        previousVC.activePlayers = players
+        if let navController = self.navigationController {
+            navController.popViewController(animated: true)
+        }
+    }
+    
     
     func makePlayerArray() -> [Player] {
         var tempArr: [Player] = []
@@ -78,4 +88,6 @@ extension PlayerSession: UITableViewDataSource, UITableViewDelegate {
         players[indexPath.row].isSelected = false
     }
     
+    
+    //then modify the send to all peers to only send to those in active list
 }

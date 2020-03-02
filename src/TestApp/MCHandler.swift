@@ -17,6 +17,7 @@ class MultipeerSession: NSObject {
     private var session: MCSession!
     private var serviceAdvertiser: MCNearbyServiceAdvertiser!
     private var serviceBrowser: MCNearbyServiceBrowser!
+    private var activePlayers: [MCPeerID] = []
     
     var receivedDataHandler: (Data, MCPeerID) -> Void
     
@@ -45,6 +46,31 @@ class MultipeerSession: NSObject {
             print("error sending data to peers: \(error.localizedDescription)")
         }
     }
+    
+    func sendToConnectedPeers(_ data: Data, _ players: [Player]) {
+        var connectedPlayers: [MCPeerID] = []
+        
+        if activePlayers.isEmpty {
+            for player in players {
+                for peer in session.connectedPeers {
+                    
+                    if player.name == peer.displayName {
+                        connectedPlayers.append(peer)
+                        break
+                    }
+                    
+                }
+            }
+            activePlayers = connectedPeers
+        }
+        
+        do {
+            try session.send(data, toPeers: self.activePlayers, with: .reliable)
+        } catch {
+            print("error sending data to peers: \(error.localizedDescription)")
+        }
+    }
+
     
     var connectedPeers: [MCPeerID] {
         return session.connectedPeers
