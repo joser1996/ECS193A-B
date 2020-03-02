@@ -44,6 +44,9 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="JM4-1L-Rhk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2UT-0T-yMF"/>
+                            <constraint firstItem="B0d-WQ-vey" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="7F7-h8-pAo"/>
+                            <constraint firstItem="B0d-WQ-vey" firstAttribute="centerX" secondItem="JM4-1L-Rhk" secondAttribute="centerX" id="8Pj-Ad-Cpx"/>
                             <constraint firstItem="fCO-dx-tt6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DLZ-pj-mDV"/>
                             <constraint firstItem="B0d-WQ-vey" firstAttribute="centerX" secondItem="JM4-1L-Rhk" secondAttribute="centerX" id="H3q-kM-v9y"/>
                             <constraint firstItem="B0d-WQ-vey" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Xmk-8i-4pf"/>
@@ -55,6 +58,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="KB3-0j-2dN"/>
                     <connections>
+                        <outlet property="Heart1" destination="bUa-vA-D2e" id="NQ8-Fa-CWW"/>
+                        <outlet property="Heart2" destination="BG9-LX-H4G" id="zqf-Rv-yDq"/>
+                        <outlet property="Heart3" destination="dgp-VK-Zgv" id="mzr-y4-Nhy"/>
                         <outlet property="sceneViewGame" destination="B0d-WQ-vey" id="T0L-Hz-CKv"/>
                         <outlet property="userPrompts" destination="JM4-1L-Rhk" id="9QM-qI-EnA"/>
                     </connections>
@@ -130,17 +136,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="otw-he-EVd">
-                                <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="otw-he-EVd">
+                                <rect key="frame" x="44" y="0.0" width="896" height="415"/>
                                 <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="896" id="IqH-Qu-DVO"/>
+                                </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="MXI-Tm-nis" appends="YES" id="Ats-7e-HtA"/>
                                 </connections>
                             </arscnView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Hj-fT-P7q">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Hj-fT-P7q">
                                 <rect key="frame" x="166" y="489" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -208,6 +215,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Image" width="48" height="48"/>
         <image name="viewfinder" catalog="system" width="64" height="56"/>
     </resources>
 </document>
