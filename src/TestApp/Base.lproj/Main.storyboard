@@ -53,6 +53,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="KB3-0j-2dN"/>
                     <connections>
+                        <outlet property="Heart1" destination="bUa-vA-D2e" id="NQ8-Fa-CWW"/>
+                        <outlet property="Heart2" destination="BG9-LX-H4G" id="zqf-Rv-yDq"/>
+                        <outlet property="Heart3" destination="dgp-VK-Zgv" id="mzr-y4-Nhy"/>
                         <outlet property="sceneViewGame" destination="B0d-WQ-vey" id="T0L-Hz-CKv"/>
                         <outlet property="userPrompts" destination="JM4-1L-Rhk" id="9QM-qI-EnA"/>
                     </connections>
@@ -201,6 +204,9 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="otw-he-EVd">
                                 <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                                 <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="896" id="IqH-Qu-DVO"/>
+                                </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="MXI-Tm-nis" appends="YES" id="Ats-7e-HtA"/>
                                 </connections>
@@ -293,6 +299,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Image" width="48" height="48"/>
         <image name="viewfinder" catalog="system" width="64" height="56"/>
     </resources>
 </document>
