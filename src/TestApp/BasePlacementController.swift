@@ -135,13 +135,13 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         case .extending:
             //has mapped some areas but is currently mapping aournd current position
             //CHANGE THE OR STATEMENT BACK TO AN AND STATEMENT
-            shareMapButton.isEnabled = (baseNode != nil) || (!mcService.connectedPeers.isEmpty)
+            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
             print("MappingStatus: Extending")
             //.text = "Point all device cameras at the base location and tap the button to share your map!"
         case .mapped:
             //Mapped enough of the visible area
             //CHANGE THE OR STATEMENT BACK TO AN AND STATEMENT
-            shareMapButton.isEnabled = (baseNode != nil) || (!mcService.connectedPeers.isEmpty)
+            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
             print("MappingStatus: Mapped")
             //userInstructions.text = "Point all device cameras at the base location and tap the button to share your map!"
         @unknown default:
