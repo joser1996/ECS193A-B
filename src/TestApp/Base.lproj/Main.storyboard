@@ -35,6 +35,18 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="S9H-Xw-WRS">
+                                <rect key="frame" x="411" y="329" width="74" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="q6Y-9J-zTR">
+                                <rect key="frame" x="329" y="329" width="74" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="HCH-OO-tdd">
+                                <rect key="frame" x="493" y="329" width="74" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -53,9 +65,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="KB3-0j-2dN"/>
                     <connections>
-                        <outlet property="Heart1" destination="bUa-vA-D2e" id="NQ8-Fa-CWW"/>
-                        <outlet property="Heart2" destination="BG9-LX-H4G" id="zqf-Rv-yDq"/>
-                        <outlet property="Heart3" destination="dgp-VK-Zgv" id="mzr-y4-Nhy"/>
+                        <outlet property="Heart1" destination="q6Y-9J-zTR" id="abl-Yv-haU"/>
+                        <outlet property="Heart2" destination="S9H-Xw-WRS" id="zke-c2-pZ4"/>
+                        <outlet property="Heart3" destination="HCH-OO-tdd" id="PH6-ab-Wcd"/>
                         <outlet property="sceneViewGame" destination="B0d-WQ-vey" id="T0L-Hz-CKv"/>
                         <outlet property="userPrompts" destination="JM4-1L-Rhk" id="9QM-qI-EnA"/>
                     </connections>
@@ -67,7 +79,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2052.3238380809598" y="68"/>
+            <point key="canvasLocation" x="2051.7857142857142" y="66.666666666666671"/>
         </scene>
         <!--Player Session-->
         <scene sceneID="ItZ-nb-ccT">
