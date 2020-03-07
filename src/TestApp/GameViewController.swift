@@ -21,10 +21,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var didSyncCrosshair = false
     var center = CGPoint(x: 0, y: 0)
     var health = 3
+    var isWithinBase = true
     
     @IBOutlet weak var sceneViewGame: ARSCNView!
     @IBOutlet weak var userPrompts: UILabel!
     @IBOutlet weak var GameOver: UILabel!
+    @IBOutlet weak var ReturnToBase: UILabel!
     
     @IBOutlet weak var Heart1: UIImageView!
     @IBOutlet weak var Heart2: UIImageView!
@@ -164,6 +166,26 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     }
         
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        let basePosition = SCNVector3(
+            previousViewController.anchorPoint.transform.columns.3.x,
+            previousViewController.anchorPoint.transform.columns.3.y,
+            previousViewController.anchorPoint.transform.columns.3.z
+        )
+        
+        let camMatrix = SCNMatrix4(frame.camera.transform)
+        let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
+        let distance = SCNVector3(x: basePosition.x - position.x, y: basePosition.y - position.y, z: basePosition.z - position.z)
+        let length = sqrtf(distance.x * distance.x + distance.y * distance.y + distance.z * distance.z)
+        
+        if length > 1.5 {
+            ReturnToBase.isHidden = false
+            isWithinBase = false
+        }
+        else {
+            ReturnToBase.isHidden = true
+            isWithinBase = true
+        }
+        
         if self.health == 2 {
             self.Heart1.isHidden = true
         }
@@ -236,7 +258,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 self.userPrompts.isHidden = true
             }
         }
-        else {
+        else if isWithinBase {
             guard let frame = sceneViewGame.session.currentFrame else { return }
             let camMatrix = SCNMatrix4(frame.camera.transform)
             let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)

@@ -85,11 +85,21 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Return to base" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="auM-9d-17x">
+                                <rect key="frame" x="324.5" y="31" width="247" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="OLg-jU-YvT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="JM4-1L-Rhk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2UT-0T-yMF"/>
                             <constraint firstItem="B0d-WQ-vey" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="7F7-h8-pAo"/>
+                            <constraint firstItem="auM-9d-17x" firstAttribute="centerY" secondItem="JM4-1L-Rhk" secondAttribute="centerY" id="89o-sv-b85"/>
                             <constraint firstItem="B0d-WQ-vey" firstAttribute="centerX" secondItem="JM4-1L-Rhk" secondAttribute="centerX" id="8Pj-Ad-Cpx"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BG9-LX-H4G" secondAttribute="bottom" constant="20" id="8hX-5l-6At"/>
                             <constraint firstItem="ClY-EW-M2W" firstAttribute="centerX" secondItem="dgp-VK-Zgv" secondAttribute="centerX" id="9jg-Mj-KWk"/>
@@ -107,6 +117,7 @@
                             <constraint firstItem="B0d-WQ-vey" firstAttribute="centerX" secondItem="fCO-dx-tt6" secondAttribute="centerX" id="XgU-cB-j67"/>
                             <constraint firstItem="fCO-dx-tt6" firstAttribute="top" secondItem="JM4-1L-Rhk" secondAttribute="bottom" constant="94.5" id="bGf-t3-Rsa"/>
                             <constraint firstItem="bUa-vA-D2e" firstAttribute="top" secondItem="wAP-O8-ETn" secondAttribute="bottom" constant="-64" id="c9i-Ht-pTP"/>
+                            <constraint firstItem="auM-9d-17x" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="cgr-vZ-RO7"/>
                             <constraint firstItem="JM4-1L-Rhk" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="20" symbolic="YES" id="e2e-I6-YY5"/>
                             <constraint firstItem="BG9-LX-H4G" firstAttribute="bottom" secondItem="bUa-vA-D2e" secondAttribute="bottom" id="fYU-rW-1Gt"/>
                             <constraint firstItem="B0d-WQ-vey" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="h5Y-bG-Ouc"/>
@@ -128,6 +139,7 @@
                         <outlet property="Heart1" destination="bUa-vA-D2e" id="NQ8-Fa-CWW"/>
                         <outlet property="Heart2" destination="BG9-LX-H4G" id="zqf-Rv-yDq"/>
                         <outlet property="Heart3" destination="dgp-VK-Zgv" id="mzr-y4-Nhy"/>
+                        <outlet property="ReturnToBase" destination="auM-9d-17x" id="7gC-eL-5ka"/>
                         <outlet property="sceneViewGame" destination="B0d-WQ-vey" id="T0L-Hz-CKv"/>
                         <outlet property="userPrompts" destination="JM4-1L-Rhk" id="9QM-qI-EnA"/>
                     </connections>
