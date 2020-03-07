@@ -11,10 +11,13 @@ import Foundation
 class Player {
     var name: String
     var isSelected: Bool    //Any other Plaer Attributes Here
+    var score: Int
+    
     
     init(name: String) {
         self.name = name
         self.isSelected = false
+        self.score = 0
     }
     
     
