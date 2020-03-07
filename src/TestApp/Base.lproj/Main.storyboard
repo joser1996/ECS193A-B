@@ -55,16 +55,28 @@
                                     <constraint firstAttribute="width" constant="60" id="kkg-Qb-JHB"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Otb-PA-a4K">
+                                <rect key="frame" x="337" y="0.0" width="222" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="91X-tx-aRy"/>
+                                </constraints>
+                                <state key="normal" title="Pause"/>
+                                <connections>
+                                    <action selector="pause_button:" destination="BYZ-38-t0r" eventType="touchUpInside" id="PJh-Ua-zCy"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="JM4-1L-Rhk" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="2UT-0T-yMF"/>
+                            <constraint firstItem="Otb-PA-a4K" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="293" id="2qV-7d-kfJ"/>
                             <constraint firstItem="B0d-WQ-vey" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="7F7-h8-pAo"/>
                             <constraint firstItem="B0d-WQ-vey" firstAttribute="centerX" secondItem="JM4-1L-Rhk" secondAttribute="centerX" id="8Pj-Ad-Cpx"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BG9-LX-H4G" secondAttribute="bottom" constant="20" id="8hX-5l-6At"/>
                             <constraint firstItem="fCO-dx-tt6" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DLZ-pj-mDV"/>
                             <constraint firstItem="dgp-VK-Zgv" firstAttribute="leading" secondItem="BG9-LX-H4G" secondAttribute="trailing" constant="8" id="DoQ-G4-4t4"/>
                             <constraint firstItem="BG9-LX-H4G" firstAttribute="leading" secondItem="bUa-vA-D2e" secondAttribute="trailing" constant="8" id="EsZ-Sd-ov8"/>
+                            <constraint firstItem="Otb-PA-a4K" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="FZN-01-N96"/>
                             <constraint firstItem="B0d-WQ-vey" firstAttribute="centerY" secondItem="fCO-dx-tt6" secondAttribute="centerY" id="VSd-r5-dMX"/>
                             <constraint firstItem="B0d-WQ-vey" firstAttribute="centerX" secondItem="fCO-dx-tt6" secondAttribute="centerX" id="XgU-cB-j67"/>
                             <constraint firstItem="fCO-dx-tt6" firstAttribute="top" secondItem="JM4-1L-Rhk" secondAttribute="bottom" constant="94.5" id="bGf-t3-Rsa"/>
@@ -74,6 +86,7 @@
                             <constraint firstItem="fCO-dx-tt6" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="hei-1A-ZNm"/>
                             <constraint firstItem="BG9-LX-H4G" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="i4k-V9-7Jg"/>
                             <constraint firstItem="BG9-LX-H4G" firstAttribute="top" secondItem="dgp-VK-Zgv" secondAttribute="top" id="lUr-ws-zMR"/>
+                            <constraint firstItem="Otb-PA-a4K" firstAttribute="top" secondItem="B0d-WQ-vey" secondAttribute="top" id="mJK-uY-2xx"/>
                             <constraint firstItem="JM4-1L-Rhk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="89" id="qKq-Gb-pEX"/>
                             <constraint firstItem="BG9-LX-H4G" firstAttribute="bottom" secondItem="dgp-VK-Zgv" secondAttribute="bottom" id="qnX-aa-6Tb"/>
                             <constraint firstItem="BG9-LX-H4G" firstAttribute="top" secondItem="bUa-vA-D2e" secondAttribute="top" id="uyG-AA-P2C"/>
@@ -96,7 +109,52 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2051.7857142857142" y="66.666666666666671"/>
+            <point key="canvasLocation" x="2051.4242878560722" y="66.400000000000006"/>
+        </scene>
+        <!--Pause View Controller-->
+        <scene sceneID="2bO-f8-WnD">
+            <objects>
+                <viewController storyboardIdentifier="PauseViewController" id="MCo-4t-tOi" customClass="PauseViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0Ou-OU-YSq">
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zvM-iv-juw">
+                                <rect key="frame" x="331" y="91" width="234" height="30"/>
+                                <state key="normal" title="Unpause"/>
+                                <connections>
+                                    <action selector="unPauseButtonPressed:" destination="MCo-4t-tOi" eventType="touchUpInside" id="REf-Vd-q1t"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bg7-dg-vo5">
+                                <rect key="frame" x="331" y="267" width="234" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="2wd-Gj-upP"/>
+                                </constraints>
+                                <state key="normal" title="Main Menu"/>
+                                <connections>
+                                    <action selector="main_menu:" destination="MCo-4t-tOi" eventType="touchUpInside" id="Stm-Jq-LBg"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="bg7-dg-vo5" firstAttribute="centerX" secondItem="0Ou-OU-YSq" secondAttribute="centerX" id="6Vz-Yb-IyC"/>
+                            <constraint firstItem="zvM-iv-juw" firstAttribute="centerX" secondItem="0Ou-OU-YSq" secondAttribute="centerX" id="WYD-cP-Vys"/>
+                            <constraint firstItem="zvM-iv-juw" firstAttribute="centerX" secondItem="0Ou-OU-YSq" secondAttribute="centerX" id="d4b-3z-buL"/>
+                            <constraint firstItem="bg7-dg-vo5" firstAttribute="leading" secondItem="zvM-iv-juw" secondAttribute="leading" id="mYQ-l3-8YK"/>
+                            <constraint firstItem="bg7-dg-vo5" firstAttribute="centerX" secondItem="zvM-iv-juw" secondAttribute="centerX" id="nYr-9p-fvJ"/>
+                            <constraint firstItem="bg7-dg-vo5" firstAttribute="centerX" secondItem="0Ou-OU-YSq" secondAttribute="centerX" id="py2-tJ-eb9"/>
+                            <constraint firstItem="1uT-Pk-XhL" firstAttribute="bottom" secondItem="bg7-dg-vo5" secondAttribute="bottom" constant="96" id="wWs-w4-gkK"/>
+                            <constraint firstItem="zvM-iv-juw" firstAttribute="top" secondItem="1uT-Pk-XhL" secondAttribute="top" constant="91" id="y2f-ay-med"/>
+                            <constraint firstItem="zvM-iv-juw" firstAttribute="leading" secondItem="1uT-Pk-XhL" secondAttribute="leading" constant="287" id="z6v-J6-wgC"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="1uT-Pk-XhL"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Xnu-Mf-Qcq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2766.9642857142858" y="63.768115942028992"/>
         </scene>
         <!--First View Controller-->
         <scene sceneID="PFX-3O-RhJ">

@@ -147,7 +147,16 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         super.viewWillDisappear(animated)
         sceneViewGame.session.pause()
     }
-    
+
+
+    @IBAction func pause_button(_ sender: Any) {
+        sceneViewGame.session.pause()
+             let storyboard = UIStoryboard(name: "Main", bundle: nil)
+              let vc = storyboard.instantiateViewController(withIdentifier: "PauseViewController") as! PauseViewController
+              self.navigationController!.pushViewController(vc, animated: true)
+        //let viewController = PauseViewController(delegate: self)
+        //navigationController?.pushViewController(viewController, animated: true)
+    }
     //MARK: - AR Session Delegate
     //Inform View of changes in quality of device position tracking
     //code to update in this case goes in this functon
@@ -289,3 +298,9 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     @IBOutlet weak var Heart3: UIImageView!
 }
 
+extension GameViewController : PauseViewControllerDelegate {
+    func pauseMenuUnPauseButtonPressed()
+    {
+        sceneViewGame.session.run(sceneViewGame.session.configuration!)
+    }
+ }
