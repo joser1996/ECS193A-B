@@ -21,10 +21,19 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var didSyncCrosshair = false
     var center = CGPoint(x: 0, y: 0)
     var health = 3
+    var isWithinBase = true
     
     @IBOutlet weak var sceneViewGame: ARSCNView!
     @IBOutlet weak var userPrompts: UILabel!
+    @IBOutlet weak var GameOver: UILabel!
+    @IBOutlet weak var ReturnToBase: UILabel!
     
+    @IBOutlet weak var Heart1: UIImageView!
+    @IBOutlet weak var Heart2: UIImageView!
+    @IBOutlet weak var Heart3: UIImageView!
+    @IBOutlet weak var EmptyHeart1: UIImageView!
+    @IBOutlet weak var EmptyHeart2: UIImageView!
+    @IBOutlet weak var EmptyHeart3: UIImageView!
     
     func spawnZombie() {
         let angle = Float.random(in: 0 ..< 360)
@@ -46,11 +55,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         mcService = previousViewController.mcService
         mcService.receivedDataHandler = receivedData
         
+        self.GameOver.isHidden = true
         if isMaster {   // Only master generates game data, sends to slave
 
             var wave = 1
             var zombieCount = 0
-            var timerOne = 5
+            var timerOne = 1
             var sleep = 7
             
             Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
@@ -165,7 +175,42 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     }
         
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        // nothing yet
+        let basePosition = SCNVector3(
+            previousViewController.anchorPoint.transform.columns.3.x,
+            previousViewController.anchorPoint.transform.columns.3.y,
+            previousViewController.anchorPoint.transform.columns.3.z
+        )
+        
+        let camMatrix = SCNMatrix4(frame.camera.transform)
+        let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
+        let distance = SCNVector3(x: basePosition.x - position.x, y: basePosition.y - position.y, z: basePosition.z - position.z)
+        let length = sqrtf(distance.x * distance.x + distance.y * distance.y + distance.z * distance.z)
+        
+        if length > 1.5 {
+            ReturnToBase.isHidden = false
+            isWithinBase = false
+        }
+        else {
+            ReturnToBase.isHidden = true
+            isWithinBase = true
+        }
+        
+        if self.health == 2 {
+            self.Heart1.isHidden = true
+        }
+        else if self.health == 1 {
+            self.Heart2.isHidden = true
+        }
+        else if self.health == 0 {
+            self.Heart3.isHidden = true
+            self.GameOver.isHidden = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                //self.sceneViewGame?.session.pause()
+                //self.sceneViewGame?.removeFromSuperview()
+                //self.sceneViewGame = nil
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+        }
     }
     
     // Let the View know that the session ended because of some error
@@ -213,7 +258,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     }
     
     @IBAction func handleSceneTap(_ sender: UITapGestureRecognizer) {
-        
         if !didSyncCrosshair {
             let tapLoc = sender.location(in: sceneViewGame)
             center = tapLoc
@@ -223,12 +267,38 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 self.userPrompts.isHidden = true
             }
         }
+        else if isWithinBase {
+            guard let frame = sceneViewGame.session.currentFrame else { return }
+            let camMatrix = SCNMatrix4(frame.camera.transform)
+            let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
+            
+            let bullet = SCNSphere(radius: 0.05)
+            bullet.firstMaterial?.diffuse.contents = UIColor.red
+            let bulletNode = SCNNode(geometry: bullet)
+            bulletNode.position = position
+            sceneViewGame.scene.rootNode.addChildNode(bulletNode)
+            
+            let shootTestResults = sceneViewGame.hitTest(center, types: .featurePoint)
+            if !shootTestResults.isEmpty {
+                guard let feature = shootTestResults.first else {
+                    return
+                }
+                let targetPosition = SCNVector3(
+                    feature.worldTransform.columns.3.x,
+                    feature.worldTransform.columns.3.y,
+                    feature.worldTransform.columns.3.z)
+                bulletNode.runAction(SCNAction.sequence([SCNAction.move(to: targetPosition, duration: 0.15), SCNAction.removeFromParentNode()]))
+            }
+            else {
+                bulletNode.runAction(SCNAction.removeFromParentNode())
+            }
         
-        let hitTestResults = sceneViewGame.hitTest(center)
-        let node = hitTestResults.first?.node
+            let hitTestResults = sceneViewGame.hitTest(center)
+            let node = hitTestResults.first?.node
         
-        if node?.name != "baseNode" {
-            node?.removeFromParentNode()
+            if node?.name != "baseNode" {
+                node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
+            }
         }
     }
     
@@ -280,7 +350,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             boxNode.runAction(zombieSequence, completionHandler:{
                 self.health -= 1
                 
-                
                 print(self.health)
                 if (self.health == 0) {
                     print("Game Over\n")
@@ -293,9 +362,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         return boxNode
     }
     
-    @IBOutlet weak var Heart1: UIImageView!
-    @IBOutlet weak var Heart2: UIImageView!
-    @IBOutlet weak var Heart3: UIImageView!
 }
 
 extension GameViewController : PauseViewControllerDelegate {
