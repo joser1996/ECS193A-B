@@ -10,7 +10,7 @@ import UIKit
 
 class PlayerSession: UIViewController {
 
-    @IBOutlet weak var playerTableView: UITableView!
+
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var doneButton: UIButton!
     
