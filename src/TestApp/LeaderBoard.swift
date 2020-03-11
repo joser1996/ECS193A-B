@@ -28,8 +28,15 @@ class LeaderBoardCell {
 //LeaderBoard must conform to NSCoding protocol
 class LeaderBoard: NSObject, NSCoding{
     
+    //MARK: Properties
     var scoreBoard:[LeaderBoardCell] = []
 
+    
+    //MARK: Archinving Paths
+    
+    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("LeaderBoard")
+    
     init(scoreBoard: [LeaderBoardCell]) {
         self.scoreBoard = scoreBoard
     }

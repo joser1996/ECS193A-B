@@ -54,14 +54,14 @@ class MultipeerSession: NSObject {
             for player in players {
                 for peer in session.connectedPeers {
                     
-                    if player.name == peer.displayName {
+                    if player.name == peer.displayName, player.isSelected {
                         connectedPlayers.append(peer)
                         break
                     }
                     
                 }
             }
-            activePlayers = connectedPeers
+            self.activePlayers = connectedPlayers
         }
         
         do {
