@@ -24,6 +24,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     var anchorPoint: ARAnchor!
     
     var worldMap: ARWorldMap!
+    var activePlayers: [Player]!
     
     // MARK: Multipeer Implementation
     var mcService : MultipeerSession!
@@ -63,6 +64,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         //Don't want app to sleep
         UIApplication.shared.isIdleTimerDisabled = true
+        
     }
 
     
@@ -75,6 +77,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     // MARK: - SCNView Delegates
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if let name = anchor.name, name.hasPrefix("cube") {
+            anchorPoint = anchor
             baseNode = loadCube()
             node.addChildNode(baseNode)
         }
@@ -120,6 +123,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     }
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        print("Player Count: \(Player.playerCount)")
         if (!mcService.connectedPeers.isEmpty && mapProvider == nil) {
             let peerNames = mcService.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
             print("Connected with \(peerNames).")
@@ -129,25 +133,27 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         switch frame.worldMappingStatus {
         case .notAvailable, .limited:
             //Don't want to send data to each other if mapping status is limited or N/A
-            shareMapButton.isEnabled = (baseNode != nil) && (mapProvider != nil)
+            //shareMapButton.isEnabled = (baseNode != nil) && (mapProvider != nil)
             print("MappingStatus: NA or Limited")
             //userInstructions.text = "NA/Limited"
         case .extending:
             //has mapped some areas but is currently mapping aournd current position
-            //CHANGE THE OR STATEMENT BACK TO AN AND STATEMENT
-            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
+
+            shareMapButton.isEnabled = (baseNode != nil) || (Player.playerCount != 0)
+
             print("MappingStatus: Extending")
             //.text = "Point all device cameras at the base location and tap the button to share your map!"
         case .mapped:
             //Mapped enough of the visible area
-            //CHANGE THE OR STATEMENT BACK TO AN AND STATEMENT
-            shareMapButton.isEnabled = (baseNode != nil) && (!mcService.connectedPeers.isEmpty)
+
+            shareMapButton.isEnabled = (baseNode != nil) || (Player.playerCount != 0)
+
             print("MappingStatus: Mapped")
             //userInstructions.text = "Point all device cameras at the base location and tap the button to share your map!"
         @unknown default:
             print("Unknown worldMappingStatus")
             //userInstructions.text = "Unknown"
-            shareMapButton.isEnabled = (baseNode != nil) && (mapProvider != nil)
+            //shareMapButton.isEnabled = (baseNode != nil) && (mapProvider != nil)
         }
         
         if mapProvider != nil {
@@ -215,16 +221,6 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     // MARK: - Common View Stuff
     @IBAction func handleSceneTap(_ sender: UITapGestureRecognizer) {
         
-//        let tapLoc = sender.location(in: sceneView)
-//        let objects = sceneView.hitTest(tapLoc)
-//        for element in objects {
-//            print("Element: \(element)")
-//        }
-//        let box = objects.first?.node
-//        if box?.name == "boxNode" {
-//            box?.removeFromParentNode()
-//            return
-//        }
         
         print("Handling Scene Tap")
         // Hit test to find a place for a virtual object.
@@ -286,28 +282,35 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
                     else { print("Error: \(error!.localizedDescription)"); return }
                 guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
                     else { fatalError("can't encode map") }
-                self.mcService.sendToAllPeers(data)
+                //self.mcService.sendToAllPeers(data)
+                if self.activePlayers != nil {
+                    self.mcService.sendToConnectedPeers(data, self.activePlayers)
+                }
+                else {
+                    print("No active Players!!")
+                }
             }
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let gameVC = segue.destination as? GameViewController {
-            sceneView.session.getCurrentWorldMap {worldMap, error in
-                guard let map = worldMap
-                    else {return}
+
+        
+            if let gameVC = segue.destination as? GameViewController {
+                sceneView.session.getCurrentWorldMap {worldMap, error in
+                    guard let map = worldMap
+                        else {return}
+                    
+                    self.worldMap = map
+                }
                 
-//                //adding snapshot anchor
-//                guard let snapShotAnchor = SnapshotAnchor(capturing: self.sceneView)
-//                    else { fatalError("Can't take snapshot")}
-//                map.anchors.append(snapShotAnchor)
-                self.worldMap = map
+                gameVC.previousViewController = self
+                gameVC.isMaster = (mapProvider == nil)
+                print("Passing self to next controller")
             }
-            
-            gameVC.previousViewController = self
-            gameVC.isMaster = (mapProvider == nil)
-            print("Passing self to next controller")
-        }
+            else if let playerVC = segue.destination as? PlayerSession {
+                playerVC.previousVC = self
+            }
         
     }
     
