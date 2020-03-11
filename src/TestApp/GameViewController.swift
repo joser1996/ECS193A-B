@@ -21,6 +21,9 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var didSyncCrosshair = false
     var center = CGPoint(x: 0, y: 0)
     
+    var zombieIndex = 0
+    var zombies : [String: Zombie] = [:]
+    
     @IBOutlet weak var sceneViewGame: ARSCNView!
     @IBOutlet weak var userPrompts: UILabel!
     
@@ -29,14 +32,24 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         let angle = Float.random(in: 0 ..< 360)
         let distance = Float.random(in: 1.5 ..< 2)
         let position = (x: distance * cos(angle * Float.pi / 180), y: -0.4, z: distance * sin(angle * Float.pi / 180))
-        let zombie = loadCube(position.x, -0.4, position.z, true)
+        let name = generateZombieName()
+        let node = loadCube(position.x, -0.4, position.z, name, true)
+        
+        let zombie = Zombie(node)
+        print("Adding zombie: \(name) at node \(node)")
         
         guard let data = try? NSKeyedArchiver.archivedData(withRootObject: zombie, requiringSecureCoding: true)
-              else { fatalError("can't encode zombie") }
-        print("Zombie type: \(type(of: zombie))")
+              else { fatalError("can't encode zombie add") }
         self.mcService.sendToAllPeers(data)
         
-        self.sceneViewGame.scene.rootNode.addChildNode(zombie)
+        zombies[name] = zombie
+        self.sceneViewGame.scene.rootNode.addChildNode(node)
+    }
+    
+    func generateZombieName() -> String {
+        let name = String(zombieIndex)
+        zombieIndex += 1
+        return name
     }
     
     override func viewDidLoad() {
@@ -213,12 +226,18 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 self.userPrompts.isHidden = true
             }
         }
-        
-        let hitTestResults = sceneViewGame.hitTest(center)
-        let node = hitTestResults.first?.node
-        
-        if node?.name != "baseNode" {
-            node?.removeFromParentNode()
+        else {
+            let hitTestResults = sceneViewGame.hitTest(center)
+            if let node = hitTestResults.first?.node, let name = node.name, name != "baseNode" {
+                let zombie = zombies[name]
+                print("Grabbing zombie: \(name)")
+                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: zombie!, requiringSecureCoding: true)
+                else { fatalError("can't encode zombie remove") }
+                
+                mcService.sendToAllPeers(data)
+                zombies.removeValue(forKey: name)
+                node.removeFromParentNode()
+            }
         }
     }
     
@@ -228,15 +247,24 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             node.addChildNode(loadCube())
         }
     }
-    
-    var mapProvider: MCPeerID?
+
     
     // TODO: ADD Functionality to share the World Map data
     /// - Tag: ReceiveData
     func receivedData(_ data: Data, from peer: MCPeerID) {
         do {
-            if let zombie = try NSKeyedUnarchiver.unarchivedObject(ofClass: SCNNode.self, from: data) {
-                sceneViewGame.scene.rootNode.addChildNode(zombie)
+            if let zombie = try NSKeyedUnarchiver.unarchivedObject(ofClass: Zombie.self, from: data) {
+                if let node = zombie.node, let name = node.name {
+                    if zombies[name] != nil {
+                        print("Removing zombie")
+                        zombies.removeValue(forKey: name)
+                        node.removeFromParentNode()
+                    } else {
+                        print("Adding zombie")
+                        zombies[name] = zombie
+                        sceneViewGame.scene.rootNode.addChildNode(node)
+                    }
+                }
             }
             else {
                 print("unknown data received from \(peer)")
@@ -248,15 +276,13 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     
     // MARK: - AR session management
-    private func loadCube(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false) -> SCNNode {
+    private func loadCube(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ name: String = "baseNode", _ isZombie: Bool = false) -> SCNNode {
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         let boxNode = SCNNode()
         boxNode.geometry = box
-        boxNode.name = "baseNode"
+        boxNode.name = name
         
         if isZombie { boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
-            
-            boxNode.name = "boxNode"
             
             let basePosition = SCNVector3(
                 previousViewController.anchorPoint.transform.columns.3.x,
@@ -274,4 +300,29 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     }
     
 }
+
+class Zombie: NSObject, NSCoding, NSSecureCoding {
+    static var supportsSecureCoding: Bool = true
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(health, forKey: "health")
+        coder.encode(node, forKey: "node")
+    }
+    
+    required convenience init?(coder decoder: NSCoder) {
+        let health = decoder.decodeInteger(forKey: "health")
+        print("Unwrapped int: \(health)")
+        let node = decoder.decodeObject(forKey: "node") as! SCNNode
+        self.init(node, health)
+    }
+    
+    var health: Int?
+    var node: SCNNode?
+    
+    init (_ node: SCNNode?, _ health: Int? = 2) {
+        self.node = node
+        self.health = health
+    }
+}
+
 
