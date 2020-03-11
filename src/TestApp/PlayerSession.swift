@@ -82,10 +82,12 @@ extension PlayerSession: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         players[indexPath.row].isSelected = true
+        Player.incPlayerCount()
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         players[indexPath.row].isSelected = false
+        Player.decPlayerCount()
     }
     
     

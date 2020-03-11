@@ -9,6 +9,7 @@
 import Foundation
 
 class Player {
+    static var playerCount: Int = 0
     var name: String
     var isSelected: Bool    //Any other Plaer Attributes Here
     var score: Int
@@ -21,5 +22,11 @@ class Player {
     }
     
     
-
+    static func incPlayerCount() {
+        playerCount += 1
+    }
+    
+    static func decPlayerCount() {
+        playerCount -= 1
+    }
 }
