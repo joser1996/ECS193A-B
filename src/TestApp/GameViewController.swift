@@ -213,9 +213,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         }
         else if self.health == 1 {
             self.Heart2.isHidden = true
+            self.Heart1.isHidden = true
         }
         else if self.health == 0 {
             self.Heart3.isHidden = true
+            self.Heart2.isHidden = true
+            self.Heart1.isHidden = true
             self.GameOver.isHidden = false
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 //self.sceneViewGame?.session.pause()
@@ -346,6 +349,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                     localZombie?.node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
                     zombies.removeValue(forKey: zombie.name!)
                 }
+                if packet.health != nil {
+                    print("Updating health to \(packet.health!)")
+                    self.health = packet.health!
+                }
             }
             else {
                 print("unknown data received from \(peer)")
@@ -378,6 +385,11 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             
             boxNode.runAction(zombieSequence, completionHandler:{
                 self.health -= 1
+                
+                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(health: self.health), requiringSecureCoding: false)
+                else { fatalError("can't encode health") }
+                
+                self.mcService.sendToAllPeers(data)
                 
                 print(self.health)
                 if (self.health == 0) {
