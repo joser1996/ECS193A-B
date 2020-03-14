@@ -23,6 +23,9 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var health = 3
     var isWithinBase = true
     
+    var zombies : [String: Zombie] = [:]
+    var zombieIndex : Int = 0
+    
     @IBOutlet weak var sceneViewGame: ARSCNView!
     @IBOutlet weak var userPrompts: UILabel!
     @IBOutlet weak var GameOver: UILabel!
@@ -35,18 +38,28 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     @IBOutlet weak var EmptyHeart2: UIImageView!
     @IBOutlet weak var EmptyHeart3: UIImageView!
     
+    func generateZombieName() -> String {
+        let name = String(zombieIndex)
+        zombieIndex += 1
+        return name
+    }
+    
     func spawnZombie() {
         let angle = Float.random(in: 0 ..< 360)
         let distance = Float.random(in: 1.5 ..< 2)
         let position = (x: distance * cos(angle * Float.pi / 180), y: -0.4, z: distance * sin(angle * Float.pi / 180))
-        let zombie = loadCube(position.x, -0.4, position.z, true)
+        let node = loadCube(position.x, -0.4, position.z, true)
+        let name = generateZombieName()
+        node.name = name
+        let zombie = Zombie(name: name, health: 1, node: node)
+        zombies[name] = zombie
         
-        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: zombie, requiringSecureCoding: true)
+        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: zombie, action: "create"), requiringSecureCoding: false)
               else { fatalError("can't encode zombie") }
-        print("Zombie type: \(type(of: zombie))")
+        
         self.mcService.sendToAllPeers(data)
         
-        self.sceneViewGame.scene.rootNode.addChildNode(zombie)
+        self.sceneViewGame.scene.rootNode.addChildNode(node)
     }
     
     override func viewDidLoad() {
@@ -296,8 +309,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             let hitTestResults = sceneViewGame.hitTest(center)
             let node = hitTestResults.first?.node
         
-            if node?.name != "baseNode" {
+            if let name = node?.name, name != "baseNode" {
+                let hitZombie = zombies[name]
+                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: hitZombie, action: "delete"), requiringSecureCoding: false)
+                      else { fatalError("can't encode zombie") }
+                self.mcService.sendToAllPeers(data)
+                
                 node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
+                zombies.removeValue(forKey: name)
             }
         }
     }
@@ -315,8 +334,18 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     /// - Tag: ReceiveData
     func receivedData(_ data: Data, from peer: MCPeerID) {
         do {
-            if let zombie = try NSKeyedUnarchiver.unarchivedObject(ofClass: SCNNode.self, from: data) {
-                sceneViewGame.scene.rootNode.addChildNode(zombie)
+            if let packet = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? GamePacket {
+                if let zombie = packet.zombie, packet.action == "create" {
+                    print("Creating zombie \(zombie.name!)")
+                    sceneViewGame.scene.rootNode.addChildNode(zombie.node!)
+                    zombies[zombie.node!.name!] = zombie
+                }
+                if let zombie = packet.zombie, packet.action == "delete" {
+                    print("Deleting zombie \(zombie.name!)")
+                    let localZombie = zombies[zombie.name!]
+                    localZombie?.node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
+                    zombies.removeValue(forKey: zombie.name!)
+                }
             }
             else {
                 print("unknown data received from \(peer)")
