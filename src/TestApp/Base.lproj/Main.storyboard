@@ -322,16 +322,15 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wbN-yn-506">
-                                <rect key="frame" x="400" y="273" width="97" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wbN-yn-506">
+                                <rect key="frame" x="399.5" y="273" width="97" height="30"/>
                                 <state key="normal" title="Select Players"/>
                                 <connections>
                                     <segue destination="sx5-7N-Qt9" kind="show" id="ShQ-12-cx7"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nDD-cf-33C">
-                                <rect key="frame" x="383" y="311" width="131" height="41"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nDD-cf-33C">
+                                <rect key="frame" x="220.5" y="311" width="455" height="41"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="455" id="DCE-nZ-4qp"/>
                                     <constraint firstAttribute="height" constant="41" id="Fmv-R0-Evf"/>
@@ -345,8 +344,11 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="wbN-yn-506" firstAttribute="centerX" secondItem="Toh-5N-3rn" secondAttribute="centerX" id="9Jl-dz-Lde"/>
                             <constraint firstItem="JAl-3S-OJD" firstAttribute="centerY" secondItem="otw-he-EVd" secondAttribute="centerY" id="9ZR-vu-aN7"/>
+                            <constraint firstItem="nDD-cf-33C" firstAttribute="centerX" secondItem="Toh-5N-3rn" secondAttribute="centerX" id="C8N-sl-svg"/>
                             <constraint firstItem="2Hj-fT-P7q" firstAttribute="leading" secondItem="Toh-5N-3rn" secondAttribute="leading" constant="166" id="J7c-9L-TkV"/>
+                            <constraint firstItem="nDD-cf-33C" firstAttribute="top" secondItem="wbN-yn-506" secondAttribute="bottom" constant="8" id="QFH-Q9-ade"/>
                             <constraint firstItem="2Hj-fT-P7q" firstAttribute="top" secondItem="otw-he-EVd" secondAttribute="bottom" constant="75" id="Qmh-u5-xdR"/>
                             <constraint firstItem="9ek-pu-vyv" firstAttribute="centerX" secondItem="Toh-5N-3rn" secondAttribute="centerX" id="Roo-EH-Um1"/>
                             <constraint firstItem="JAl-3S-OJD" firstAttribute="top" secondItem="9ek-pu-vyv" secondAttribute="bottom" constant="89" id="SfU-r5-WJ2"/>
@@ -416,33 +418,38 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9Tl-RH-SBi">
-                                <rect key="frame" x="0.0" y="361" width="896" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b9j-sQ-xFq">
+                                <rect key="frame" x="134.5" y="363" width="627" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="627" id="YIm-li-0YZ"/>
+                                </constraints>
                                 <state key="normal" title="Done"/>
                                 <connections>
-                                    <action selector="finishedSelecting:" destination="sx5-7N-Qt9" eventType="touchUpInside" id="n58-83-a4i"/>
+                                    <action selector="finishedSelecting:" destination="sx5-7N-Qt9" eventType="touchUpInside" id="s7j-f7-Qxf"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="b9j-sQ-xFq" firstAttribute="centerX" secondItem="KQO-YY-NgA" secondAttribute="centerX" id="4Vi-Yb-euN"/>
+                            <constraint firstItem="b9j-sQ-xFq" firstAttribute="top" secondItem="0AN-UK-c0H" secondAttribute="bottom" constant="-3" id="8j5-zv-2uy"/>
+                            <constraint firstItem="b9j-sQ-xFq" firstAttribute="centerX" secondItem="KQO-YY-NgA" secondAttribute="centerX" id="EvG-21-slI"/>
                             <constraint firstItem="0AN-UK-c0H" firstAttribute="leading" secondItem="KQO-YY-NgA" secondAttribute="leading" constant="20" symbolic="YES" id="T7l-wv-vkf"/>
                             <constraint firstItem="PDy-tr-vfq" firstAttribute="bottom" secondItem="0AN-UK-c0H" secondAttribute="bottom" constant="27" id="cmr-lv-8ul"/>
                             <constraint firstItem="0AN-UK-c0H" firstAttribute="top" secondItem="PDy-tr-vfq" secondAttribute="top" id="k4R-k6-Xq2"/>
                             <constraint firstAttribute="trailing" secondItem="0AN-UK-c0H" secondAttribute="trailing" constant="20" symbolic="YES" id="lx4-pv-vY8"/>
+                            <constraint firstItem="0AN-UK-c0H" firstAttribute="centerX" secondItem="KQO-YY-NgA" secondAttribute="centerX" id="lxb-f2-v2h"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PDy-tr-vfq"/>
                     </view>
                     <navigationItem key="navigationItem" id="fDn-Tv-2bn"/>
                     <connections>
-                        <outlet property="doneButton" destination="9Tl-RH-SBi" id="6Uf-QE-eR6"/>
                         <outlet property="tableView" destination="0AN-UK-c0H" id="n9z-LZ-wSz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BkQ-hg-Ch9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1281.6964285714284" y="-857.97101449275374"/>
+            <point key="canvasLocation" x="1277.8110944527737" y="-863.20000000000005"/>
         </scene>
     </scenes>
     <resources>
