@@ -9,9 +9,14 @@
 import Foundation
 import os.log
 
-class LeaderBoardCell {
+//MARK: LeaderBoardCell Class
+class LeaderBoardCell: NSObject, NSCoding {
+    
+    
+    //MARK: Properties
     var teamName: [String] = []
-    var gameScore: Int
+    var gameScore: Int = 0
+    //MARK: Methods
     
     init(_ members: [Player]) {
         self.gameScore = 0
@@ -22,25 +27,58 @@ class LeaderBoardCell {
         
     }
     
+    //MARK: ARCHIVING
+    
+    required init?(coder Decoder: NSCoder) {
+        let tn = Decoder.decodeObject(forKey: LeaderBoardCellKeys.teamName) as! [String]
+        
+        let gs = Decoder.decodeInteger(forKey: LeaderBoardCellKeys.gameScore)
+        
+        self.teamName = tn
+        self.gameScore = gs
+        
+    }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(self.teamName, forKey: LeaderBoardCellKeys.teamName)
+        print("Encoding game score: \(self.gameScore)")
+        coder.encode(self.gameScore, forKey: LeaderBoardCellKeys.gameScore)
+    }
+    
+}
+
+//MARK: Leaderboard Cell Property Keys
+struct LeaderBoardCellKeys {
+    static let teamName = "teamName"
+    static let gameScore = "gameScore"
 }
 
 
-//LeaderBoard must conform to NSCoding protocol
+//MARK: LeaderBoard Class
 class LeaderBoard: NSObject, NSCoding{
     
+    
     //MARK: Properties
-    var scoreBoard:[LeaderBoardCell] = []
-
     
-    //MARK: Archinving Paths
-    
-    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("LeaderBoard")
-    
-    init(scoreBoard: [LeaderBoardCell]) {
+    var scoreBoard: [LeaderBoardCell] = []
+    init(scoreBoard: [LeaderBoardCell]){
         self.scoreBoard = scoreBoard
     }
 
+    //MARK: ARCHIVING
+    
+    required convenience init?(coder Decoder: NSCoder) {
+        let sb = Decoder.decodeObject(forKey: LeaderBoardKeys.scoreBoard) as! [LeaderBoardCell]
+        self.init(scoreBoard: sb)
+    }
+    
+    func encode(with coder: NSCoder) {
+        coder.encode(scoreBoard, forKey: LeaderBoardKeys.scoreBoard)
+    }
+    
+    
+    
+    //MARK: Methods
     
     func addToLeaderBoardMulti(_ players: [Player]) {
         
@@ -63,26 +101,16 @@ class LeaderBoard: NSObject, NSCoding{
         
     }
     
-    
-    //MARK: NSCoding
-    func encode(with coder: NSCoder) {
-        coder.encode(scoreBoard, forKey: PropertyKey.scoreBoard)
+    func playerNamesString(_ cell: LeaderBoardCell) -> String {
+        let names = cell.teamName
+        let oneName = names.joined(separator: ", ")
+        return oneName
     }
     
-    
-    required convenience init?(coder: NSCoder) {
-        guard let sb = coder.decodeObject(forKey: PropertyKey.scoreBoard) as? [LeaderBoardCell] else {
-            os_log("Unable to decode the leader board", log: OSLog.default, type: .debug)
-            return nil
-        }
-        
-        self.init(scoreBoard: sb)
-    }
 }
 
-
-
-struct PropertyKey {
+//MARK: Leaderboard Keys
+struct LeaderBoardKeys {
     static let scoreBoard = "scoreBoard"
-    
 }
+
