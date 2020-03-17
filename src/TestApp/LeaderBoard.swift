@@ -46,12 +46,13 @@ class LeaderBoardCell: NSObject, NSCoding {
     }
     
 }
-
-//MARK: Leaderboard Cell Property Keys
 struct LeaderBoardCellKeys {
     static let teamName = "teamName"
     static let gameScore = "gameScore"
 }
+
+
+
 
 
 //MARK: LeaderBoard Class
@@ -61,12 +62,12 @@ class LeaderBoard: NSObject, NSCoding{
     //MARK: Properties
     
     var scoreBoard: [LeaderBoardCell] = []
+    
     init(scoreBoard: [LeaderBoardCell]){
         self.scoreBoard = scoreBoard
     }
 
     //MARK: ARCHIVING
-    
     required convenience init?(coder Decoder: NSCoder) {
         let sb = Decoder.decodeObject(forKey: LeaderBoardKeys.scoreBoard) as! [LeaderBoardCell]
         self.init(scoreBoard: sb)
@@ -101,16 +102,71 @@ class LeaderBoard: NSObject, NSCoding{
         
     }
     
-    func playerNamesString(_ cell: LeaderBoardCell) -> String {
+    static func playerNamesString(_ cell: LeaderBoardCell) -> String {
         let names = cell.teamName
         let oneName = names.joined(separator: ", ")
         return oneName
     }
     
+    static func saveLeaderBoard(leaderBoard: LeaderBoard) {
+        do{
+            let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+            let archiveURL = DocumentsDirectory.appendingPathComponent("leaderboard.bin")
+            
+            guard let scoreBoardData = try? NSKeyedArchiver.archivedData(withRootObject: leaderBoard, requiringSecureCoding: false)
+                else{
+                    fatalError("Couldn't encode scoreBoard")
+            }
+            print("Saving Leader board to \(archiveURL)")
+            try scoreBoardData.write(to: archiveURL)
+        } catch {
+            print(error)
+        }
+    }
+    
+    static func loadLeaderBoard() -> LeaderBoard? {
+        var returnVal: LeaderBoard? = nil
+        do{
+            let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+            let archiveURL = DocumentsDirectory.appendingPathComponent("leaderboard.bin")
+            
+            var sbReadData: NSData? = try? NSData(contentsOf: archiveURL, options: .mappedIfSafe)
+            
+            //If No data then create new leaderBoard
+            if sbReadData == nil {
+                print("No Leader Board Making New One")
+                let cells: [LeaderBoardCell] = []
+                let lb = LeaderBoard(scoreBoard: cells)
+                
+                let p1: Player = Player(name: "Big Chungus")
+                let p2: Player = Player(name: "Tom")
+                
+                p1.score = 100
+                p2.score = 75
+                
+                let team1: [Player] = [p1]
+                let team2: [Player] = [p1, p2]
+                lb.addToLeaderBoardMulti(team1)
+                lb.addToLeaderBoardMulti(team2)
+                LeaderBoard.saveLeaderBoard(leaderBoard: lb)
+                
+                sbReadData = try NSData(contentsOf: archiveURL, options: .mappedIfSafe)
+            }
+            
+            if let sb = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(sbReadData! as Data) as? LeaderBoard {
+                print("Loaded LeaderBoard")
+                returnVal = sb
+            }
+        }catch {
+            print(error)
+        }
+        return returnVal
+    }
+    
 }
 
-//MARK: Leaderboard Keys
 struct LeaderBoardKeys {
     static let scoreBoard = "scoreBoard"
 }
+
 
