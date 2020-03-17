@@ -27,6 +27,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var zombieIndex : Int = 0
     
     var zombieTimer : Timer! = nil
+    var masterScore : Int = 0
     
     @IBOutlet weak var sceneViewGame: ARSCNView!
     @IBOutlet weak var userPrompts: UILabel!
@@ -328,6 +329,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 hitZombie?.health? -= 1
                 if hitZombie?.health == 0 {
                     node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
+                    if isMaster {
+                        masterScore += hitZombie?.maxHealth ?? 0
+                        guard let data2 = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(score: masterScore), requiringSecureCoding: false)
+                            else { fatalError("can't encode score")}
+                        self.mcService.sendToAllPeers(data2)
+                    }
                     zombies.removeValue(forKey: name)
                 }
                 else if hitZombie?.health == 1 {
@@ -374,6 +381,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                     if zombies[zombie.node!.name!]?.health == 0 {
                         let localZombie = zombies[zombie.name!]
                         localZombie?.node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
+                        if isMaster {
+                            masterScore += zombies[zombie.node!.name!]?.maxHealth ?? 0
+                            guard let data2 = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(score: masterScore), requiringSecureCoding: false)
+                                else { fatalError("can't encode score")}
+                            self.mcService.sendToAllPeers(data2)
+                        }
                         zombies.removeValue(forKey: zombie.name!)
                     }
                     else if zombies[zombie.node!.name!]?.health == 1 {
@@ -395,6 +408,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 if packet.health != nil {
                     print("Updating health to \(packet.health!)")
                     self.health = packet.health!
+                }
+                if packet.score != nil {
+                    print("Updating score to \(packet.score!)")
+                    self.masterScore = packet.score!
                 }
             }
             else {
