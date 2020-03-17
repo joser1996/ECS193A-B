@@ -222,7 +222,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pLH-Uc-scS">
-                                <rect key="frame" x="306" y="172.5" width="74" height="30"/>
+                                <rect key="frame" x="296.5" y="172.5" width="74" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w6C-lv-xPS">
                                         <rect key="frame" x="0.0" y="0.0" width="74" height="30"/>
@@ -234,6 +234,8 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="74" id="23j-y5-7EZ"/>
+                                    <constraint firstItem="w6C-lv-xPS" firstAttribute="centerX" secondItem="pLH-Uc-scS" secondAttribute="centerX" id="BU6-Xe-xI7"/>
+                                    <constraint firstItem="w6C-lv-xPS" firstAttribute="centerY" secondItem="pLH-Uc-scS" secondAttribute="centerY" id="O6a-8U-ESG"/>
                                     <constraint firstItem="w6C-lv-xPS" firstAttribute="centerX" secondItem="pLH-Uc-scS" secondAttribute="centerX" id="fee-Lg-i2X"/>
                                 </constraints>
                             </stackView>
@@ -246,9 +248,8 @@
                                 <color key="textColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="highlightedColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irA-BI-ZgP">
-                                <rect key="frame" x="295" y="257" width="98" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irA-BI-ZgP">
+                                <rect key="frame" x="284.5" y="237.5" width="98" height="31.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Leaderboard"/>
                                 <connections>
@@ -258,10 +259,14 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="pLH-Uc-scS" firstAttribute="centerX" secondItem="eaP-wx-Yic" secondAttribute="centerX" constant="9.5" id="GSS-F2-PNm"/>
+                            <constraint firstItem="irA-BI-ZgP" firstAttribute="top" secondItem="pLH-Uc-scS" secondAttribute="bottom" constant="35" id="NxM-Xg-79I"/>
                             <constraint firstItem="pLH-Uc-scS" firstAttribute="centerY" secondItem="eaP-wx-Yic" secondAttribute="centerY" id="PlU-Ps-qrO"/>
+                            <constraint firstItem="pLH-Uc-scS" firstAttribute="centerX" secondItem="eaP-wx-Yic" secondAttribute="centerX" id="QDB-Yg-6lG"/>
+                            <constraint firstItem="irA-BI-ZgP" firstAttribute="centerX" secondItem="eaP-wx-Yic" secondAttribute="centerX" id="Un1-y6-V5D"/>
                             <constraint firstItem="L5c-AI-BHU" firstAttribute="top" secondItem="zcq-EU-yrl" secondAttribute="top" constant="49" id="bOQ-kL-mh1"/>
+                            <constraint firstItem="zcq-EU-yrl" firstAttribute="bottom" secondItem="irA-BI-ZgP" secondAttribute="bottom" constant="106" id="bWn-PU-ave"/>
                             <constraint firstItem="L5c-AI-BHU" firstAttribute="centerX" secondItem="eaP-wx-Yic" secondAttribute="centerX" id="xXP-Fd-8jb"/>
+                            <constraint firstItem="pLH-Uc-scS" firstAttribute="centerY" secondItem="eaP-wx-Yic" secondAttribute="centerY" id="zwx-3n-ykt"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="zcq-EU-yrl"/>
                     </view>
