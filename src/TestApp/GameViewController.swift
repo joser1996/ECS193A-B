@@ -335,6 +335,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                             else { fatalError("can't encode score")}
                         self.mcService.sendToAllPeers(data2)
                     }
+                    print("Score: \(masterScore)")
                     zombies.removeValue(forKey: name)
                 }
                 else if hitZombie?.health == 1 {
@@ -462,7 +463,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 
                 print(self.health)
                 if (self.health == 0) {
-                    print("Game Over\n")
+                    //print("Game Over\n")
+                    print("Score: \(self.masterScore)")
                 }
             })
         }
