@@ -26,6 +26,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var zombies : [String: Zombie] = [:]
     var zombieIndex : Int = 0
     
+    var zombieTimer : Timer! = nil
+    
     @IBOutlet weak var sceneViewGame: ARSCNView!
     @IBOutlet weak var userPrompts: UILabel!
     @IBOutlet weak var GameOver: UILabel!
@@ -44,14 +46,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         return name
     }
     
-    func spawnZombie() {
+    func spawnZombie(paramHealth: Int = 2) {
         let angle = Float.random(in: 0 ..< 360)
         let distance = Float.random(in: 1.5 ..< 2)
         let position = (x: distance * cos(angle * Float.pi / 180), y: -0.4, z: distance * sin(angle * Float.pi / 180))
-        let node = loadCube(position.x, -0.4, position.z, true)
+        let node = loadCube(position.x, -0.4, position.z, true, paramHealth)
         let name = generateZombieName()
         node.name = name
-        let zombie = Zombie(name: name, health: 1, node: node)
+        let zombie = Zombie(name: name, health: paramHealth, node: node)
         zombies[name] = zombie
         
         guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: zombie, action: "create"), requiringSecureCoding: false)
@@ -76,14 +78,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             var timerOne = 1
             var sleep = 7
             
-            Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            self.zombieTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                 if zombieCount == 0 && sleep != 0 {
                     sleep -= 1
                 }
                 else if zombieCount == 10 + wave * 10 {
                     if sleep == 0 {
                         for _ in 1...(10 + wave * 10) {
-                            self.spawnZombie()
+                            self.spawnZombie(paramHealth: Int.random(in: 1...3))
                         }
                         wave += 1
                         zombieCount = 0
@@ -96,7 +98,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 }
                 else if timerOne == 0 {
                     // Zombie spawn code
-                    self.spawnZombie()
+                    self.spawnZombie(paramHealth: Int.random(in: 1...3))
                     zombieCount += 1
                     
                     // Reset timer
@@ -169,6 +171,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         sceneViewGame.session.pause()
+        
+        if isMaster {
+            self.zombieTimer.invalidate()
+        }
     }
 
 
@@ -288,10 +294,11 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             let camMatrix = SCNMatrix4(frame.camera.transform)
             let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
             
-            let bullet = SCNSphere(radius: 0.05)
+            let bullet = SCNSphere(radius: 0.02)
             bullet.firstMaterial?.diffuse.contents = UIColor.red
             let bulletNode = SCNNode(geometry: bullet)
             bulletNode.position = position
+            bulletNode.position.y -= 0.1
             sceneViewGame.scene.rootNode.addChildNode(bulletNode)
             
             let shootTestResults = sceneViewGame.hitTest(center, types: .featurePoint)
@@ -314,12 +321,30 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         
             if let name = node?.name, name != "baseNode" {
                 let hitZombie = zombies[name]
-                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: hitZombie, action: "delete"), requiringSecureCoding: false)
+                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: hitZombie, action: "damage"), requiringSecureCoding: false)
                       else { fatalError("can't encode zombie") }
                 self.mcService.sendToAllPeers(data)
                 
-                node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
-                zombies.removeValue(forKey: name)
+                hitZombie?.health? -= 1
+                if hitZombie?.health == 0 {
+                    node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
+                    zombies.removeValue(forKey: name)
+                }
+                else if hitZombie?.health == 1 {
+                    Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
+                        node?.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+                    }
+                }
+                else if hitZombie?.health == 2 {
+                    Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
+                        node?.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                    }
+                }
+                else if hitZombie?.health == 3 {
+                    Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
+                        node?.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                    }
+                }
             }
         }
     }
@@ -343,6 +368,24 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                     sceneViewGame.scene.rootNode.addChildNode(zombie.node!)
                     zombies[zombie.node!.name!] = zombie
                 }
+                if let zombie = packet.zombie, packet.action == "damage" {
+                    print("Damaging zombie \(zombie.name!)")
+                    zombies[zombie.node!.name!]?.health? -= 1
+                    if zombies[zombie.node!.name!]?.health == 0 {
+                        let localZombie = zombies[zombie.name!]
+                        localZombie?.node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
+                        zombies.removeValue(forKey: zombie.name!)
+                    }
+                    else if zombies[zombie.node!.name!]?.health == 1 {
+                        zombies[zombie.node!.name!]?.node?.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+                    }
+                    else if zombies[zombie.node!.name!]?.health == 2 {
+                        zombies[zombie.node!.name!]?.node?.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                    }
+                    else if zombies[zombie.node!.name!]?.health == 3 {
+                        zombies[zombie.node!.name!]?.node?.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                    }
+                }
                 if let zombie = packet.zombie, packet.action == "delete" {
                     print("Deleting zombie \(zombie.name!)")
                     let localZombie = zombies[zombie.name!]
@@ -364,13 +407,22 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     
     // MARK: - AR session management
-    private func loadCube(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false) -> SCNNode {
+    private func loadCube(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         let boxNode = SCNNode()
         boxNode.geometry = box
         boxNode.name = "baseNode"
         
-        if isZombie { boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+        if isZombie {
+            if health == 1 {
+                boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+            }
+            else if health == 2 {
+                boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+            }
+            else if health == 3 {
+                boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+            }
             
             boxNode.name = "boxNode"
             
