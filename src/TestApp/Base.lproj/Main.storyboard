@@ -105,6 +105,13 @@
                                     <action selector="pause_button:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gU8-6c-t31"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Score: 000" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Sn-Rh-ap2">
+                                <rect key="frame" x="575" y="8" width="85" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -153,6 +160,7 @@
                         <outlet property="Heart2" destination="BG9-LX-H4G" id="zqf-Rv-yDq"/>
                         <outlet property="Heart3" destination="dgp-VK-Zgv" id="mzr-y4-Nhy"/>
                         <outlet property="ReturnToBase" destination="auM-9d-17x" id="7gC-eL-5ka"/>
+                        <outlet property="Score" destination="4Sn-Rh-ap2" id="s0i-NS-m8x"/>
                         <outlet property="sceneViewGame" destination="B0d-WQ-vey" id="T0L-Hz-CKv"/>
                         <outlet property="userPrompts" destination="JM4-1L-Rhk" id="9QM-qI-EnA"/>
                     </connections>
@@ -164,7 +172,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2051.7857142857142" y="66.666666666666671"/>
+            <point key="canvasLocation" x="2051.4242878560722" y="66.400000000000006"/>
         </scene>
         <!--Pause View Controller-->
         <scene sceneID="Tya-MI-ogb">
