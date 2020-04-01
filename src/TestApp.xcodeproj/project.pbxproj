@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9302697823FB812B00116608 /* BasePlacementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302697723FB812B00116608 /* BasePlacementController.swift */; };
+		936DCE65243518CE002FD853 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936DCE64243518CE002FD853 /* MusicPlayer.swift */; };
+		936DCE6724351BA7002FD853 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936DCE6624351BA7002FD853 /* AVFoundation.framework */; };
+		936DCE6A24351F93002FD853 /* wind.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 936DCE6924351F93002FD853 /* wind.mp3 */; };
 		939BE830240ACB2100B1F458 /* PlayerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939BE82F240ACB2100B1F458 /* PlayerSession.swift */; };
 		939BE832240AFECF00B1F458 /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939BE831240AFECF00B1F458 /* PlayerCell.swift */; };
 		939BE834240AFF8100B1F458 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939BE833240AFF8100B1F458 /* Player.swift */; };
@@ -51,6 +54,9 @@
 
 /* Begin PBXFileReference section */
 		9302697723FB812B00116608 /* BasePlacementController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePlacementController.swift; sourceTree = "<group>"; };
+		936DCE64243518CE002FD853 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = SOURCE_ROOT; };
+		936DCE6624351BA7002FD853 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		936DCE6924351F93002FD853 /* wind.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = wind.mp3; path = ../../../../../wind.mp3; sourceTree = "<group>"; };
 		939BE82F240ACB2100B1F458 /* PlayerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSession.swift; sourceTree = "<group>"; };
 		939BE831240AFECF00B1F458 /* PlayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
 		939BE833240AFF8100B1F458 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
@@ -89,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				936DCE6724351BA7002FD853 /* AVFoundation.framework in Frameworks */,
 				93AD7E252432F78A00E3A588 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -110,9 +117,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		936DCE6824351BD2002FD853 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				936DCE6924351F93002FD853 /* wind.mp3 */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 		93AD7E232432F78A00E3A588 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				936DCE6624351BA7002FD853 /* AVFoundation.framework */,
 				93AD7E242432F78A00E3A588 /* StoreKit.framework */,
 			);
 			name = Frameworks;
@@ -142,6 +158,8 @@
 		93C74FA423D91CFE003BF585 /* TestApp */ = {
 			isa = PBXGroup;
 			children = (
+				936DCE6824351BD2002FD853 /* Sounds */,
+				936DCE64243518CE002FD853 /* MusicPlayer.swift */,
 				93AD7E1D2432B8B300E3A588 /* LeaderBoardController.swift */,
 				93AD7E1E2432B8B300E3A588 /* LeaderBoardViewCell.swift */,
 				E0591F702432D7F100DBD38E /* fonts */,
@@ -301,6 +319,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93C74FB223D91D01003BF585 /* LaunchScreen.storyboard in Resources */,
+				936DCE6A24351F93002FD853 /* wind.mp3 in Resources */,
 				93C74FAF23D91D01003BF585 /* Assets.xcassets in Resources */,
 				93C74FAD23D91CFE003BF585 /* Main.storyboard in Resources */,
 				E0591F6F2432D71500DBD38E /* BLOODY.TTF in Resources */,
@@ -335,6 +354,7 @@
 				93AD7E202432B8B300E3A588 /* LeaderBoardViewCell.swift in Sources */,
 				E09688D923F7E750006F9CBF /* FirstViewController.swift in Sources */,
 				939BE830240ACB2100B1F458 /* PlayerSession.swift in Sources */,
+				936DCE65243518CE002FD853 /* MusicPlayer.swift in Sources */,
 				9302697823FB812B00116608 /* BasePlacementController.swift in Sources */,
 				939BE832240AFECF00B1F458 /* PlayerCell.swift in Sources */,
 				E0591F67242004E700DBD38E /* LeaderBoard.swift in Sources */,

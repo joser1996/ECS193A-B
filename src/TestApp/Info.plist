@@ -18,6 +18,10 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>Fonts provided by application</key>
+	<array>
+		<string>BLOODY.TTF</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -53,10 +57,6 @@
 	<array>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>Fonts provided by application</key>
-	<array>
-		<string>BLOODY.TTF</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

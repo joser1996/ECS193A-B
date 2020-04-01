@@ -36,7 +36,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     //View Life Cycle modeled after AR Multipeer Demo
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("View Loaded?")
+        MusicPlayer.shared.stopBackgroundMusic()
         mcService = MultipeerSession(receivedDataHandler: receivedData)
         sceneView.delegate = self
         //userInstructions.text = "Move camera to map your surroundings\nTap on a flat surface to place your base"
