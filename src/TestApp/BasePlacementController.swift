@@ -19,10 +19,13 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     @IBOutlet weak var userInstructions: UILabel!
     @IBOutlet weak var shareMapButton: UIButton!
     @IBOutlet weak var connectionLabel: UILabel!
+    @IBOutlet weak var gameModeState: UISwitch!
+    @IBOutlet weak var selectPlayerButton: UIButton!
+    @IBOutlet weak var promptLabel: UILabel!
     
     var baseNode: SCNNode!
     var anchorPoint: ARAnchor!
-    
+    var isHosting: Bool = true
     var worldMap: ARWorldMap!
     var activePlayers: [Player]!
     
@@ -39,6 +42,9 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         //userInstructions.text = "Move camera to map your surroundings\nTap on a flat surface to place your base"
         shareMapButton.isEnabled = false
         connectionLabel.text = "Searching for peers..."
+        if isHosting {
+            promptLabel.text = "Place Base Down"
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -132,28 +138,19 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         
         switch frame.worldMappingStatus {
         case .notAvailable, .limited:
-            //Don't want to send data to each other if mapping status is limited or N/A
-            //shareMapButton.isEnabled = (baseNode != nil) && (mapProvider != nil)
             print("MappingStatus: NA or Limited")
-            //userInstructions.text = "NA/Limited"
         case .extending:
-            //has mapped some areas but is currently mapping aournd current position
 
             shareMapButton.isEnabled = (baseNode != nil) || (Player.playerCount != 0)
-
             print("MappingStatus: Extending")
-            //.text = "Point all device cameras at the base location and tap the button to share your map!"
+
         case .mapped:
-            //Mapped enough of the visible area
 
             shareMapButton.isEnabled = (baseNode != nil) || (Player.playerCount != 0)
 
             print("MappingStatus: Mapped")
-            //userInstructions.text = "Point all device cameras at the base location and tap the button to share your map!"
         @unknown default:
             print("Unknown worldMappingStatus")
-            //userInstructions.text = "Unknown"
-            //shareMapButton.isEnabled = (baseNode != nil) && (mapProvider != nil)
         }
         
         if mapProvider != nil {
@@ -221,8 +218,11 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     // MARK: - Common View Stuff
     @IBAction func handleSceneTap(_ sender: UITapGestureRecognizer) {
         
+        if !isHosting {
+            print("Can't set base.")
+            return
+        }
         
-        print("Handling Scene Tap")
         // Hit test to find a place for a virtual object.
         guard let hitTestResult = sceneView
             .hitTest(sender.location(in: sceneView), types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
@@ -237,11 +237,6 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         sceneView.session.add(anchor: anchorPoint)
         print("handleSceneTap: added anchor")
             
-//        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchorPoint!, requiringSecureCoding: true)
-//              else { fatalError("can't encode anchor") }
-//        print("Attempting to send to all peers\n")
-//        self.mcService.sendToAllPeers(data)
-        // TODO: Add code that sends Anchor infor to other peers here for now.
     }
     
     var mapProvider: MCPeerID?
@@ -261,12 +256,10 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
                 
                 // Remember who provided the map for showing UI feedback.
                 mapProvider = peer
+                
+                shareMapButton.isHidden = false
+                shareMapButton.isEnabled = true
             }
-//            else if let anchor = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARAnchor.self, from: data) {
-//                print("Getting anchor")
-//                // Add anchor to the session, ARSCNView delegate adds visible content.
-//                sceneView.session.add(anchor: anchor)
-//            }
             else {
                 print("unknown data recieved from \(peer)")
             }
@@ -314,7 +307,41 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         
     }
     
+    
+    @IBAction func gameModeState(_ sender: UISwitch) {
+        //On means Hosting a game
+        let gameState: Bool = sender.isOn
+        //Off means Joining Game
+        print("Switch: \(gameState)")
+        if(gameState == true){
+            setForHosting()
+            self.isHosting = true
+        }
+        else{
+            self.isHosting = false
+            setForJoining()
+        }
+        
+    }
+    
+    
+    func setForHosting() {
+        selectPlayerButton.isHidden = false
+        selectPlayerButton.isEnabled = true
+        
+        shareMapButton.isHidden = false
+        promptLabel.text = "Place Base Down"
+    }
 
+    func setForJoining() {
+        selectPlayerButton.isHidden = true
+        selectPlayerButton.isEnabled = false
+        
+        shareMapButton.isHidden = true
+        shareMapButton.isEnabled = false
+        
+        promptLabel.text = "Waiting For Map From Host"
+    }
     
 
 }
