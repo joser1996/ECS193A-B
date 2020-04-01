@@ -33,6 +33,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     @IBOutlet weak var userPrompts: UILabel!
     @IBOutlet weak var GameOver: UILabel!
     @IBOutlet weak var ReturnToBase: UILabel!
+    @IBOutlet weak var Score: UILabel!
     
     @IBOutlet weak var Heart1: UIImageView!
     @IBOutlet weak var Heart2: UIImageView!
@@ -335,7 +336,16 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                             else { fatalError("can't encode score")}
                         self.mcService.sendToAllPeers(data2)
                     }
-                    print("Score: \(masterScore)")
+                    let myScore = String(masterScore)
+                    if (masterScore < 10) {
+                        Score.text = "Score: 00" + myScore
+                    }
+                    if (masterScore >= 10 && masterScore < 99) {
+                        Score.text = "Score: 0" + myScore
+                    }
+                    if (masterScore >= 100) {
+                        Score.text = "Score: " + myScore
+                    }
                     zombies.removeValue(forKey: name)
                 }
                 else if hitZombie?.health == 1 {
