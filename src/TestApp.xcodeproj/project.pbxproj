@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9302697823FB812B00116608 /* BasePlacementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302697723FB812B00116608 /* BasePlacementController.swift */; };
+		93369F1A244261C9001935E6 /* OnlineMultiplayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */; };
 		936DCE65243518CE002FD853 /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936DCE64243518CE002FD853 /* MusicPlayer.swift */; };
 		936DCE6724351BA7002FD853 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936DCE6624351BA7002FD853 /* AVFoundation.framework */; };
 		936DCE6A24351F93002FD853 /* wind.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 936DCE6924351F93002FD853 /* wind.mp3 */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		9302697723FB812B00116608 /* BasePlacementController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePlacementController.swift; sourceTree = "<group>"; };
+		93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineMultiplayerController.swift; sourceTree = "<group>"; };
 		936DCE64243518CE002FD853 /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = SOURCE_ROOT; };
 		936DCE6624351BA7002FD853 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		936DCE6924351F93002FD853 /* wind.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = wind.mp3; path = ../../../../../wind.mp3; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 				93C74FA723D91CFE003BF585 /* SceneDelegate.swift */,
 				93C74FA923D91CFE003BF585 /* GameViewController.swift */,
 				93C74FAB23D91CFE003BF585 /* Main.storyboard */,
+				93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */,
 				E0591F6A2432BD2A00DBD38E /* LeaderBoardViewCell.swift */,
 				E0591F682432BC9200DBD38E /* LeaderBoardController.swift */,
 				E0591F62242004E600DBD38E /* GamePacket.swift */,
@@ -364,6 +367,7 @@
 				E0591F65242004E700DBD38E /* GamePacket.swift in Sources */,
 				93C74FA823D91CFE003BF585 /* SceneDelegate.swift in Sources */,
 				E074C2E7240E0AC80049D7BE /* PauseViewController.swift in Sources */,
+				93369F1A244261C9001935E6 /* OnlineMultiplayerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -538,7 +542,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = L227T5HHPC;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -559,7 +563,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = L227T5HHPC;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
