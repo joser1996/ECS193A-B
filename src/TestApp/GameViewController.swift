@@ -188,6 +188,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         //let viewController = PauseViewController(delegate: self)
         //navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    @IBAction func goToScanView(_ sender: Any) {
+        sceneViewGame.session.pause()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "ScanViewController") as! ScanViewController
+        self.navigationController!.pushViewController(vc, animated: true)
+    }
+    
     //MARK: - AR Session Delegate
     //Inform View of changes in quality of device position tracking
     //code to update in this case goes in this functon
@@ -492,3 +500,9 @@ extension GameViewController : PauseViewControllerDelegate {
         sceneViewGame.session.run(sceneViewGame.session.configuration!)
     }
  }
+
+extension GameViewController : ScanViewControllerDelegate {
+    func returnToGame() {
+        sceneViewGame.session.run(sceneViewGame.session.configuration!)
+    }
+}

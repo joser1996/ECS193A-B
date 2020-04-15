@@ -111,7 +111,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game Over" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JBN-ce-ZWN">
-                                <rect key="frame" x="129.5" y="68" width="408" height="96"/>
+                                <rect key="frame" x="139" y="68" width="389.5" height="96"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="96" id="EQk-C4-e8L"/>
                                 </constraints>
@@ -119,6 +119,14 @@
                                 <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gsu-Ks-O7c">
+                                <rect key="frame" x="573" y="20" width="74" height="43"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="magnifyingglass" catalog="system"/>
+                                <connections>
+                                    <action selector="goToScanView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oXc-in-Crj"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -250,7 +258,7 @@
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="None To Mourn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5c-AI-BHU">
-                                <rect key="frame" x="195.5" y="37" width="276" height="81"/>
+                                <rect key="frame" x="201" y="37" width="265.5" height="81"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="81" id="ofu-qG-yPk"/>
                                 </constraints>
@@ -259,7 +267,7 @@
                                 <color key="highlightedColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                             <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w6C-lv-xPS">
-                                <rect key="frame" x="236" y="126" width="195" height="59"/>
+                                <rect key="frame" x="236" y="127.5" width="195" height="56"/>
                                 <fontDescription key="fontDescription" name="Bloody" family="Bloody" pointSize="40"/>
                                 <state key="normal" title="Play Game">
                                     <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -269,7 +277,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irA-BI-ZgP">
-                                <rect key="frame" x="247.5" y="270" width="172" height="47"/>
+                                <rect key="frame" x="250" y="272" width="167" height="45"/>
                                 <fontDescription key="fontDescription" name="Bloody" family="Bloody" pointSize="30"/>
                                 <state key="normal" title="Leaderboard">
                                     <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -279,7 +287,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAA-yo-egg">
-                                <rect key="frame" x="236" y="211" width="195" height="51"/>
+                                <rect key="frame" x="236" y="213" width="195" height="51"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="51" id="rcW-Ct-meZ"/>
                                 </constraints>
@@ -635,10 +643,59 @@
             </objects>
             <point key="canvasLocation" x="493.40329835082463" y="-863.20000000000005"/>
         </scene>
+        <!--Scan View Controller-->
+        <scene sceneID="wUU-dM-D7r">
+            <objects>
+                <viewController restorationIdentifier="ScanViewController" storyboardIdentifier="ScanViewController" id="8SR-Cj-CJd" customClass="ScanViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0b6-I7-vvx">
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N2E-A3-u3H">
+                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LOs-pB-LUm">
+                                <rect key="frame" x="270" y="293" width="126" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Tap to scan object"/>
+                                <connections>
+                                    <action selector="takePhoto:" destination="8SR-Cj-CJd" eventType="touchUpInside" id="Isz-ww-Quk"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="79K-Bo-zv1">
+                                <rect key="frame" x="44" y="20" width="119" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Return to game..."/>
+                                <connections>
+                                    <action selector="returnToGame:" destination="8SR-Cj-CJd" eventType="touchUpInside" id="Cvc-fR-v1p"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Scan object" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M84-t7-Mu2">
+                                <rect key="frame" x="188" y="44" width="291" height="112"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="BgP-On-hpZ"/>
+                    </view>
+                    <connections>
+                        <outlet property="classificationLabel" destination="M84-t7-Mu2" id="d6n-sf-mqH"/>
+                        <outlet property="imageView" destination="N2E-A3-u3H" id="deV-Hq-9Q1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0yH-Gh-rJD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2051.4242878560722" y="-863.20000000000005"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Image" width="48" height="48"/>
         <image name="Image-1" width="48" height="48"/>
+        <image name="magnifyingglass" catalog="system" width="64" height="56"/>
         <image name="shutterstock_1200949210" width="6500" height="3657"/>
         <image name="viewfinder" catalog="system" width="64" height="56"/>
     </resources>
