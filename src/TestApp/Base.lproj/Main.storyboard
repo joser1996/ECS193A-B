@@ -457,43 +457,99 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GCu-Gs-YX8">
-                                <rect key="frame" x="266" y="217" width="138" height="48"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GCu-Gs-YX8">
+                                <rect key="frame" x="258" y="203" width="147" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="Join Game"/>
                                 <connections>
                                     <action selector="joinGameReq:" destination="BJo-va-b74" eventType="touchUpInside" id="r7s-P7-LxY"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Please Select One" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPv-6E-Ocz">
-                                <rect key="frame" x="146" y="55" width="359" height="45"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please Select One" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPv-6E-Ocz">
+                                <rect key="frame" x="152" y="20" width="359" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="YOu-mU-DDP"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jQM-7T-zTi">
-                                <rect key="frame" x="258" y="138" width="146" height="48"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game ID: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="517-aZ-Jjz">
+                                <rect key="frame" x="152" y="73" width="359" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jQM-7T-zTi">
+                                <rect key="frame" x="258" y="138" width="147" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="Host Game"/>
                                 <connections>
                                     <action selector="hostGameRequest:" destination="BJo-va-b74" eventType="touchUpInside" id="7L2-iJ-ALq"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Players:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IxF-JM-nEj">
+                                <rect key="frame" x="152" y="102" width="359" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gRe-hj-rnO">
+                                <rect key="frame" x="258" y="259" width="147" height="42"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" title="Enter Name"/>
+                                <connections>
+                                    <action selector="enterNameAction:" destination="BJo-va-b74" eventType="touchUpInside" id="jJb-u1-MSf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fJZ-ps-BeF">
+                                <rect key="frame" x="258" y="309" width="147" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Enter Game ID"/>
+                                <connections>
+                                    <action selector="enterGameIDAction:" destination="BJo-va-b74" eventType="touchUpInside" id="7T0-sa-g3F"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="gRe-hj-rnO" firstAttribute="leading" secondItem="GCu-Gs-YX8" secondAttribute="leading" id="1M1-2D-Xuu"/>
+                            <constraint firstItem="03b-yf-PWC" firstAttribute="bottom" secondItem="gRe-hj-rnO" secondAttribute="bottom" constant="74" id="5Cc-wT-svO"/>
+                            <constraint firstItem="fJZ-ps-BeF" firstAttribute="trailing" secondItem="gRe-hj-rnO" secondAttribute="trailing" id="5M3-Z6-B00"/>
+                            <constraint firstItem="fJZ-ps-BeF" firstAttribute="leading" secondItem="gRe-hj-rnO" secondAttribute="leading" id="7Tk-Lo-DDh"/>
+                            <constraint firstItem="03b-yf-PWC" firstAttribute="trailing" secondItem="517-aZ-Jjz" secondAttribute="trailing" constant="156" id="FXJ-mt-F8d"/>
+                            <constraint firstItem="gRe-hj-rnO" firstAttribute="leading" secondItem="jQM-7T-zTi" secondAttribute="leading" id="LU2-7T-ufg"/>
+                            <constraint firstItem="gRe-hj-rnO" firstAttribute="centerX" secondItem="517-aZ-Jjz" secondAttribute="centerX" id="Lf0-fd-cj7"/>
+                            <constraint firstItem="GCu-Gs-YX8" firstAttribute="top" secondItem="jQM-7T-zTi" secondAttribute="bottom" constant="17" id="Mlx-GV-7RI"/>
+                            <constraint firstItem="gRe-hj-rnO" firstAttribute="trailing" secondItem="GCu-Gs-YX8" secondAttribute="trailing" id="Tbe-az-BhK"/>
+                            <constraint firstItem="gRe-hj-rnO" firstAttribute="trailing" secondItem="jQM-7T-zTi" secondAttribute="trailing" id="XLl-0v-jhF"/>
+                            <constraint firstItem="gRe-hj-rnO" firstAttribute="leading" secondItem="03b-yf-PWC" secondAttribute="leading" constant="258" id="fAt-8U-bc6"/>
+                            <constraint firstItem="ZPv-6E-Ocz" firstAttribute="leading" secondItem="517-aZ-Jjz" secondAttribute="leading" id="fZs-1s-Esr"/>
+                            <constraint firstItem="jQM-7T-zTi" firstAttribute="top" secondItem="IxF-JM-nEj" secondAttribute="bottom" constant="15" id="hEe-Gm-evF"/>
+                            <constraint firstItem="gRe-hj-rnO" firstAttribute="centerX" secondItem="IxF-JM-nEj" secondAttribute="centerX" id="j6o-aV-Zg5"/>
+                            <constraint firstItem="517-aZ-Jjz" firstAttribute="leading" secondItem="IxF-JM-nEj" secondAttribute="leading" id="jtU-nf-6DW"/>
+                            <constraint firstItem="IxF-JM-nEj" firstAttribute="top" secondItem="517-aZ-Jjz" secondAttribute="bottom" constant="8" id="qfB-CO-CTH"/>
+                            <constraint firstItem="ZPv-6E-Ocz" firstAttribute="top" secondItem="03b-yf-PWC" secondAttribute="top" constant="20" id="rmi-yA-6Tf"/>
+                            <constraint firstItem="fJZ-ps-BeF" firstAttribute="top" secondItem="gRe-hj-rnO" secondAttribute="bottom" constant="8" id="sdn-8P-KQm"/>
+                            <constraint firstItem="gRe-hj-rnO" firstAttribute="top" secondItem="GCu-Gs-YX8" secondAttribute="bottom" constant="8" id="uvR-nb-zgf"/>
+                            <constraint firstItem="03b-yf-PWC" firstAttribute="bottom" secondItem="fJZ-ps-BeF" secondAttribute="bottom" constant="36" id="wRQ-Jf-Vw0"/>
+                            <constraint firstItem="ZPv-6E-Ocz" firstAttribute="trailing" secondItem="517-aZ-Jjz" secondAttribute="trailing" id="xIq-hV-6Ew"/>
+                            <constraint firstItem="517-aZ-Jjz" firstAttribute="leading" secondItem="03b-yf-PWC" secondAttribute="leading" constant="152" id="xgm-hi-IlU"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="03b-yf-PWC"/>
                     </view>
                     <navigationItem key="navigationItem" id="SRd-WX-gVG"/>
                     <connections>
+                        <outlet property="gameIDLabel" destination="517-aZ-Jjz" id="NPH-hV-un9"/>
+                        <outlet property="hostGameButton" destination="jQM-7T-zTi" id="vaD-O3-xhW"/>
+                        <outlet property="joinGameButton" destination="GCu-Gs-YX8" id="vrA-np-Pkn"/>
                         <outlet property="notificationLabel" destination="ZPv-6E-Ocz" id="NzW-rj-IK4"/>
+                        <outlet property="playerLabel" destination="IxF-JM-nEj" id="flP-oD-bg2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K8F-9G-Hds" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1277.8110944527737" y="920.79999999999995"/>
+            <point key="canvasLocation" x="1340.7796101949027" y="925.60000000000002"/>
         </scene>
         <!--Player Session-->
         <scene sceneID="5Gr-zm-Yk7">
