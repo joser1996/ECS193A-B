@@ -14,7 +14,7 @@ class OnlineMultiplayerController: UIViewController {
     let urlSession: URLSession = URLSession(configuration: URLSessionConfiguration.default)
 
     let server: String = "http://server162.site:59435"
-    var gameID: Int = 0
+    var gameID: Int = 1
     var didConnect: Bool = false
     var playersInLobby: [String] = ["", "", "", ""]
     var timer = Timer()
