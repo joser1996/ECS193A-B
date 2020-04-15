@@ -540,9 +540,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="SRd-WX-gVG"/>
                     <connections>
+                        <outlet property="gameIDButton" destination="fJZ-ps-BeF" id="sRl-Jc-Pk6"/>
                         <outlet property="gameIDLabel" destination="517-aZ-Jjz" id="NPH-hV-un9"/>
                         <outlet property="hostGameButton" destination="jQM-7T-zTi" id="vaD-O3-xhW"/>
                         <outlet property="joinGameButton" destination="GCu-Gs-YX8" id="vrA-np-Pkn"/>
+                        <outlet property="nameButton" destination="gRe-hj-rnO" id="DrD-cL-V16"/>
                         <outlet property="notificationLabel" destination="ZPv-6E-Ocz" id="NzW-rj-IK4"/>
                         <outlet property="playerLabel" destination="IxF-JM-nEj" id="flP-oD-bg2"/>
                     </connections>

@@ -15,6 +15,8 @@ class OnlineMultiplayerController: UIViewController {
     @IBOutlet weak var playerLabel: UILabel!
     @IBOutlet weak var hostGameButton: UIButton!
     @IBOutlet weak var joinGameButton: UIButton!
+    @IBOutlet weak var gameIDButton: UIButton!
+    @IBOutlet weak var nameButton: UIButton!
     
     
     
@@ -33,6 +35,9 @@ class OnlineMultiplayerController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.notificationLabel.isHidden = true
+        self.hostGameButton.isEnabled = false
+        self.joinGameButton.isEnabled = false
+        self.gameIDButton.isEnabled = false
     }
     
     @IBAction func enterNameAction(_ sender: Any) {
@@ -48,6 +53,11 @@ class OnlineMultiplayerController: UIViewController {
             self.playerLabel.text = "Players: " + name
             self.nameEntered = true
             self.playerName = name
+            
+            self.hostGameButton.isEnabled = true
+            self.joinGameButton.isEnabled = true
+            self.gameIDButton.isEnabled = true
+            self.nameButton.isEnabled = false
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) {(_) in }
@@ -127,6 +137,7 @@ class OnlineMultiplayerController: UIViewController {
                     self.gameIDLabel.text = "GameID is \(self.gameID!)"
                     self.hostGameButton.isEnabled = false
                     self.joinGameButton.isEnabled = false
+                    self.gameIDButton.isEnabled = false
                     self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.checkForUpdate), userInfo: nil, repeats: true)
                 }
 
@@ -148,7 +159,7 @@ class OnlineMultiplayerController: UIViewController {
             return
         }
         
-        let endPoint = "/join/" + String(gameID) + name
+        let endPoint = "/join/" + String(gameID) + "/" + name
         let urlString = server + endPoint
         guard let url = URL(string: urlString) else {return}
         
@@ -177,6 +188,7 @@ class OnlineMultiplayerController: UIViewController {
                 if self.didConnect {
                     self.joinGameButton.isEnabled = false
                     self.hostGameButton.isEnabled = false
+                    self.gameIDButton.isEnabled = false
                     self.notificationLabel.text = "Connected to server!"
                     self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.checkForUpdate), userInfo: nil, repeats: true)
                 }
