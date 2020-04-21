@@ -10,13 +10,11 @@
 		9302697823FB812B00116608 /* BasePlacementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302697723FB812B00116608 /* BasePlacementController.swift */; };
 		93369F1A244261C9001935E6 /* OnlineMultiplayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */; };
 		936DCE6724351BA7002FD853 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936DCE6624351BA7002FD853 /* AVFoundation.framework */; };
-		936DCE6A24351F93002FD853 /* wind.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 936DCE6924351F93002FD853 /* wind.mp3 */; };
 		939BE830240ACB2100B1F458 /* PlayerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939BE82F240ACB2100B1F458 /* PlayerSession.swift */; };
 		939BE832240AFECF00B1F458 /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939BE831240AFECF00B1F458 /* PlayerCell.swift */; };
 		939BE834240AFF8100B1F458 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939BE833240AFF8100B1F458 /* Player.swift */; };
 		93AD7E1F2432B8B300E3A588 /* LeaderBoardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AD7E1D2432B8B300E3A588 /* LeaderBoardController.swift */; };
 		93AD7E202432B8B300E3A588 /* LeaderBoardViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AD7E1E2432B8B300E3A588 /* LeaderBoardViewCell.swift */; };
-		93AD7E252432F78A00E3A588 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93AD7E242432F78A00E3A588 /* StoreKit.framework */; };
 		93C74FA623D91CFE003BF585 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C74FA523D91CFE003BF585 /* AppDelegate.swift */; };
 		93C74FA823D91CFE003BF585 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C74FA723D91CFE003BF585 /* SceneDelegate.swift */; };
 		93C74FAA23D91CFE003BF585 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C74FA923D91CFE003BF585 /* GameViewController.swift */; };
@@ -34,6 +32,8 @@
 		E074C2E7240E0AC80049D7BE /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E074C2E6240E0AC80049D7BE /* PauseViewController.swift */; };
 		E09688D923F7E750006F9CBF /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09688D823F7E750006F9CBF /* FirstViewController.swift */; };
 		E09688DB23F7E77A006F9CBF /* NewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09688DA23F7E77A006F9CBF /* NewViewController.swift */; };
+		E0CE014B244EF950001A3C77 /* wind.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E0CE014A244EF94F001A3C77 /* wind.mp3 */; };
+		E0CE014D244EF982001A3C77 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = E0CE014C244EF982001A3C77 /* art.scnassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,13 +57,11 @@
 		9302697723FB812B00116608 /* BasePlacementController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePlacementController.swift; sourceTree = "<group>"; };
 		93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineMultiplayerController.swift; sourceTree = "<group>"; };
 		936DCE6624351BA7002FD853 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		936DCE6924351F93002FD853 /* wind.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = wind.mp3; path = ../../../../../wind.mp3; sourceTree = "<group>"; };
 		939BE82F240ACB2100B1F458 /* PlayerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSession.swift; sourceTree = "<group>"; };
 		939BE831240AFECF00B1F458 /* PlayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
 		939BE833240AFF8100B1F458 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		93AD7E1D2432B8B300E3A588 /* LeaderBoardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaderBoardController.swift; sourceTree = "<group>"; };
 		93AD7E1E2432B8B300E3A588 /* LeaderBoardViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaderBoardViewCell.swift; sourceTree = "<group>"; };
-		93AD7E242432F78A00E3A588 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		93C74FA223D91CFE003BF585 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C74FA523D91CFE003BF585 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93C74FA723D91CFE003BF585 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -90,6 +88,8 @@
 		E074C2E6240E0AC80049D7BE /* PauseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseViewController.swift; sourceTree = "<group>"; };
 		E09688D823F7E750006F9CBF /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		E09688DA23F7E77A006F9CBF /* NewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewViewController.swift; sourceTree = "<group>"; };
+		E0CE014A244EF94F001A3C77 /* wind.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wind.mp3; sourceTree = "<group>"; };
+		E0CE014C244EF982001A3C77 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +98,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				936DCE6724351BA7002FD853 /* AVFoundation.framework in Frameworks */,
-				93AD7E252432F78A00E3A588 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,7 +121,7 @@
 		936DCE6824351BD2002FD853 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				936DCE6924351F93002FD853 /* wind.mp3 */,
+				E0CE014A244EF94F001A3C77 /* wind.mp3 */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -131,7 +130,6 @@
 			isa = PBXGroup;
 			children = (
 				936DCE6624351BA7002FD853 /* AVFoundation.framework */,
-				93AD7E242432F78A00E3A588 /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -186,6 +184,7 @@
 				93C74FB323D91D01003BF585 /* Info.plist */,
 				939BE831240AFECF00B1F458 /* PlayerCell.swift */,
 				939BE833240AFF8100B1F458 /* Player.swift */,
+				E0CE014C244EF982001A3C77 /* art.scnassets */,
 				E0591F6E2432D71500DBD38E /* BLOODY.TTF */,
 			);
 			path = TestApp;
@@ -322,7 +321,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				93C74FB223D91D01003BF585 /* LaunchScreen.storyboard in Resources */,
-				936DCE6A24351F93002FD853 /* wind.mp3 in Resources */,
+				E0CE014D244EF982001A3C77 /* art.scnassets in Resources */,
+				E0CE014B244EF950001A3C77 /* wind.mp3 in Resources */,
 				93C74FAF23D91D01003BF585 /* Assets.xcassets in Resources */,
 				93C74FAD23D91CFE003BF585 /* Main.storyboard in Resources */,
 				E0591F6F2432D71500DBD38E /* BLOODY.TTF in Resources */,
@@ -543,13 +543,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = L227T5HHPC;
+				DEVELOPMENT_TEAM = 3BM743GJUH;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior1.NTM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -564,13 +564,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = L227T5HHPC;
+				DEVELOPMENT_TEAM = 3BM743GJUH;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior1.NTM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
