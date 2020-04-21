@@ -189,12 +189,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         //navigationController?.pushViewController(viewController, animated: true)
     }
     
-    @IBAction func goToScanView(_ sender: Any) {
-        sceneViewGame.session.pause()
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "ScanViewController") as! ScanViewController
-        self.navigationController!.pushViewController(vc, animated: true)
-    }
+    @IBAction func exitInventoryToGame(unwindSegue: UIStoryboardSegue) {}
     
     //MARK: - AR Session Delegate
     //Inform View of changes in quality of device position tracking

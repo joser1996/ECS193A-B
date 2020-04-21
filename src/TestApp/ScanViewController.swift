@@ -19,8 +19,24 @@ class ScanViewController: UIViewController, UINavigationControllerDelegate, UIIm
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var classificationLabel: UILabel!
     
+    @IBOutlet weak var addItemButton: UIButton!
+    
+    var item: String! = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        classificationLabel.text = nil
+        
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+//            presentPhotoPicker(sourceType: .photoLibrary)
+            // Label: unable to scan
+            return
+        }
+        
+        addItemButton.isEnabled = false
+        
+        presentPhotoPicker(sourceType: .camera)
     }
      
      init(delegate: ScanViewControllerDelegate) {
@@ -31,33 +47,6 @@ class ScanViewController: UIViewController, UINavigationControllerDelegate, UIIm
      required init?(coder aDecoder: NSCoder) {
          super.init(coder: aDecoder)
      }
-    
-    @IBAction func returnToGame(_ sender: Any) {
-        delegate?.returnToGame()
-        self.navigationController!.popViewController(animated: true)
-    }
-    
-    @IBAction func takePhoto(_ sender: Any) {
-    // Show options for the source picker only if the camera is available.
-        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-            presentPhotoPicker(sourceType: .photoLibrary)
-            return
-        }
-        
-        let photoSourcePicker = UIAlertController()
-        let takePhoto = UIAlertAction(title: "Take Photo", style: .default) { [unowned self] _ in
-            self.presentPhotoPicker(sourceType: .camera)
-        }
-        let choosePhoto = UIAlertAction(title: "Choose Photo", style: .default) { [unowned self] _ in
-            self.presentPhotoPicker(sourceType: .photoLibrary)
-        }
-        
-        photoSourcePicker.addAction(takePhoto)
-        photoSourcePicker.addAction(choosePhoto)
-        photoSourcePicker.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(photoSourcePicker, animated: true)
-    }
     
     func presentPhotoPicker(sourceType: UIImagePickerController.SourceType) {
         let picker = UIImagePickerController()
@@ -129,10 +118,12 @@ class ScanViewController: UIViewController, UINavigationControllerDelegate, UIIm
             if classifications.isEmpty {
                 self.classificationLabel.text = "Nothing recognized."
             } else if classifications[0].confidence > 0.7 {
-                // Display top classifications ranked by confidence in the UI.
+                // Display top classifications ranked by confidence in the UI
                 let possibleItems = classifications[0].identifier.split(separator: ",", maxSplits: 2)
                 let description = String(format: "Item found: %@", String(possibleItems[0]))
                 self.classificationLabel.text = description
+                self.item = description
+                self.addItemButton.isEnabled = true
             }
             else {
                 self.classificationLabel.text = "Could not detect item."
