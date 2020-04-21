@@ -84,7 +84,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if let name = anchor.name, name.hasPrefix("cube") {
             anchorPoint = anchor
-            baseNode = loadCube()
+            baseNode = loadBase()
             node.addChildNode(baseNode)
         }
     }
@@ -168,6 +168,13 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         return boxNode
     }
     
+    private func loadBase() -> SCNNode {
+        let sceneURL = Bundle.main.url(forResource: "base copy", withExtension: "scn", subdirectory: "art.scnassets")!
+        let referenceNode = SCNReferenceNode(url: sceneURL)!
+        referenceNode.load()
+        referenceNode.name = "boxNode"
+        return referenceNode
+    }
     // MARK: - Session Observer
     func sessionWasInterrupted(_ session: ARSession) {
         print("Sessin was interrupted")
