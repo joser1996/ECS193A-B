@@ -122,7 +122,7 @@ class ScanViewController: UIViewController, UINavigationControllerDelegate, UIIm
                 let possibleItems = classifications[0].identifier.split(separator: ",", maxSplits: 2)
                 let description = String(format: "Item found: %@", String(possibleItems[0]))
                 self.classificationLabel.text = description
-                self.item = description
+                self.item = String(possibleItems[0])
                 self.addItemButton.isEnabled = true
             }
             else {

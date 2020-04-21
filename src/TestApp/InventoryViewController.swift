@@ -13,12 +13,15 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
     @IBOutlet weak var collectionView: UICollectionView!
     
     let reuseIdentifier = "CellIdentifier"
-    
+    var items: [String] = []
     var numItems = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        //collectionView.register(InventoryViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
     override func didReceiveMemoryWarning() {
@@ -37,7 +40,7 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
     func collectionView(_ collectionView: UICollectionView,
            layout collectionViewLayout: UICollectionViewLayout,
            sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 100)
+        return CGSize(width: 150, height: 150)
     }
 //     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat
 //     {
@@ -53,17 +56,16 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
 //     }
      
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-         
          return numItems
      }
      
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as UICollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! InventoryViewCell
     
         cell.backgroundColor = self.randomColor()
-        let label = UILabel()
-        label.text = "Item"
-        cell.contentView.addSubview(label)
+        
+        let index = indexPath[0] + indexPath[1]
+        cell.label.text = items[index]
         
         print(indexPath)
         
@@ -83,6 +85,7 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
             numItems += 1
             print("Item saved, now there are " + String(numItems) + " items.")
             print("Added " + sourceVC.item)
+            items.append(sourceVC.item)
             collectionView.reloadData()
         }
     }
