@@ -20,6 +20,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var gameState: GameState!
     var baseNode: SCNNode!
     var anchorPoint: ARAnchor!
+    
+    var taskTimer = Timer()
+    
     @IBOutlet weak var confirmBaseButton: UIButton!
     
     
@@ -166,12 +169,24 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     
     func waitForGame() {
         //change state
+        print("waitForGame")
         self.gameState = GameState.WaitingForGame
 
         //set up task that will monitor state from server
+        
+        DispatchQueue.main.async {
+            self.taskTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkGameState), userInfo: nil, repeats: true)
+        }
+
+    }
+
+        
+    @objc func checkGameState() {
+        print("Update")
         let endPoint = "/game-state-check/"
-        guard  let gameID = self.gameID else {return}
-        let urlString = server + endPoint + String(gameID)
+        guard let gameID = self.gameID else {return}
+        
+        let urlString = self.server + endPoint + String(gameID)
         guard let url = URL(string: urlString) else {return}
         
         let checkStateTask = self.urlSession.dataTask(with: url) {
@@ -184,13 +199,41 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             
             do {
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
-                print(json)
+                print("Game State JSON: \(json)")
+                guard let dict = json as? [String: Any] else {return}
+                guard let state = dict["gameState"] as? String else {return}
+                
+                print("STATE: \(state)")
+                print("STATE: self \(self.gameState)")
+                if self.gameState == GameState.WaitingForGame {
+                    print("STATE: in if")
+                    if state == "game"{
+                        self.taskTimer.invalidate()
+                        self.mainGameState()
+                    }
+                }
+                
+                
             } catch {
                 print("JSON Error: \(error.localizedDescription)")
             }
             
         }
+        
         checkStateTask.resume()
+        
+    }
+    
+    
+    func mainGameState(){
+        print("In Main Game")
+        //listen for zombie wave
+        
+        //send response that wave was recieved
+        
+        //waiting for start signal
+        
+        //start game
     }
     
     
@@ -207,23 +250,23 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     
     
     
-    //MARK: AR Session Delegate
-    func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        
-        switch frame.worldMappingStatus {
-        case .notAvailable, .limited:
-            print("Mapping stateus: NA or Limited")
-        case .extending:
-            print("Extending map")
-            
-        case .mapped:
-            print("Mapped state")
-            
-        @unknown default:
-            print("Unkown world Mapping State")
-        }
-        
-    }
+//    //MARK: AR Session Delegate
+//    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+//
+//        switch frame.worldMappingStatus {
+//        case .notAvailable, .limited:
+//            print("Mapping stateus: NA or Limited")
+//        case .extending:
+//            print("Extending map")
+//
+//        case .mapped:
+//            print("Mapped state")
+//
+//        @unknown default:
+//            print("Unkown world Mapping State")
+//        }
+//
+//    }
     
     func sessionWasInterrupted(_ session: ARSession) {
         print("Session was interrupted")

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9302697823FB812B00116608 /* BasePlacementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302697723FB812B00116608 /* BasePlacementController.swift */; };
 		93369F1A244261C9001935E6 /* OnlineMultiplayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */; };
+		9342F3892453E997008AA9DC /* wind.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9342F3882453E997008AA9DC /* wind.mp3 */; };
 		936DCE6724351BA7002FD853 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936DCE6624351BA7002FD853 /* AVFoundation.framework */; };
 		939BE830240ACB2100B1F458 /* PlayerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939BE82F240ACB2100B1F458 /* PlayerSession.swift */; };
 		939BE832240AFECF00B1F458 /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939BE831240AFECF00B1F458 /* PlayerCell.swift */; };
@@ -57,6 +58,7 @@
 /* Begin PBXFileReference section */
 		9302697723FB812B00116608 /* BasePlacementController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePlacementController.swift; sourceTree = "<group>"; };
 		93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineMultiplayerController.swift; sourceTree = "<group>"; };
+		9342F3882453E997008AA9DC /* wind.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wind.mp3; sourceTree = "<group>"; };
 		936DCE6624351BA7002FD853 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		939BE82F240ACB2100B1F458 /* PlayerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSession.swift; sourceTree = "<group>"; };
 		939BE831240AFECF00B1F458 /* PlayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 		936DCE6824351BD2002FD853 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				9342F3882453E997008AA9DC /* wind.mp3 */,
 				E0CE014A244EF94F001A3C77 /* wind.mp3 */,
 			);
 			path = Sounds;
@@ -328,6 +331,7 @@
 				E0CE014B244EF950001A3C77 /* wind.mp3 in Resources */,
 				93C74FAF23D91D01003BF585 /* Assets.xcassets in Resources */,
 				93C74FAD23D91CFE003BF585 /* Main.storyboard in Resources */,
+				9342F3892453E997008AA9DC /* wind.mp3 in Resources */,
 				E0591F6F2432D71500DBD38E /* BLOODY.TTF in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -547,13 +551,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 3BM743GJUH;
+				DEVELOPMENT_TEAM = L227T5HHPC;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior1.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -568,13 +572,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 3BM743GJUH;
+				DEVELOPMENT_TEAM = L227T5HHPC;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior1.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
