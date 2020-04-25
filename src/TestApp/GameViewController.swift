@@ -52,7 +52,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         let angle = Float.random(in: 0 ..< 360)
         let distance = Float.random(in: 1.5 ..< 2)
         let position = (x: distance * cos(angle * Float.pi / 180), y: -0.4, z: distance * sin(angle * Float.pi / 180))
-        let node = loadCube(position.x, -0.4, position.z, true, paramHealth)
+        let node = loadZombie(position.x, -0.4, position.z, true, paramHealth)
         let name = generateZombieName()
         node.name = name
         let zombie = Zombie(name: name, health: paramHealth, node: node)
@@ -79,6 +79,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             var zombieCount = 0
             var timerOne = 1
             var sleep = 7
+            
+            _ = loadBase()
             
             self.zombieTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                 if zombieCount == 0 && sleep != 0 {
@@ -370,7 +372,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     // MARK: - SCNView Delegates
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if let name = anchor.name, name.hasPrefix("cube") {
-            node.addChildNode(loadCube())
+            node.addChildNode(loadBase())
         }
     }
     
@@ -432,27 +434,37 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             print("can't zombie data received from \(peer)")
         }
     }
-    
+    private func loadBase(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
+        let sceneURL = Bundle.main.url(forResource: "base copy", withExtension: "scn", subdirectory: "art.scnassets")!
+        let referenceNode = SCNReferenceNode(url: sceneURL)!
+        referenceNode.load()
+        referenceNode.name = "boxNode"
+        
+        referenceNode.position = SCNVector3(x,y,z)
+        
+        return referenceNode
+        }
     
     // MARK: - AR session management
-    private func loadCube(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
-        let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
-        let boxNode = SCNNode()
-        boxNode.geometry = box
-        boxNode.name = "baseNode"
+    private func loadZombie(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
+        let sceneURL = Bundle.main.url(forResource: "minecraftupdate2", withExtension: "scn", subdirectory: "art.scnassets")!
+        let referenceNode = SCNReferenceNode(url: sceneURL)!
+        referenceNode.load()
+        referenceNode.name = "boxNode"
+        print("Health: \(health)")
         
         if isZombie {
             if health == 1 {
-                boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+                referenceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
             }
             else if health == 2 {
-                boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                referenceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
             }
             else if health == 3 {
-                boxNode.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                referenceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
             }
             
-            boxNode.name = "boxNode"
+            referenceNode.name = "boxNode"
             
             let basePosition = SCNVector3(
                 previousViewController.anchorPoint.transform.columns.3.x,
@@ -463,7 +475,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             let deletion = SCNAction.removeFromParentNode()
             let zombieSequence = SCNAction.sequence([moveAction, deletion])
             
-            boxNode.runAction(zombieSequence, completionHandler:{
+            referenceNode.runAction(zombieSequence, completionHandler:{
                 self.health -= 1
                 
                 guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(health: self.health), requiringSecureCoding: false)
@@ -479,9 +491,9 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             })
         }
         
-        boxNode.position = SCNVector3(x,y,z)
+        referenceNode.position = SCNVector3(x,y,z)
         
-        return boxNode
+        return referenceNode
     }
     
 }
