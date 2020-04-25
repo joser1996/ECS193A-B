@@ -7,6 +7,12 @@
 //
 
 import UIKit
+enum GameState {
+    case BasePlacing
+    case Initial
+    case WaitingForGame
+}
+
 
 class OnlineMultiplayerController: UIViewController {
 
@@ -17,6 +23,7 @@ class OnlineMultiplayerController: UIViewController {
     @IBOutlet weak var joinGameButton: UIButton!
     @IBOutlet weak var gameIDButton: UIButton!
     @IBOutlet weak var nameButton: UIButton!
+    @IBOutlet weak var startButton: UIButton!
     
     
     
@@ -30,14 +37,19 @@ class OnlineMultiplayerController: UIViewController {
     var nameEntered: Bool = false
     var idEntered: Bool = false
     var playerName: String?
-    
+    var isHost: Bool = false
+    var gameState: GameState = GameState.Initial
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        MusicPlayer.shared.stopBackgroundMusic()
+        
         self.notificationLabel.isHidden = true
         self.hostGameButton.isEnabled = false
         self.joinGameButton.isEnabled = false
         self.gameIDButton.isEnabled = false
+        self.startButton.isHidden = true
+        self.startButton.isEnabled = false
     }
     
     @IBAction func enterNameAction(_ sender: Any) {
@@ -98,7 +110,10 @@ class OnlineMultiplayerController: UIViewController {
         
     }
     
+
+    
     @IBAction func hostGameRequest(_ sender: UIButton) {
+    
         
         if !nameEntered {
             print("No Name was entered")
@@ -138,6 +153,7 @@ class OnlineMultiplayerController: UIViewController {
                     self.hostGameButton.isEnabled = false
                     self.joinGameButton.isEnabled = false
                     self.gameIDButton.isEnabled = false
+                    self.isHost = true
                     self.timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.checkForUpdate), userInfo: nil, repeats: true)
                 }
 
@@ -198,8 +214,74 @@ class OnlineMultiplayerController: UIViewController {
         joinReqTask.resume()
     }
     
+
     
     @objc func checkForUpdate() {
+        playerNameUpdateTask()
+        checkGameState()
+    }
+    
+    func checkGameState() {
+        print("In checkGameState")
+        guard let gameID = self.gameID else {return}
+        
+        let endPoint = "/game-state-check/"
+        guard let url = URL(string: server + endPoint + String(gameID)) else {return}
+        
+        if self.gameState == GameState.BasePlacing {
+            self.startButton.isHidden = false
+            self.startButton.isEnabled = true
+        }
+        
+        let checkGameStateTask = self.urlSession.dataTask(with: url) {
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            guard let data = data else {return}
+            print("Data was recieved")
+            
+            do{
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                print(json)
+                
+                if let dict = json as? [String: Any] {
+                    if let state = dict["gameState"] as? String {
+                        if(state == "bases"){
+                            if self.gameState != GameState.BasePlacing{
+                                self.gameState = GameState.BasePlacing
+                            }
+                        }
+                    }
+                }
+            }catch{
+                print("JSON error: \(error.localizedDescription)")
+            }
+        }
+        checkGameStateTask.resume()
+        
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let gameVC = segue.destination as? OnlineGameViewController {
+            gameVC.players = self.playersInLobby
+            gameVC.gameID = self.gameID
+            gameVC.playerName =  self.playerName
+            print("Invalidate Timer")
+            self.timer.invalidate()
+            if self.isHost {
+                gameVC.isHost = true
+            }
+            gameVC.gameState = self.gameState
+        }
+    }
+    
+
+    
+    func playerNameUpdateTask() {
         guard let gameID = self.gameID else{return}
         let endPoint = "/host-check/" + String(gameID)
         guard let url = URL(string: server + endPoint) else {return}
@@ -247,6 +329,10 @@ class OnlineMultiplayerController: UIViewController {
                 if !self.playersInLobby.isEmpty {
                     let namesList = self.playersInLobby.joined(separator: ", ")
                     self.playerLabel.text = "Players: " + namesList
+                    if self.isHost{
+                        self.startButton.isHidden = false
+                        self.startButton.isEnabled = true
+                    }
                 }
             }
         }
