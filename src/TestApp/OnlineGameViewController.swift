@@ -20,14 +20,36 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var gameState: GameState!
     var baseNode: SCNNode!
     var anchorPoint: ARAnchor!
-    
     var taskTimer = Timer()
+    
+    //game stuff
+    var didSyncCrossHair = false
+    var isSyncing:Bool = false
+
+    var center = CGPoint(x: 0, y: 0)
+    var health = 3
+    var isWithinBase = true
+    var zombies: [String: Zombie] = [:]
+    var zombieIndex: Int = 0
+    var zombieTimer: Timer! = nil
+    var masterScore: Int = 0
+    var recievedZombies: Bool = false
     
     @IBOutlet weak var confirmBaseButton: UIButton!
     
     
     @IBOutlet weak var promptLabel: UILabel!
     @IBOutlet weak var arView: ARSCNView!
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     override func viewDidLoad() {
@@ -92,7 +114,12 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         self.promptLabel.text = text
     }
     
-    
+    func hidePrompt() {
+        self.promptLabel.isHidden = true
+    }
+    func showPrompt() {
+        self.promptLabel.isHidden = false
+    }
     //MARK: Methods
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -131,13 +158,24 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             confirmBaseButton.isEnabled = true
         }
         
-        
+        if isSyncing {
+            let tapLoc = sender.location(in: self.arView)
+            self.center = tapLoc
+            self.isSyncing = false
+            self.didSyncCrossHair = true
+            self.hidePrompt()
+            DispatchQueue.main.async {
+                self.listenForWaveTask()
+            }
+        }
 
     }
     
     @IBAction func confirmBaseLocation(_ sender: UIButton) {
         //No more Base Placing
         self.isPlacingBase = false
+        self.confirmBaseButton.isHidden = true
+        self.confirmBaseButton.isEnabled = false
         guard let gameID = self.gameID else {return}
         guard let name = self.playerName else {return}
         //Send a message to server saying base has been placed
@@ -203,13 +241,14 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 guard let dict = json as? [String: Any] else {return}
                 guard let state = dict["gameState"] as? String else {return}
                 
-                print("STATE: \(state)")
-                print("STATE: self \(self.gameState)")
                 if self.gameState == GameState.WaitingForGame {
                     print("STATE: in if")
                     if state == "game"{
                         self.taskTimer.invalidate()
-                        self.mainGameState()
+                        
+                        DispatchQueue.main.async {
+                           self.syncCrosshair()
+                        }
                     }
                 }
                 
@@ -225,16 +264,59 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     }
     
     
-    func mainGameState(){
+    func mainGamePrep(){
         print("In Main Game")
         //listen for zombie wave
-        
+        self.listenForWaveTask()
+        while(!self.recievedZombies){
+            print("Waiting For Zombies")
+        }
         //send response that wave was recieved
         
         //waiting for start signal
         
         //start game
     }
+    
+    func listenForWaveTask() {
+        guard let gameID = self.gameID else {return}
+        print("In listenForZombieWave")
+        
+        let endPoint = "/request-wave/"
+        let urlString = self.server + endPoint + String(gameID)
+        guard let url = URL(string: urlString) else {return}
+        
+        let waveRequestTask = self.urlSession.dataTask(with: url) {
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            
+            guard let data = data else{return}
+            do{
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                
+                print(json)
+                //want to extract data(wave) and store in global
+            } catch {
+                print("JSON error: \(error.localizedDescription)")
+            }
+            
+            
+            
+            
+            
+        }
+    }
+    
+    func syncCrosshair() {
+        print("Syncing")
+        self.changePrompt(text: "Tap on center!")
+        self.showPrompt()
+        self.isSyncing = true
+    }
+    
     
     
     //MARK: AR SCNView Delegate
