@@ -39,7 +39,6 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         MusicPlayer.shared.stopBackgroundMusic()
         mcService = MultipeerSession(receivedDataHandler: receivedData)
         sceneView.delegate = self
-        //userInstructions.text = "Move camera to map your surroundings\nTap on a flat surface to place your base"
         shareMapButton.isEnabled = false
         connectionLabel.text = "Searching for peers..."
         if isHosting {
@@ -54,7 +53,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
             fatalError("""
                 AR Not supported on device. Implement so that App won't be installed on devices
                 that lack AR support so users don't see this message
-            """) // For details, see https://developer.apple.com/documentation/arkit
+            """)
         }
         
         // Start the view's AR session.
@@ -84,7 +83,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if let name = anchor.name, name.hasPrefix("cube") {
             anchorPoint = anchor
-            baseNode = loadCube()
+            baseNode = loadBase()
             node.addChildNode(baseNode)
         }
     }
@@ -104,14 +103,6 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
             let peerNames = mcService.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
             print("Connected with \(peerNames).")
             
-//        case .notAvailable:
-//            message = "Tracking unavailable."
-//
-//        case .limited(.excessiveMotion):
-//            message = "Tracking limited - Move the device more slowly."
-//
-//        case .limited(.insufficientFeatures):
-//            message = "Tracking limited - Point the device at an area with visible surface detail, or improve lighting conditions."
             
         case .limited(.initializing) where mapProvider != nil,
              .limited(.relocalizing) where mapProvider != nil:
@@ -168,6 +159,13 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         return boxNode
     }
     
+    private func loadBase() -> SCNNode {
+        let sceneURL = Bundle.main.url(forResource: "base copy", withExtension: "scn", subdirectory: "art.scnassets")!
+        let referenceNode = SCNReferenceNode(url: sceneURL)!
+        referenceNode.load()
+        referenceNode.name = "boxNode"
+        return referenceNode
+    }
     // MARK: - Session Observer
     func sessionWasInterrupted(_ session: ARSession) {
         print("Sessin was interrupted")
