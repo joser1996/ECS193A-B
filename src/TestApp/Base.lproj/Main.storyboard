@@ -77,7 +77,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="xmark" catalog="system"/>
                                 <connections>
-                                    <segue destination="uNt-mB-7JB" kind="unwind" unwindAction="exitInventoryToGameWithUnwindSegue:" id="YXU-x8-bfq"/>
+                                    <segue destination="uNt-mB-7JB" kind="unwind" unwindAction="exitAndSaveInventoryWithUnwindSegue:" id="eh8-aO-fsH"/>
                                 </connections>
                             </button>
                         </subviews>
