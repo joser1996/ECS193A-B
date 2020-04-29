@@ -36,6 +36,25 @@ class MusicPlayer {
         player.stop()
     }
     
+    func playZombieDying() {
+        if let path = Bundle.main.path(forResource: "David_Screeching", ofType: "mp3") {
+            let url = URL(fileURLWithPath: path)
+            
+            do{
+                player = try AVAudioPlayer(contentsOf: url)
+                guard let player = player else {return}
+                player.enableRate = true
+                player.rate = 2
+                player.numberOfLoops = 0
+                player.prepareToPlay()
+                player.play()
+            } catch {
+                print("Couldn't play sound")
+                print(error)
+            }
+            
+        }
+    }
     
 }
 
