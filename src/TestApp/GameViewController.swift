@@ -29,6 +29,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var zombieTimer : Timer! = nil
     var masterScore : Int = 0
     
+    var inventoryItems : [String] = []
+    
     @IBOutlet weak var sceneViewGame: ARSCNView!
     @IBOutlet weak var userPrompts: UILabel!
     @IBOutlet weak var GameOver: UILabel!
@@ -508,6 +510,18 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         referenceNode.position = SCNVector3(x,y,z)
         
         return referenceNode
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if let inventoryVC = segue.destination as? InventoryViewController {
+                inventoryVC.items = inventoryItems
+            }
+    }
+    
+    @IBAction func exitAndSaveInventory(unwindSegue: UIStoryboardSegue) {
+        if let sourceVC = unwindSegue.source as? InventoryViewController {
+            inventoryItems = sourceVC.items // store inventory items to load next time inventory opens
+        }
     }
     
 }
