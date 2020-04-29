@@ -357,8 +357,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             
             guard let data = data else {return}
             do{
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                print("JSON from recZombiesTask\(json)")
+                //let json = try JSONSerialization.jsonObject(with: data, options: [])
+                print("JSON from recZombiesTask")
+                print(data)
                 //Not JSON just a string "Success"
             } catch {
                 print("JSON error: \(error.localizedDescription)")
@@ -424,25 +425,29 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     }
     
     //MARK: SpawnZombie Logic
-    func getZombieSeed () -> ZombieSeed! {
+    func getZombieSeedIndex() -> Int {
+        var ret = -1
         print("In getZombieSeed")
-        for var seed in self.zombieWave {
+        for (index, seed) in self.zombieWave.enumerated() {
             if !seed.hasSpawned {
-                seed.hasSpawned = true
-                return seed
+                ret = index
+                return ret
             }
         }
-        return nil
+        return ret
     }
     
     @objc func zombieSpawningTask() {
         print("In zombieSpawningTask")
-        guard let zSeed = self.getZombieSeed() else {
-            print("returned nil")
+        let zSeedIndex = self.getZombieSeedIndex()
+        if(zSeedIndex == -1) {
+            //failed to return value index. Probablly no more seeds available
+            print("NO MORE SEEDS!")
             return
         }
-        let node = loadZombie(seed: zSeed)
-        let name = String(zSeed.id)
+        
+        let node = loadZombie(seedIndex: zSeedIndex)
+        let name = String(self.zombieWave[zSeedIndex].id)
         node.name = name
         let zombie = Zombie(name: node.name!, health: 1, node: node)
         zombies[node.name!] = zombie
@@ -451,7 +456,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         
     }
     
-    private func loadZombie(seed: ZombieSeed) -> SCNNode{
+    private func loadZombie(seedIndex si: Int) -> SCNNode{
         print("in loadZombie")
         let sceneURL = Bundle.main.url(forResource: "minecraftupdate2", withExtension: "scn", subdirectory: "art.scnassets")!
         let referenceNode = SCNReferenceNode(url: sceneURL)!
@@ -478,9 +483,11 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             
             // if health is 0 go to game over state
         })
-        
+        let seed = self.zombieWave[si]
         referenceNode.position = SCNVector3(seed.positionX, seed.positionY, seed.positionZ)
         
+        // mark seed as spawned
+        self.zombieWave[si].hasSpawned = true
         return referenceNode
     }
     
