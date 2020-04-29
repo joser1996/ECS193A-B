@@ -29,6 +29,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var zombieTimer : Timer! = nil
     var masterScore : Int = 0
     
+    var inventoryItems : [String] = []
+    
     @IBOutlet weak var sceneViewGame: ARSCNView!
     @IBOutlet weak var userPrompts: UILabel!
     @IBOutlet weak var GameOver: UILabel!
@@ -291,7 +293,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             let tapLoc = sender.location(in: sceneViewGame)
             center = tapLoc
             didSyncCrosshair = true
-            updatePromptLabel(prompt: "Aim and Tap to shoot cubes!")
+            updatePromptLabel(prompt: "Aim and Tap to shoot zombies!")
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 self.userPrompts.isHidden = true
             }
@@ -327,14 +329,21 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             let node = hitTestResults.first?.node
         
             if let name = node?.name, name != "baseNode" {
-                let hitZombie = zombies[name]
+                guard let parentNode = node?.parent else {
+                    print("No parent node")
+                    return
+                }
+                
+                guard let zIndex = parentNode.name else {return}
+                let hitZombie = zombies[zIndex]
                 guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: hitZombie, action: "damage"), requiringSecureCoding: false)
                       else { fatalError("can't encode zombie") }
                 self.mcService.sendToAllPeers(data)
                 
+                print("Hit zombie")
                 hitZombie?.health? -= 1
                 if hitZombie?.health == 0 {
-                    node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
+                    parentNode.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
                     if isMaster {
                         masterScore += hitZombie?.maxHealth ?? 0
                         guard let data2 = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(score: masterScore), requiringSecureCoding: false)
@@ -355,12 +364,17 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 }
                 else if hitZombie?.health == 1 {
                     Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
-                        node?.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+                        node?.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                        print("should be purple")
                     }
                 }
                 else if hitZombie?.health == 2 {
                     Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
                         node?.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                        node?.geometry?.material(named: "Body")?.diffuse.contents = UIColor.yellow
+                        node?.geometry?.material(named: "Head")?.diffuse.contents = UIColor.yellow
+                        node?.geometry?.material(named: "Material.012")?.diffuse.contents = UIColor.yellow
+                        print("should be yellow")
                     }
                 }
                 else if hitZombie?.health == 3 {
@@ -442,7 +456,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
         referenceNode.name = "boxNode"
-        
         referenceNode.position = SCNVector3(x,y,z)
         
         return referenceNode
@@ -458,14 +471,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         
         if isZombie {
             if health == 1 {
-                referenceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.green
+                referenceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                
             }
             else if health == 2 {
-                referenceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
-            }
-            else if health == 3 {
+
                 referenceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
             }
+
             
             referenceNode.name = "boxNode"
             
@@ -474,6 +487,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 previousViewController.anchorPoint.transform.columns.3.y,
                 previousViewController.anchorPoint.transform.columns.3.z
             )
+            let _: Void = referenceNode.look(at: basePosition, up: SCNVector3(0,1,0), localFront: basePosition)
             let moveAction = SCNAction.move(to: basePosition, duration: 10)
             let deletion = SCNAction.removeFromParentNode()
             let zombieSequence = SCNAction.sequence([moveAction, deletion])
@@ -486,7 +500,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 
                 self.mcService.sendToAllPeers(data)
                 
-                print(self.health)
                 if (self.health == 0) {
                     //print("Game Over\n")
                     print("Score: \(self.masterScore)")
@@ -497,6 +510,18 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         referenceNode.position = SCNVector3(x,y,z)
         
         return referenceNode
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if let inventoryVC = segue.destination as? InventoryViewController {
+                inventoryVC.items = inventoryItems
+            }
+    }
+    
+    @IBAction func exitAndSaveInventory(unwindSegue: UIStoryboardSegue) {
+        if let sourceVC = unwindSegue.source as? InventoryViewController {
+            inventoryItems = sourceVC.items // store inventory items to load next time inventory opens
+        }
     }
     
 }
