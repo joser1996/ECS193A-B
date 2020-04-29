@@ -7,10 +7,12 @@
 //
 
 import UIKit
+
 enum GameState {
     case BasePlacing
     case Initial
     case WaitingForGame
+    case ActiveGame
 }
 
 

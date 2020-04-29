@@ -25,7 +25,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     //game stuff
     var didSyncCrossHair = false
     var isSyncing:Bool = false
-
+    var currentWave:Int = 0
     var center = CGPoint(x: 0, y: 0)
     var health = 3
     var isWithinBase = true
@@ -34,22 +34,12 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var zombieTimer: Timer! = nil
     var masterScore: Int = 0
     var recievedZombies: Bool = false
-    
+    var zombieWave: [ZombieSeed] = []
     @IBOutlet weak var confirmBaseButton: UIButton!
     
     
     @IBOutlet weak var promptLabel: UILabel!
     @IBOutlet weak var arView: ARSCNView!
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     override func viewDidLoad() {
@@ -127,11 +117,11 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     }
     
     
-    private func loadCube() -> SCNNode {
+    private func loadBase() -> SCNNode {
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         let boxNode = SCNNode()
         boxNode.geometry = box
-        boxNode.name = "boxNode"
+        boxNode.name = "baseNode"
         return boxNode
     }
     
@@ -144,7 +134,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             arView.session.remove(anchor: anchorPoint)
         }
         
-        self.anchorPoint = ARAnchor(name: "cube", transform: hitTestResult.worldTransform)
+        self.anchorPoint = ARAnchor(name: "baseNode", transform: hitTestResult.worldTransform)
         
         arView.session.add(anchor: self.anchorPoint)
     }
@@ -156,20 +146,78 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             changePrompt(text: "Confirm Base Location")
             confirmBaseButton.isHidden = false
             confirmBaseButton.isEnabled = true
-        }
-        
-        if isSyncing {
+            
+        } else if isSyncing {
             let tapLoc = sender.location(in: self.arView)
             self.center = tapLoc
+            print("Center is: \(self.center)")
             self.isSyncing = false
             self.didSyncCrossHair = true
             self.hidePrompt()
             DispatchQueue.main.async {
                 self.listenForWaveTask()
             }
+        } else if self.gameState == GameState.ActiveGame {
+            self.handleShooting(sender: sender)
         }
 
     }
+    
+    func handleShooting(sender: UITapGestureRecognizer) {
+        guard let frame = self.arView.session.currentFrame else {return}
+        let camMatrix = SCNMatrix4(frame.camera.transform)
+        let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
+        
+        let bullet = SCNSphere(radius: 0.02)
+        bullet.firstMaterial?.diffuse.contents = UIColor.red
+        let bulletNode = SCNNode(geometry: bullet)
+        bulletNode.position = position
+        bulletNode.position.y -= 0.1
+        self.arView.scene.rootNode.addChildNode(bulletNode)
+        
+        let shootTestResults = self.arView.hitTest(center, types: .featurePoint)
+        if !shootTestResults.isEmpty {
+            guard let feature = shootTestResults.first else {return}
+            let targetPosition = SCNVector3(
+                feature.worldTransform.columns.3.x,
+                feature.worldTransform.columns.3.y,
+                feature.worldTransform.columns.3.z
+            )
+            
+            bulletNode.runAction(SCNAction.sequence([SCNAction.move(to: targetPosition, duration: 0.15), SCNAction.removeFromParentNode()]))
+        } else {
+            bulletNode.runAction(SCNAction.removeFromParentNode())
+        }
+        
+        let hitTestResults = self.arView.hitTest(self.center)
+        guard let node = hitTestResults.first?.node else {
+            print("Hit test returned nothing")
+            return
+        }
+        
+        if let n = node.name, n.hasPrefix("baseNode") {
+            print("Detect Zombies")
+        }
+        
+        if let name = node.name, name != "baseNode" {
+            guard let parentNode = node.parent else{
+                print("No parent Node")
+                return
+            }
+            guard let zIndex = parentNode.name else {return}
+            let hitZombie = zombies[zIndex]
+            //assuming health is 1 for now
+            parentNode.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
+            // update score
+            
+            // remove zombie logically
+            self.zombies.removeValue(forKey: zIndex)
+        }
+        
+        
+    }
+    
+    
     
     @IBAction func confirmBaseLocation(_ sender: UIButton) {
         //No more Base Placing
@@ -271,11 +319,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         while(!self.recievedZombies){
             print("Waiting For Zombies")
         }
-        //send response that wave was recieved
-        
-        //waiting for start signal
-        
-        //start game
     }
     
     func listenForWaveTask() {
@@ -299,16 +342,211 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 
                 print(json)
                 //want to extract data(wave) and store in global
+                guard let dict = json as? [String: Any] else {return}
+                print("Dictionary: \(dict)")
+                guard let waveNum = dict["waveNumber"] as? Int else {return}
+                self.currentWave = waveNum
+                print("Current Wave Number: \(self.currentWave)")
+                
+                guard let wave = dict["zombieWave"] as? [Any] else {
+                    fatalError("Failed to get zombie wave!!")
+                }
+                print("Wave: \(wave) of size: \(wave.count)")
+                for i in 0..<wave.count {
+                    guard let seed = wave[i] as? [String: Any] else {
+                        fatalError("Failed to get seed!")
+                    }
+                    guard let angle = seed["angle"] as? Float else {
+                        print("Failed at angle")
+                        return
+                        
+                    }
+                    guard let distance = seed["distance"] as? Double else {
+                        print("fail distance")
+                        return
+                            
+                    }
+                    guard let id = seed["id"] as? Int else {
+                        print("fail id")
+                        return
+                        
+                    }
+                    guard let x = seed["positionX"] as? Double else {
+                        print("fail x")
+                        return
+                        
+                    }
+                    guard let y = seed["positionY"] as? Double else {
+                        fatalError("Fail y")
+                    }
+                    guard let z = seed["positionZ"] as? Double else {
+                        fatalError("Fail x")
+                    }
+
+                    let tempSeed = ZombieSeed(angle: angle, distance: Float(distance), id: id, positionX: Float(x), positionY: Float(y), positionZ: Float(z), hasSpawned: false)
+                    self.zombieWave.append(tempSeed)
+                }
+                print("Final Wave: \(self.zombieWave)")
+                DispatchQueue.main.async {
+                    self.recievedZombieWave()
+                }
+                
             } catch {
                 print("JSON error: \(error.localizedDescription)")
             }
             
+        }
+        waveRequestTask.resume()
+    }
+    
+    func recievedZombieWave() {
+        print("In recieved zombie wave")
+        guard let gameID = self.gameID else {return}
+        let endPoint = "/received-zombie/" + String(gameID)
+        let urlString = server + endPoint
+        guard let url = URL(string: urlString) else {return}
+        
+        let recZombiesTask = self.urlSession.dataTask(with: url) {
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
             
-            
-            
+            guard let data = data else {return}
+            do{
+                //let json = try JSONSerialization.jsonObject(with: data, options: [])
+                print("JSON from recZombiesTask")
+                print(data)
+                //Not JSON just a string "Success"
+            }
+            DispatchQueue.main.async {
+                self.listenForStartTaskHelper()
+            }
             
         }
+        recZombiesTask.resume()
     }
+    
+    func listenForStartTaskHelper() {
+        self.taskTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.listenForStartTask), userInfo: nil, repeats: true)
+    }
+    
+    @objc func listenForStartTask() {
+        let endPoint = "/game-ready/"
+        guard let gameID = self.gameID else {return}
+        let urlString = server + endPoint + String(gameID)
+        print("Game: game-ready")
+        guard let url = URL(string: urlString) else {return}
+        let listenForStartTask = urlSession.dataTask(with: url) {
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            guard let data = data else {return}
+            print("Data: \(data)")
+
+            do{
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                print(json)
+                
+                guard let dict = json as? [String: Any] else {
+                    fatalError("Failed in lisenForTask:convert JSON to Dict")
+                }
+                
+                guard let isReady = dict["isReady"] as? Bool else {
+                    fatalError("Failed in listenForStartTask: extracting isReady")
+                }
+                if isReady {
+                    DispatchQueue.main.async {
+                        self.taskTimer.invalidate()
+                        self.startGameNow()
+                    }
+                }
+            } catch {
+                print("JSON error: \(error.localizedDescription)")
+            }
+        }
+        
+        listenForStartTask.resume()
+    }
+    
+    
+    func startGameNow() {
+        //start zombie spawning task here
+        print("Setting up background task")
+        self.taskTimer = Timer.scheduledTimer(timeInterval:2, target: self, selector: #selector(self.zombieSpawningTask), userInfo: nil, repeats: true)
+        self.gameState = GameState.ActiveGame
+    }
+    
+    //MARK: SpawnZombie Logic
+    func getZombieSeedIndex() -> Int {
+        var ret = -1
+        print("In getZombieSeed")
+        for (index, seed) in self.zombieWave.enumerated() {
+            if !seed.hasSpawned {
+                ret = index
+                return ret
+            }
+        }
+        return ret
+    }
+    
+    @objc func zombieSpawningTask() {
+        print("In zombieSpawningTask")
+        let zSeedIndex = self.getZombieSeedIndex()
+        if(zSeedIndex == -1) {
+            //failed to return value index. Probablly no more seeds available
+            print("NO MORE SEEDS!")
+            return
+        }
+        
+        let node = loadZombie(seedIndex: zSeedIndex)
+        let name = String(self.zombieWave[zSeedIndex].id)
+        node.name = name
+        let zombie = Zombie(name: node.name!, health: 1, node: node)
+        zombies[node.name!] = zombie
+        print("Done spawning zombie")
+        self.arView.scene.rootNode.addChildNode(node)
+        
+    }
+    
+    private func loadZombie(seedIndex si: Int) -> SCNNode{
+        print("in loadZombie")
+        let sceneURL = Bundle.main.url(forResource: "minecraftupdate2", withExtension: "scn", subdirectory: "art.scnassets")!
+        let referenceNode = SCNReferenceNode(url: sceneURL)!
+        referenceNode.load()
+        referenceNode.name = "zombieNode"
+        
+        let basePosition = SCNVector3(
+            self.anchorPoint.transform.columns.3.x,
+            self.anchorPoint.transform.columns.3.y,
+            self.anchorPoint.transform.columns.3.z
+            
+        )
+        
+        //Movement
+        let moveAction = SCNAction.move(to: basePosition, duration: 15)
+        let deletion = SCNAction.removeFromParentNode()
+        let zombieSequence = SCNAction.sequence([moveAction, deletion])
+        
+        referenceNode.runAction(zombieSequence, completionHandler:{
+            //decrease player health
+            
+            // TODO: send update to server to update health
+            print("Base has been hit!!!")
+            
+            // if health is 0 go to game over state
+        })
+        let seed = self.zombieWave[si]
+        referenceNode.position = SCNVector3(seed.positionX, seed.positionY, seed.positionZ)
+        
+        // mark seed as spawned
+        self.zombieWave[si].hasSpawned = true
+        return referenceNode
+    }
+    
     
     func syncCrosshair() {
         print("Syncing")
@@ -322,9 +560,10 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     //MARK: AR SCNView Delegate
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         print("This function was called 1")
-        if let name = anchor.name, name.hasPrefix("cube") {
+        print("Base Anchor Name: \(anchor.name)")
+        if let name = anchor.name, name.hasPrefix("baseNode") {
             self.anchorPoint = anchor
-            self.baseNode = loadCube()
+            self.baseNode = loadBase()
             node.addChildNode(self.baseNode)
 
         }
@@ -390,3 +629,12 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     
 }
 
+struct ZombieSeed {
+    var angle:Float = 0
+    var distance:Float = 0
+    var id:Int = 0;
+    var positionX:Float = 0;
+    var positionY:Float = 0;
+    var positionZ:Float = 0;
+    var hasSpawned:Bool = false
+}
