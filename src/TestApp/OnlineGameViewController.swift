@@ -205,6 +205,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 return
             }
             guard let zIndex = parentNode.name else {return}
+            MusicPlayer.shared.playZombieDying()
             let hitZombie = zombies[zIndex]
             //assuming health is 1 for now
             parentNode.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
@@ -338,6 +339,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             
             guard let data = data else{return}
             do{
+                print("HERE: \(data)")
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
                 
                 print(json)
@@ -478,7 +480,36 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         print("Setting up background task")
         self.taskTimer = Timer.scheduledTimer(timeInterval:2, target: self, selector: #selector(self.zombieSpawningTask), userInfo: nil, repeats: true)
         self.gameState = GameState.ActiveGame
+        
+        
+        //set up task that will send and recives update from server for zombies
+        
     }
+    
+    func updateZombiesTask() {
+        print("In updateZombiesTask")
+        let endPoint = "/update-wave/"
+        guard let gameID = self.gameID else {return}
+        let urlString = server + endPoint + String(gameID)
+        guard let url = URL(string: urlString) else {return}
+        var json: [String: Any] = [:]
+        for seed in self.zombieWave {
+            if seed.isDead {
+                //will put health in here later
+                json[String(seed.id)] = true
+            }
+        }
+        let jsonData = try? JSONSerialization.data(withJSONObject: json)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = jsonData
+        
+        //let updateZombiesTask = urlSession.dataTask(with: request)
+        
+        
+        
+    }
+    
     
     //MARK: SpawnZombie Logic
     func getZombieSeedIndex() -> Int {
@@ -633,8 +664,9 @@ struct ZombieSeed {
     var angle:Float = 0
     var distance:Float = 0
     var id:Int = 0;
-    var positionX:Float = 0;
-    var positionY:Float = 0;
-    var positionZ:Float = 0;
+    var positionX:Float = 0
+    var positionY:Float = 0
+    var positionZ:Float = 0
     var hasSpawned:Bool = false
+    var isDead:Bool = false
 }
