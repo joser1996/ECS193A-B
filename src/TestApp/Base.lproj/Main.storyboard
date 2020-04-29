@@ -18,7 +18,7 @@
             <objects>
                 <viewController title="Inventory View Controller" id="2AA-4x-gBd" customClass="InventoryViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Mjt-dG-ys6">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="k5U-Dt-D1B">
@@ -39,6 +39,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Clk-s5-U3g">
+                                                    <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DSl-QS-zVU">
                                                     <rect key="frame" x="8" y="47" width="109" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -50,6 +54,7 @@
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="125" height="125"/>
                                         <connections>
+                                            <outlet property="imageView" destination="Clk-s5-U3g" id="pyK-P7-Nm9"/>
                                             <outlet property="label" destination="DSl-QS-zVU" id="44W-mY-dIw"/>
                                         </connections>
                                     </collectionViewCell>
@@ -87,7 +92,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zg5-cB-Xac" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="uNt-mB-7JB" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2051.4242878560722" y="-863.20000000000005"/>
+            <point key="canvasLocation" x="2051.0869565217395" y="-863.768115942029"/>
         </scene>
         <!--Game View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -188,7 +193,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game Over" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JBN-ce-ZWN">
-                                <rect key="frame" x="164.33333333333334" y="68" width="407.66666666666663" height="96"/>
+                                <rect key="frame" x="173.33333333333334" y="68" width="389.66666666666663" height="96"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="96" id="EQk-C4-e8L"/>
                                 </constraints>
@@ -405,7 +410,7 @@
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="None To Mourn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5c-AI-BHU">
-                                <rect key="frame" x="230.33333333333334" y="37" width="275.66666666666663" height="81"/>
+                                <rect key="frame" x="235.33333333333334" y="37" width="265.33333333333326" height="81"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="81" id="ofu-qG-yPk"/>
                                 </constraints>
@@ -414,7 +419,7 @@
                                 <color key="highlightedColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                             <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w6C-lv-xPS">
-                                <rect key="frame" x="227" y="145.66666666666666" width="282" height="59"/>
+                                <rect key="frame" x="219.66666666666663" y="147" width="297" height="56"/>
                                 <fontDescription key="fontDescription" name="Bloody" family="Bloody" pointSize="40"/>
                                 <state key="normal" title="Play Game">
                                     <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -424,7 +429,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irA-BI-ZgP">
-                                <rect key="frame" x="282" y="309" width="172" height="47"/>
+                                <rect key="frame" x="284.66666666666669" y="311" width="167" height="45"/>
                                 <fontDescription key="fontDescription" name="Bloody" family="Bloody" pointSize="30"/>
                                 <state key="normal" title="Leaderboard">
                                     <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -434,7 +439,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAA-yo-egg">
-                                <rect key="frame" x="227" y="233" width="282" height="51"/>
+                                <rect key="frame" x="219.66666666666663" y="235" width="297" height="51"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="51" id="rcW-Ct-meZ"/>
                                 </constraints>
@@ -866,7 +871,7 @@
             <objects>
                 <viewController restorationIdentifier="ScanViewController" storyboardIdentifier="ScanViewController" id="8SR-Cj-CJd" customClass="ScanViewController" customModule="TestApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0b6-I7-vvx">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N2E-A3-u3H">
