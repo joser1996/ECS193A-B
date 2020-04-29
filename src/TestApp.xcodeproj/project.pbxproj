@@ -44,7 +44,6 @@
 		E0CE015A245A3203001A3C77 /* David_Screeching.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E0CE0153245A3202001A3C77 /* David_Screeching.mp3 */; };
 		E0CE015B245A3203001A3C77 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CE0154245A3202001A3C77 /* InventoryViewController.swift */; };
 		E0CE015D245A335D001A3C77 /* 3D Models in Resources */ = {isa = PBXBuildFile; fileRef = E0CE015C245A335D001A3C77 /* 3D Models */; };
-		E0CE015F245A3390001A3C77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0CE015E245A3390001A3C77 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,7 +110,6 @@
 		E0CE0153245A3202001A3C77 /* David_Screeching.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = David_Screeching.mp3; sourceTree = "<group>"; };
 		E0CE0154245A3202001A3C77 /* InventoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		E0CE015C245A335D001A3C77 /* 3D Models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "3D Models"; sourceTree = "<group>"; };
-		E0CE015E245A3390001A3C77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,7 +184,6 @@
 				9302697723FB812B00116608 /* BasePlacementController.swift */,
 				93AD7E1E2432B8B300E3A588 /* LeaderBoardViewCell.swift */,
 				BFC8916623F8C24D0061699D /* MCHandler.swift */,
-				E0CE015E245A3390001A3C77 /* Assets.xcassets */,
 				E0CE015C245A335D001A3C77 /* 3D Models */,
 				93AD7E1D2432B8B300E3A588 /* LeaderBoardController.swift */,
 				93C74FA523D91CFE003BF585 /* AppDelegate.swift */,
@@ -357,7 +354,6 @@
 				E0CE014D244EF982001A3C77 /* art.scnassets in Resources */,
 				E0CE015D245A335D001A3C77 /* 3D Models in Resources */,
 				E0CE014B244EF950001A3C77 /* wind.mp3 in Resources */,
-				E0CE015F245A3390001A3C77 /* Assets.xcassets in Resources */,
 				93C74FAF23D91D01003BF585 /* Assets.xcassets in Resources */,
 				E0CE015A245A3203001A3C77 /* David_Screeching.mp3 in Resources */,
 				93C74FAD23D91CFE003BF585 /* Main.storyboard in Resources */,
