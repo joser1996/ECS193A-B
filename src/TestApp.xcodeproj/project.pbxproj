@@ -164,11 +164,11 @@
 			isa = PBXGroup;
 			children = (
 				936DCE6824351BD2002FD853 /* Sounds */,
-				93AD7E1D2432B8B300E3A588 /* LeaderBoardController.swift */,
-				93AD7E1E2432B8B300E3A588 /* LeaderBoardViewCell.swift */,
 				E0591F702432D7F100DBD38E /* fonts */,
 				9302697723FB812B00116608 /* BasePlacementController.swift */,
+				93AD7E1E2432B8B300E3A588 /* LeaderBoardViewCell.swift */,
 				BFC8916623F8C24D0061699D /* MCHandler.swift */,
+				93AD7E1D2432B8B300E3A588 /* LeaderBoardController.swift */,
 				93C74FA523D91CFE003BF585 /* AppDelegate.swift */,
 				93C74FA723D91CFE003BF585 /* SceneDelegate.swift */,
 				93C74FA923D91CFE003BF585 /* GameViewController.swift */,
@@ -551,13 +551,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = L227T5HHPC;
+				DEVELOPMENT_TEAM = 3BM743GJUH;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seniors.NTM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -572,13 +572,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = L227T5HHPC;
+				DEVELOPMENT_TEAM = 3BM743GJUH;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.seniors.NTM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
