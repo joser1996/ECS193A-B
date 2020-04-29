@@ -343,7 +343,9 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 print("Hit zombie")
                 hitZombie?.health? -= 1
                 if hitZombie?.health == 0 {
+                    MusicPlayer.shared.playZombieDying()
                     parentNode.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
+                    
                     if isMaster {
                         masterScore += hitZombie?.maxHealth ?? 0
                         guard let data2 = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(score: masterScore), requiringSecureCoding: false)

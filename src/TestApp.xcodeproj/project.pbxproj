@@ -48,7 +48,6 @@
 		E0CE0157245A3203001A3C77 /* Resnet50.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = E0CE0150245A3202001A3C77 /* Resnet50.mlmodel */; };
 		E0CE0158245A3203001A3C77 /* SqueezeNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = E0CE0151245A3202001A3C77 /* SqueezeNet.mlmodel */; };
 		E0CE0159245A3203001A3C77 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CE0152245A3202001A3C77 /* ScanViewController.swift */; };
-		E0CE015A245A3203001A3C77 /* David_Screeching.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E0CE0153245A3202001A3C77 /* David_Screeching.mp3 */; };
 		E0CE015B245A3203001A3C77 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CE0154245A3202001A3C77 /* InventoryViewController.swift */; };
 		E0CE015D245A335D001A3C77 /* 3D Models in Resources */ = {isa = PBXBuildFile; fileRef = E0CE015C245A335D001A3C77 /* 3D Models */; };
 /* End PBXBuildFile section */
@@ -610,13 +609,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 3BM743GJUH;
+				DEVELOPMENT_TEAM = L227T5HHPC;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.seniors.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -631,13 +630,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 3BM743GJUH;
+				DEVELOPMENT_TEAM = L227T5HHPC;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.seniors.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
