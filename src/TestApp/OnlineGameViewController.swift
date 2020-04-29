@@ -117,11 +117,11 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     }
     
     
-    private func loadCube() -> SCNNode {
+    private func loadBase() -> SCNNode {
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         let boxNode = SCNNode()
         boxNode.geometry = box
-        boxNode.name = "boxNode"
+        boxNode.name = "baseNode"
         return boxNode
     }
     
@@ -134,7 +134,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             arView.session.remove(anchor: anchorPoint)
         }
         
-        self.anchorPoint = ARAnchor(name: "cube", transform: hitTestResult.worldTransform)
+        self.anchorPoint = ARAnchor(name: "baseNode", transform: hitTestResult.worldTransform)
         
         arView.session.add(anchor: self.anchorPoint)
     }
@@ -146,20 +146,78 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             changePrompt(text: "Confirm Base Location")
             confirmBaseButton.isHidden = false
             confirmBaseButton.isEnabled = true
-        }
-        
-        if isSyncing {
+            
+        } else if isSyncing {
             let tapLoc = sender.location(in: self.arView)
             self.center = tapLoc
+            print("Center is: \(self.center)")
             self.isSyncing = false
             self.didSyncCrossHair = true
             self.hidePrompt()
             DispatchQueue.main.async {
                 self.listenForWaveTask()
             }
+        } else if self.gameState == GameState.ActiveGame {
+            self.handleShooting(sender: sender)
         }
 
     }
+    
+    func handleShooting(sender: UITapGestureRecognizer) {
+        guard let frame = self.arView.session.currentFrame else {return}
+        let camMatrix = SCNMatrix4(frame.camera.transform)
+        let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
+        
+        let bullet = SCNSphere(radius: 0.02)
+        bullet.firstMaterial?.diffuse.contents = UIColor.red
+        let bulletNode = SCNNode(geometry: bullet)
+        bulletNode.position = position
+        bulletNode.position.y -= 0.1
+        self.arView.scene.rootNode.addChildNode(bulletNode)
+        
+        let shootTestResults = self.arView.hitTest(center, types: .featurePoint)
+        if !shootTestResults.isEmpty {
+            guard let feature = shootTestResults.first else {return}
+            let targetPosition = SCNVector3(
+                feature.worldTransform.columns.3.x,
+                feature.worldTransform.columns.3.y,
+                feature.worldTransform.columns.3.z
+            )
+            
+            bulletNode.runAction(SCNAction.sequence([SCNAction.move(to: targetPosition, duration: 0.15), SCNAction.removeFromParentNode()]))
+        } else {
+            bulletNode.runAction(SCNAction.removeFromParentNode())
+        }
+        
+        let hitTestResults = self.arView.hitTest(self.center)
+        guard let node = hitTestResults.first?.node else {
+            print("Hit test returned nothing")
+            return
+        }
+        
+        if let n = node.name, n.hasPrefix("baseNode") {
+            print("Detect Zombies")
+        }
+        
+        if let name = node.name, name != "baseNode" {
+            guard let parentNode = node.parent else{
+                print("No parent Node")
+                return
+            }
+            guard let zIndex = parentNode.name else {return}
+            let hitZombie = zombies[zIndex]
+            //assuming health is 1 for now
+            parentNode.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
+            // update score
+            
+            // remove zombie logically
+            self.zombies.removeValue(forKey: zIndex)
+        }
+        
+        
+    }
+    
+    
     
     @IBAction func confirmBaseLocation(_ sender: UIButton) {
         //No more Base Placing
@@ -361,10 +419,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 print("JSON from recZombiesTask")
                 print(data)
                 //Not JSON just a string "Success"
-            } catch {
-                print("JSON error: \(error.localizedDescription)")
             }
-        
             DispatchQueue.main.async {
                 self.listenForStartTaskHelper()
             }
@@ -421,7 +476,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     func startGameNow() {
         //start zombie spawning task here
         print("Setting up background task")
-        self.taskTimer = Timer.scheduledTimer(timeInterval:1, target: self, selector: #selector(self.zombieSpawningTask), userInfo: nil, repeats: true)
+        self.taskTimer = Timer.scheduledTimer(timeInterval:2, target: self, selector: #selector(self.zombieSpawningTask), userInfo: nil, repeats: true)
+        self.gameState = GameState.ActiveGame
     }
     
     //MARK: SpawnZombie Logic
@@ -461,7 +517,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         let sceneURL = Bundle.main.url(forResource: "minecraftupdate2", withExtension: "scn", subdirectory: "art.scnassets")!
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
-        referenceNode.name = "boxNode"
+        referenceNode.name = "zombieNode"
         
         let basePosition = SCNVector3(
             self.anchorPoint.transform.columns.3.x,
@@ -471,7 +527,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         )
         
         //Movement
-        let moveAction = SCNAction.move(to: basePosition, duration: 10)
+        let moveAction = SCNAction.move(to: basePosition, duration: 15)
         let deletion = SCNAction.removeFromParentNode()
         let zombieSequence = SCNAction.sequence([moveAction, deletion])
         
@@ -504,9 +560,10 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     //MARK: AR SCNView Delegate
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         print("This function was called 1")
-        if let name = anchor.name, name.hasPrefix("cube") {
+        print("Base Anchor Name: \(anchor.name)")
+        if let name = anchor.name, name.hasPrefix("baseNode") {
             self.anchorPoint = anchor
-            self.baseNode = loadCube()
+            self.baseNode = loadBase()
             node.addChildNode(self.baseNode)
 
         }
