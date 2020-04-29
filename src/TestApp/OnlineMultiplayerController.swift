@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 enum GameState {
     case BasePlacing
     case Initial

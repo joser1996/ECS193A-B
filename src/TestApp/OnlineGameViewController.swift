@@ -25,7 +25,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     //game stuff
     var didSyncCrossHair = false
     var isSyncing:Bool = false
-
+    var currentWave:Int = 0
     var center = CGPoint(x: 0, y: 0)
     var health = 3
     var isWithinBase = true
@@ -34,22 +34,12 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var zombieTimer: Timer! = nil
     var masterScore: Int = 0
     var recievedZombies: Bool = false
-    
+    var zombieWave: [ZombieSeed] = []
     @IBOutlet weak var confirmBaseButton: UIButton!
     
     
     @IBOutlet weak var promptLabel: UILabel!
     @IBOutlet weak var arView: ARSCNView!
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     override func viewDidLoad() {
@@ -271,11 +261,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         while(!self.recievedZombies){
             print("Waiting For Zombies")
         }
-        //send response that wave was recieved
-        
-        //waiting for start signal
-        
-        //start game
     }
     
     func listenForWaveTask() {
@@ -299,16 +284,206 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 
                 print(json)
                 //want to extract data(wave) and store in global
+                guard let dict = json as? [String: Any] else {return}
+                print("Dictionary: \(dict)")
+                guard let waveNum = dict["waveNumber"] as? Int else {return}
+                self.currentWave = waveNum
+                print("Current Wave Number: \(self.currentWave)")
+                
+                guard let wave = dict["zombieWave"] as? [Any] else {
+                    fatalError("Failed to get zombie wave!!")
+                }
+                print("Wave: \(wave) of size: \(wave.count)")
+                for i in 0..<wave.count {
+                    guard let seed = wave[i] as? [String: Any] else {
+                        fatalError("Failed to get seed!")
+                    }
+                    guard let angle = seed["angle"] as? Float else {
+                        print("Failed at angle")
+                        return
+                        
+                    }
+                    guard let distance = seed["distance"] as? Double else {
+                        print("fail distance")
+                        return
+                            
+                    }
+                    guard let id = seed["id"] as? Int else {
+                        print("fail id")
+                        return
+                        
+                    }
+                    guard let x = seed["positionX"] as? Double else {
+                        print("fail x")
+                        return
+                        
+                    }
+                    guard let y = seed["positionY"] as? Double else {
+                        fatalError("Fail y")
+                    }
+                    guard let z = seed["positionZ"] as? Double else {
+                        fatalError("Fail x")
+                    }
+
+                    let tempSeed = ZombieSeed(angle: angle, distance: Float(distance), id: id, positionX: Float(x), positionY: Float(y), positionZ: Float(z), hasSpawned: false)
+                    self.zombieWave.append(tempSeed)
+                }
+                print("Final Wave: \(self.zombieWave)")
+                DispatchQueue.main.async {
+                    self.recievedZombieWave()
+                }
+                
             } catch {
                 print("JSON error: \(error.localizedDescription)")
             }
             
+        }
+        waveRequestTask.resume()
+    }
+    
+    func recievedZombieWave() {
+        print("In recieved zombie wave")
+        guard let gameID = self.gameID else {return}
+        let endPoint = "/received-zombie/" + String(gameID)
+        let urlString = server + endPoint
+        guard let url = URL(string: urlString) else {return}
+        
+        let recZombiesTask = self.urlSession.dataTask(with: url) {
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
             
-            
-            
+            guard let data = data else {return}
+            do{
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                print("JSON from recZombiesTask\(json)")
+                //Not JSON just a string "Success"
+            } catch {
+                print("JSON error: \(error.localizedDescription)")
+            }
+        
+            DispatchQueue.main.async {
+                self.listenForStartTaskHelper()
+            }
             
         }
+        recZombiesTask.resume()
     }
+    
+    func listenForStartTaskHelper() {
+        self.taskTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.listenForStartTask), userInfo: nil, repeats: true)
+    }
+    
+    @objc func listenForStartTask() {
+        let endPoint = "/game-ready/"
+        guard let gameID = self.gameID else {return}
+        let urlString = server + endPoint + String(gameID)
+        print("Game: game-ready")
+        guard let url = URL(string: urlString) else {return}
+        let listenForStartTask = urlSession.dataTask(with: url) {
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            guard let data = data else {return}
+            print("Data: \(data)")
+
+            do{
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                print(json)
+                
+                guard let dict = json as? [String: Any] else {
+                    fatalError("Failed in lisenForTask:convert JSON to Dict")
+                }
+                
+                guard let isReady = dict["isReady"] as? Bool else {
+                    fatalError("Failed in listenForStartTask: extracting isReady")
+                }
+                if isReady {
+                    DispatchQueue.main.async {
+                        self.taskTimer.invalidate()
+                        self.startGameNow()
+                    }
+                }
+            } catch {
+                print("JSON error: \(error.localizedDescription)")
+            }
+        }
+        
+        listenForStartTask.resume()
+    }
+    
+    
+    func startGameNow() {
+        //start zombie spawning task here
+        print("Setting up background task")
+        self.taskTimer = Timer.scheduledTimer(timeInterval:1, target: self, selector: #selector(self.zombieSpawningTask), userInfo: nil, repeats: true)
+    }
+    
+    //MARK: SpawnZombie Logic
+    func getZombieSeed () -> ZombieSeed! {
+        print("In getZombieSeed")
+        for var seed in self.zombieWave {
+            if !seed.hasSpawned {
+                seed.hasSpawned = true
+                return seed
+            }
+        }
+        return nil
+    }
+    
+    @objc func zombieSpawningTask() {
+        print("In zombieSpawningTask")
+        guard let zSeed = self.getZombieSeed() else {
+            print("returned nil")
+            return
+        }
+        let node = loadZombie(seed: zSeed)
+        let name = String(zSeed.id)
+        node.name = name
+        let zombie = Zombie(name: node.name!, health: 1, node: node)
+        zombies[node.name!] = zombie
+        print("Done spawning zombie")
+        self.arView.scene.rootNode.addChildNode(node)
+        
+    }
+    
+    private func loadZombie(seed: ZombieSeed) -> SCNNode{
+        print("in loadZombie")
+        let sceneURL = Bundle.main.url(forResource: "minecraftupdate2", withExtension: "scn", subdirectory: "art.scnassets")!
+        let referenceNode = SCNReferenceNode(url: sceneURL)!
+        referenceNode.load()
+        referenceNode.name = "boxNode"
+        
+        let basePosition = SCNVector3(
+            self.anchorPoint.transform.columns.3.x,
+            self.anchorPoint.transform.columns.3.y,
+            self.anchorPoint.transform.columns.3.z
+            
+        )
+        
+        //Movement
+        let moveAction = SCNAction.move(to: basePosition, duration: 10)
+        let deletion = SCNAction.removeFromParentNode()
+        let zombieSequence = SCNAction.sequence([moveAction, deletion])
+        
+        referenceNode.runAction(zombieSequence, completionHandler:{
+            //decrease player health
+            
+            // TODO: send update to server to update health
+            print("Base has been hit!!!")
+            
+            // if health is 0 go to game over state
+        })
+        
+        referenceNode.position = SCNVector3(seed.positionX, seed.positionY, seed.positionZ)
+        
+        return referenceNode
+    }
+    
     
     func syncCrosshair() {
         print("Syncing")
@@ -390,3 +565,12 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     
 }
 
+struct ZombieSeed {
+    var angle:Float = 0
+    var distance:Float = 0
+    var id:Int = 0;
+    var positionX:Float = 0;
+    var positionY:Float = 0;
+    var positionZ:Float = 0;
+    var hasSpawned:Bool = false
+}
