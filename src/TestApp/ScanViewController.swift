@@ -70,7 +70,7 @@ class ScanViewController: UIViewController, UINavigationControllerDelegate, UIIm
              To use a different Core ML classifier model, add it to the project
              and replace `MobileNet` with that model's generated Swift class.
              */
-            let model = try VNCoreMLModel(for: Resnet50().model)
+            let model = try VNCoreMLModel(for: SqueezeNet().model)
             
             let request = VNCoreMLRequest(model: model, completionHandler: { [weak self] request, error in
                 self?.processClassifications(for: request, error: error)
@@ -117,7 +117,7 @@ class ScanViewController: UIViewController, UINavigationControllerDelegate, UIIm
         
             if classifications.isEmpty {
                 self.classificationLabel.text = "Nothing recognized."
-            } else if classifications[0].confidence > 0.7 {
+            } else if classifications[0].confidence > 0.55 {
                 // Display top classifications ranked by confidence in the UI
                 let possibleItems = classifications[0].identifier.split(separator: ",", maxSplits: 2)
                 let description = String(format: "Item found: %@", String(possibleItems[0]))
