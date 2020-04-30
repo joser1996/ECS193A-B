@@ -15,6 +15,7 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
     let reuseIdentifier = "CellIdentifier"
     let BASE_SERVER_URL = "http://server162.site:59435"
     var items: [String] = []
+    var selectedItem: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +54,23 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
 //
 //         return 1
 //     }
-     
+    
+    // Handling selection
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt: IndexPath) {
+        if let cell = collectionView.cellForItem(at: didSelectItemAt) as! InventoryViewCell? {
+            cell.label.textColor = UIColor.red
+            cell.backgroundColor = UIColor.red
+        }
+        selectedItem = didSelectItemAt[0] + didSelectItemAt[1]
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt didUnselectItemAt: IndexPath) {
+        if let cell = collectionView.cellForItem(at: didUnselectItemAt) as! InventoryViewCell? {
+            cell.label.textColor = UIColor.white
+            cell.backgroundColor = UIColor.white
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
      }

@@ -514,18 +514,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         return referenceNode
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if let inventoryVC = segue.destination as? InventoryViewController {
-                inventoryVC.items = inventoryItems
-            }
-    }
-    
-    @IBAction func exitAndSaveInventory(unwindSegue: UIStoryboardSegue) {
-        if let sourceVC = unwindSegue.source as? InventoryViewController {
-            inventoryItems = sourceVC.items // store inventory items to load next time inventory opens
-        }
-    }
-    
 }
 
 extension GameViewController : PauseViewControllerDelegate {

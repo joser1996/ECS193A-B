@@ -37,6 +37,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var zombieWave: [ZombieSeed] = []
     @IBOutlet weak var confirmBaseButton: UIButton!
     
+    // Inventory
+    var inventoryItems: [String] = []
+    var selectedItem: Int = 0
     
     @IBOutlet weak var promptLabel: UILabel!
     @IBOutlet weak var arView: ARSCNView!
@@ -656,8 +659,19 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         arView.session.run(config, options:[.resetTracking, .removeExistingAnchors])
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if let inventoryVC = segue.destination as? InventoryViewController {
+                inventoryVC.items = inventoryItems
+                inventoryVC.selectedItem = selectedItem
+            }
+    }
     
-    
+    @IBAction func exitAndSaveInventory(unwindSegue: UIStoryboardSegue) {
+        if let sourceVC = unwindSegue.source as? InventoryViewController {
+            inventoryItems = sourceVC.items // store inventory items to load next time inventory opens
+            selectedItem = sourceVC.selectedItem
+        }
+    }
 }
 
 struct ZombieSeed {
