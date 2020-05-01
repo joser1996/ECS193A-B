@@ -14,7 +14,7 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
     
     let reuseIdentifier = "CellIdentifier"
     let BASE_SERVER_URL = "http://server162.site:59435"
-    var items: [String] = []
+    var items: [String] = ["bullet"]
     var selectedItem: Int = 0
 
     override func viewDidLoad() {

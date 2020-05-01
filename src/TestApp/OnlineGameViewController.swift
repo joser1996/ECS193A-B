@@ -38,7 +38,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     @IBOutlet weak var confirmBaseButton: UIButton!
     
     // Inventory
-    var inventoryItems: [String] = []
+    var inventoryItems: [String] = ["bullet"]
     var selectedItem: Int = 0
     
     @IBOutlet weak var promptLabel: UILabel!
@@ -171,11 +171,15 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         let camMatrix = SCNMatrix4(frame.camera.transform)
         let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
         
-        let bullet = SCNSphere(radius: 0.02)
-        bullet.firstMaterial?.diffuse.contents = UIColor.red
-        let bulletNode = SCNNode(geometry: bullet)
+        let sceneURL = Bundle.main.url(forResource: "mug-model", withExtension: "scn", subdirectory: "art.scnassets")!
+        let bulletNode = SCNReferenceNode(url: sceneURL)!
+        bulletNode.load()
+//        let bullet = SCNSphere(radius: 0.02)
+//        bullet.firstMaterial?.diffuse.contents = UIColor.red
+//        let bulletNode = SCNNode(geometry: bullet)
         bulletNode.position = position
         bulletNode.position.y -= 0.1
+        bulletNode.scale = SCNVector3(x: 0.01, y: 0.01, z: 0.01)
         self.arView.scene.rootNode.addChildNode(bulletNode)
         
         let shootTestResults = self.arView.hitTest(center, types: .featurePoint)
@@ -660,10 +664,10 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if let inventoryVC = segue.destination as? InventoryViewController {
-                inventoryVC.items = inventoryItems
-                inventoryVC.selectedItem = selectedItem
-            }
+        if let inventoryVC = segue.destination as? InventoryViewController {
+            inventoryVC.items = inventoryItems
+            inventoryVC.selectedItem = selectedItem
+        }
     }
     
     @IBAction func exitAndSaveInventory(unwindSegue: UIStoryboardSegue) {
