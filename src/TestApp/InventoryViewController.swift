@@ -16,6 +16,8 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
     let BASE_SERVER_URL = "http://server162.site:59435"
     var items: [String] = ["bullet"]
     var selectedItem: Int = 0
+    var playerName: String!
+    var gameID: Int!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +34,6 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
      //UICollectionViewDelegateFlowLayout methods
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat
      {
-         
          return 2;
      }
     
@@ -80,7 +81,7 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
         
         let index = indexPath[0] + indexPath[1]
         cell.label.text = items[index]
-        cell.loadThumbnailImage(baseUrlString: BASE_SERVER_URL, item: items[index])
+        cell.loadThumbnailImage(baseUrlString: BASE_SERVER_URL, item: items[index], gameID: gameID!, playerName: playerName!)
         
         return cell
     }
@@ -94,7 +95,7 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
      }
     
     func addToInventory(_ item: String) {
-        let url = URL(string: "\(BASE_SERVER_URL)/add-to-inventory/5/jacob/\(item)")
+        let url = URL(string: "\(BASE_SERVER_URL)/add-to-inventory/\(gameID!)/\(playerName!)/\(item)")
         guard let requestUrl = url else { fatalError() }
         var request = URLRequest(url: requestUrl)
         request.httpMethod = "GET"

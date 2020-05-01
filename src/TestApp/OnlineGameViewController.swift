@@ -665,6 +665,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let inventoryVC = segue.destination as? InventoryViewController {
+            inventoryVC.gameID = gameID
+            inventoryVC.playerName = playerName
             inventoryVC.items = inventoryItems
             inventoryVC.selectedItem = selectedItem
         }
