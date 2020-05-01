@@ -38,8 +38,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     @IBOutlet weak var confirmBaseButton: UIButton!
     
     // Inventory
-    var inventoryItems: [String] = ["bullet"]
-    var selectedItem: Int = 0
+    let modelNames = ModelNameFetcher()
+    var inventoryItems: [IndexPath: String] = [[0, 0]: "bullet"]
+    var selectedItem: IndexPath = [0, 0]
     
     @IBOutlet weak var promptLabel: UILabel!
     @IBOutlet weak var arView: ARSCNView!
@@ -171,7 +172,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         let camMatrix = SCNMatrix4(frame.camera.transform)
         let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
         
-        let sceneURL = Bundle.main.url(forResource: "mug-model", withExtension: "scn", subdirectory: "art.scnassets")!
+        let modelName = modelNames.getItemModelName(inventoryItems[selectedItem]!)
+        let sceneURL = Bundle.main.url(forResource: modelName!, withExtension: "scn", subdirectory: "art.scnassets")!
         let bulletNode = SCNReferenceNode(url: sceneURL)!
         bulletNode.load()
 //        let bullet = SCNSphere(radius: 0.02)

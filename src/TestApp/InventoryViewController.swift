@@ -14,8 +14,8 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
     
     let reuseIdentifier = "CellIdentifier"
     let BASE_SERVER_URL = "http://server162.site:59435"
-    var items: [String] = ["bullet"]
-    var selectedItem: Int = 0
+    var items: [IndexPath: String] = [[0, 0]: "bullet"]
+    var selectedItem: IndexPath = [0, 0]
     var playerName: String!
     var gameID: Int!
 
@@ -56,20 +56,11 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
 //         return 1
 //     }
     
-    // Handling selection
+    // Handling selection    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt: IndexPath) {
-        if let cell = collectionView.cellForItem(at: didSelectItemAt) as! InventoryViewCell? {
-            cell.label.textColor = UIColor.red
-            cell.backgroundColor = UIColor.red
-        }
-        selectedItem = didSelectItemAt[0] + didSelectItemAt[1]
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt didUnselectItemAt: IndexPath) {
-        if let cell = collectionView.cellForItem(at: didUnselectItemAt) as! InventoryViewCell? {
-            cell.label.textColor = UIColor.white
-            cell.backgroundColor = UIColor.white
-        }
+        let cellsToReload = [didSelectItemAt, selectedItem]
+        selectedItem = didSelectItemAt
+        collectionView.reloadItems(at: cellsToReload)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -79,9 +70,22 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! InventoryViewCell
         
-        let index = indexPath[0] + indexPath[1]
-        cell.label.text = items[index]
-        cell.loadThumbnailImage(baseUrlString: BASE_SERVER_URL, item: items[index], gameID: gameID!, playerName: playerName!)
+        if items[indexPath] == nil {
+            items[indexPath] = items[[-1, -1]]
+            items[[-1, -1]] = nil
+        }
+            
+        cell.label.text = items[indexPath]
+        cell.loadThumbnailImage(baseUrlString: BASE_SERVER_URL, item: items[indexPath]!, gameID: gameID!, playerName: playerName!)
+        
+        if indexPath == selectedItem {
+            cell.label.textColor = UIColor.red
+            cell.backgroundColor = UIColor.red
+        }
+        else {
+            cell.label.textColor = UIColor.lightGray
+            cell.backgroundColor = UIColor.lightGray
+        }
         
         return cell
     }
@@ -123,7 +127,7 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
 
             let spacelessItem = sourceVC.item.replacingOccurrences(of: " ", with: "-")
             print(spacelessItem)
-            items.append(spacelessItem)
+            items[[-1, -1]] = spacelessItem
             addToInventory(spacelessItem)
             
             collectionView.reloadData()
