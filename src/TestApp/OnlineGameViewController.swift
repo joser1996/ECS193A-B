@@ -179,30 +179,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     func handleShooting(sender: UITapGestureRecognizer) {
         
         Shooter.fireProjectile(view: arView)
-//        guard let frame = self.arView.session.currentFrame else {return}
-//        let camMatrix = SCNMatrix4(frame.camera.transform)
-//        let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
-//
-//        let bullet = SCNSphere(radius: 0.02)
-//        bullet.firstMaterial?.diffuse.contents = UIColor.red
-//        let bulletNode = SCNNode(geometry: bullet)
-//        bulletNode.position = position
-//        bulletNode.position.y -= 0.1
-//        self.arView.scene.rootNode.addChildNode(bulletNode)
-//
-//        let shootTestResults = self.arView.hitTest(center, types: .featurePoint)
-//        if !shootTestResults.isEmpty {
-//            guard let feature = shootTestResults.first else {return}
-//            let targetPosition = SCNVector3(
-//                feature.worldTransform.columns.3.x,
-//                feature.worldTransform.columns.3.y,
-//                feature.worldTransform.columns.3.z
-//            )
-//
-//            bulletNode.runAction(SCNAction.sequence([SCNAction.move(to: targetPosition, duration: 0.10), SCNAction.removeFromParentNode()]))
-//        } else {
-//            bulletNode.runAction(SCNAction.removeFromParentNode())
-//        }
         
         let hitTestResults = self.arView.hitTest(center, options: [SCNHitTestOption.backFaceCulling: false])
         print("ZOMBIE: Center is \(self.center)")
@@ -210,11 +186,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             print("ZOMBIE: Hit test returned nothing")
             return
         }
-
-//        print("HIT: node \(node)")
-//        print("HIT: name \(node.name)")
-//        print("HIT: parent \(node.parent)")
-//        print("")
         
         if let name = node.name, name != "baseNode" {
             guard let parentNode = node.parent else{
@@ -227,10 +198,33 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             //assuming health is 1 for now
             parentNode.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
 //            // update score
-//
 //            // remove zombie logically
             self.zombies.removeValue(forKey: zIndex)
         }
+        
+        
+    }
+    
+    
+    
+    //MARK: Collision Detection
+    func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        
+        print("** Collision!! " + contact.nodeA.name! + " hit " + contact.nodeB.name!)
+        
+        if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue {
+            
+            //handle logic to differentiate b/w  targets
+            
+            //increment score based on target
+            
+            DispatchQueue.main.async {
+                contact.nodeA.removeFromParentNode()
+                contact.nodeB.removeFromParentNode()
+            }
+            
+        }
+        
         
         
     }
@@ -572,12 +566,13 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         }
         parentNode.name = "parentZombie"
         
+        //Add physics to node
+        parentNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        parentNode.physicsBody?.isAffectedByGravity = false
         
-        //print("in loadZombie")
-//        let sceneURL = Bundle.main.url(forResource: "minecraftupdate2", withExtension: "scn", subdirectory: "art.scnassets")!
-//        let referenceNode = SCNReferenceNode(url: sceneURL)!
-//        referenceNode.load()
-//        referenceNode.name = "zombieNode"
+        //collision
+        parentNode.physicsBody?.categoryBitMask = CollisionCategory.targetCategory.rawValue
+        parentNode.physicsBody?.contactTestBitMask = CollisionCategory.bulletCategory.rawValue
         
         let basePosition = SCNVector3(
             self.anchorPoint.transform.columns.3.x,
@@ -587,7 +582,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         )
         
         //Movement
-        let moveAction = SCNAction.move(to: basePosition, duration: 300)
+        let moveAction = SCNAction.move(to: basePosition, duration: 150)
         let deletion = SCNAction.removeFromParentNode()
         let zombieSequence = SCNAction.sequence([moveAction, deletion])
         

@@ -25,11 +25,14 @@ class Shooting {
         let bullet = SCNSphere(radius: 0.02)
         bullet.firstMaterial?.diffuse.contents = UIColor.red
         let bulletNode = SCNNode(geometry: bullet)
-        
+        bulletNode.name = "bullet"
         bulletNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         bulletNode.physicsBody?.isAffectedByGravity = false
         
         //do collision bit mask here
+        bulletNode.physicsBody?.categoryBitMask = CollisionCategory.bulletCategory.rawValue
+        bulletNode.physicsBody?.collisionBitMask = CollisionCategory.targetCategory.rawValue
+        
         return bulletNode
     }
     
@@ -40,7 +43,7 @@ class Shooting {
         node.position = position
         
         var nodeDirection = SCNVector3()
-        nodeDirection = SCNVector3(direction.x*4, direction.y*4,direction.z*4)
+        nodeDirection = SCNVector3(direction.x*6, direction.y*6,direction.z*6)
         
 
         //fire
@@ -49,4 +52,12 @@ class Shooting {
         view.scene.rootNode.addChildNode(node)
         
     }
+}
+
+
+
+struct CollisionCategory: OptionSet {
+    let rawValue: Int
+    static let bulletCategory = CollisionCategory(rawValue: 1 << 0)
+    static let targetCategory = CollisionCategory(rawValue: 1 << 1)
 }
