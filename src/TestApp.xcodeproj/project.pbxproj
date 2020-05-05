@@ -17,6 +17,7 @@
 		93271315245A294B00050DD4 /* David_Screeching.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 93271314245A294B00050DD4 /* David_Screeching.mp3 */; };
 		93369F1A244261C9001935E6 /* OnlineMultiplayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */; };
 		9342F3892453E997008AA9DC /* wind.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9342F3882453E997008AA9DC /* wind.mp3 */; };
+		936782702461215F00BBEA87 /* Shooting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9367826F2461215F00BBEA87 /* Shooting.swift */; };
 		936DCE6724351BA7002FD853 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936DCE6624351BA7002FD853 /* AVFoundation.framework */; };
 		939BE830240ACB2100B1F458 /* PlayerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939BE82F240ACB2100B1F458 /* PlayerSession.swift */; };
 		939BE832240AFECF00B1F458 /* PlayerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939BE831240AFECF00B1F458 /* PlayerCell.swift */; };
@@ -80,6 +81,7 @@
 		93271314245A294B00050DD4 /* David_Screeching.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = David_Screeching.mp3; sourceTree = "<group>"; };
 		93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineMultiplayerController.swift; sourceTree = "<group>"; };
 		9342F3882453E997008AA9DC /* wind.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wind.mp3; sourceTree = "<group>"; };
+		9367826F2461215F00BBEA87 /* Shooting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shooting.swift; sourceTree = SOURCE_ROOT; };
 		936DCE6624351BA7002FD853 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		939BE82F240ACB2100B1F458 /* PlayerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSession.swift; sourceTree = "<group>"; };
 		939BE831240AFECF00B1F458 /* PlayerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerCell.swift; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 		93C74FA423D91CFE003BF585 /* TestApp */ = {
 			isa = PBXGroup;
 			children = (
+				9367826F2461215F00BBEA87 /* Shooting.swift */,
 				93271314245A294B00050DD4 /* David_Screeching.mp3 */,
 				932713102459FD0400050DD4 /* Resnet50.mlmodel */,
 				932713112459FD0500050DD4 /* SqueezeNet.mlmodel */,
@@ -423,6 +426,7 @@
 				93C74FAA23D91CFE003BF585 /* GameViewController.swift in Sources */,
 				93C74FA623D91CFE003BF585 /* AppDelegate.swift in Sources */,
 				E09688DB23F7E77A006F9CBF /* NewViewController.swift in Sources */,
+				936782702461215F00BBEA87 /* Shooting.swift in Sources */,
 				932713132459FD0500050DD4 /* SqueezeNet.mlmodel in Sources */,
 				E0591F65242004E700DBD38E /* GamePacket.swift in Sources */,
 				E0CE0156245A3203001A3C77 /* CGImagePropertyOrientation+UIImageOrientation.swift in Sources */,

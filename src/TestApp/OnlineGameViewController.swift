@@ -8,7 +8,10 @@
 
 import UIKit
 import ARKit
-class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
+import SceneKit
+import AVFoundation
+
+class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate, SCNPhysicsContactDelegate {
 
     var playerName: String!
     var players: [String] = []
@@ -21,6 +24,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var baseNode: SCNNode!
     var anchorPoint: ARAnchor!
     var taskTimer = Timer()
+    var Shooter: Shooting = Shooting()
     
     //game stuff
     var didSyncCrossHair = false
@@ -45,6 +49,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     override func viewDidLoad() {
         super.viewDidLoad()
         arView.delegate = self
+        arView.scene.physicsWorld.contactDelegate = self
         confirmBaseButton.isHidden = true
         confirmBaseButton.isEnabled = false
         changePrompt(text: "Please place Base.")
@@ -53,6 +58,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         }
     }
     
+    // MARK: sendGameStartMessage
     func sendGameStartMessage() {
         print("In view start message")
         guard let gameID = self.gameID else {return}
@@ -100,6 +106,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         UIApplication.shared.isIdleTimerDisabled = true
     }
     
+    //MARK: Prompt Stuff
     func changePrompt(text: String) {
         self.promptLabel.text = text
     }
@@ -117,6 +124,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     }
     
     
+    //MARK: loadBase
     private func loadBase() -> SCNNode {
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         let boxNode = SCNNode()
@@ -139,6 +147,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         arView.session.add(anchor: self.anchorPoint)
     }
     
+    
+    //MARK: handleTap
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         if isPlacingBase {
             basePlacing(sender: sender)
@@ -148,6 +158,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             confirmBaseButton.isEnabled = true
             
         } else if isSyncing {
+            print("is in isSyncing")
             let tapLoc = sender.location(in: self.arView)
             self.center = tapLoc
             print("Center is: \(self.center)")
@@ -163,41 +174,47 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
 
     }
     
+    
+    //MARK: handleShooting
     func handleShooting(sender: UITapGestureRecognizer) {
-        guard let frame = self.arView.session.currentFrame else {return}
-        let camMatrix = SCNMatrix4(frame.camera.transform)
-        let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
         
-        let bullet = SCNSphere(radius: 0.02)
-        bullet.firstMaterial?.diffuse.contents = UIColor.red
-        let bulletNode = SCNNode(geometry: bullet)
-        bulletNode.position = position
-        bulletNode.position.y -= 0.1
-        self.arView.scene.rootNode.addChildNode(bulletNode)
+        Shooter.fireProjectile(view: arView)
+//        guard let frame = self.arView.session.currentFrame else {return}
+//        let camMatrix = SCNMatrix4(frame.camera.transform)
+//        let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
+//
+//        let bullet = SCNSphere(radius: 0.02)
+//        bullet.firstMaterial?.diffuse.contents = UIColor.red
+//        let bulletNode = SCNNode(geometry: bullet)
+//        bulletNode.position = position
+//        bulletNode.position.y -= 0.1
+//        self.arView.scene.rootNode.addChildNode(bulletNode)
+//
+//        let shootTestResults = self.arView.hitTest(center, types: .featurePoint)
+//        if !shootTestResults.isEmpty {
+//            guard let feature = shootTestResults.first else {return}
+//            let targetPosition = SCNVector3(
+//                feature.worldTransform.columns.3.x,
+//                feature.worldTransform.columns.3.y,
+//                feature.worldTransform.columns.3.z
+//            )
+//
+//            bulletNode.runAction(SCNAction.sequence([SCNAction.move(to: targetPosition, duration: 0.10), SCNAction.removeFromParentNode()]))
+//        } else {
+//            bulletNode.runAction(SCNAction.removeFromParentNode())
+//        }
         
-        let shootTestResults = self.arView.hitTest(center, types: .featurePoint)
-        if !shootTestResults.isEmpty {
-            guard let feature = shootTestResults.first else {return}
-            let targetPosition = SCNVector3(
-                feature.worldTransform.columns.3.x,
-                feature.worldTransform.columns.3.y,
-                feature.worldTransform.columns.3.z
-            )
-            
-            bulletNode.runAction(SCNAction.sequence([SCNAction.move(to: targetPosition, duration: 0.15), SCNAction.removeFromParentNode()]))
-        } else {
-            bulletNode.runAction(SCNAction.removeFromParentNode())
-        }
-        
-        let hitTestResults = self.arView.hitTest(self.center)
+        let hitTestResults = self.arView.hitTest(center, options: [SCNHitTestOption.backFaceCulling: false])
+        print("ZOMBIE: Center is \(self.center)")
         guard let node = hitTestResults.first?.node else {
-            print("Hit test returned nothing")
+            print("ZOMBIE: Hit test returned nothing")
             return
         }
-        
-        if let n = node.name, n.hasPrefix("baseNode") {
-            print("Detect Zombies")
-        }
+
+//        print("HIT: node \(node)")
+//        print("HIT: name \(node.name)")
+//        print("HIT: parent \(node.parent)")
+//        print("")
         
         if let name = node.name, name != "baseNode" {
             guard let parentNode = node.parent else{
@@ -209,9 +226,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             let hitZombie = zombies[zIndex]
             //assuming health is 1 for now
             parentNode.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
-            // update score
-            
-            // remove zombie logically
+//            // update score
+//
+//            // remove zombie logically
             self.zombies.removeValue(forKey: zIndex)
         }
         
@@ -322,6 +339,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         }
     }
     
+    
+    //MARK: listernForWaveTask
     func listenForWaveTask() {
         guard let gameID = self.gameID else {return}
         print("In listenForZombieWave")
@@ -478,7 +497,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     func startGameNow() {
         //start zombie spawning task here
         print("Setting up background task")
-        self.taskTimer = Timer.scheduledTimer(timeInterval:2, target: self, selector: #selector(self.zombieSpawningTask), userInfo: nil, repeats: true)
+        self.taskTimer = Timer.scheduledTimer(timeInterval:1, target: self, selector: #selector(self.zombieSpawningTask), userInfo: nil, repeats: true)
         self.gameState = GameState.ActiveGame
         
         
@@ -514,7 +533,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     //MARK: SpawnZombie Logic
     func getZombieSeedIndex() -> Int {
         var ret = -1
-        print("In getZombieSeed")
         for (index, seed) in self.zombieWave.enumerated() {
             if !seed.hasSpawned {
                 ret = index
@@ -525,11 +543,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     }
     
     @objc func zombieSpawningTask() {
-        print("In zombieSpawningTask")
         let zSeedIndex = self.getZombieSeedIndex()
         if(zSeedIndex == -1) {
             //failed to return value index. Probablly no more seeds available
-            print("NO MORE SEEDS!")
             return
         }
         
@@ -543,12 +559,25 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         
     }
     
+    //MARK: loadZombie
     private func loadZombie(seedIndex si: Int) -> SCNNode{
-        print("in loadZombie")
-        let sceneURL = Bundle.main.url(forResource: "minecraftupdate2", withExtension: "scn", subdirectory: "art.scnassets")!
-        let referenceNode = SCNReferenceNode(url: sceneURL)!
-        referenceNode.load()
-        referenceNode.name = "zombieNode"
+        guard let zScene = SCNScene(named: "art.scnassets/minecraftupdate2.dae") else {
+            fatalError("Couldn't load zombie")
+        }
+        let parentNode = SCNNode()
+        let nodeArray = zScene.rootNode.childNodes
+        
+        for child in nodeArray {
+            parentNode.addChildNode(child as SCNNode)
+        }
+        parentNode.name = "parentZombie"
+        
+        
+        //print("in loadZombie")
+//        let sceneURL = Bundle.main.url(forResource: "minecraftupdate2", withExtension: "scn", subdirectory: "art.scnassets")!
+//        let referenceNode = SCNReferenceNode(url: sceneURL)!
+//        referenceNode.load()
+//        referenceNode.name = "zombieNode"
         
         let basePosition = SCNVector3(
             self.anchorPoint.transform.columns.3.x,
@@ -558,11 +587,11 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         )
         
         //Movement
-        let moveAction = SCNAction.move(to: basePosition, duration: 15)
+        let moveAction = SCNAction.move(to: basePosition, duration: 300)
         let deletion = SCNAction.removeFromParentNode()
         let zombieSequence = SCNAction.sequence([moveAction, deletion])
         
-        referenceNode.runAction(zombieSequence, completionHandler:{
+        parentNode.runAction(zombieSequence, completionHandler:{
             //decrease player health
             
             // TODO: send update to server to update health
@@ -571,11 +600,11 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             // if health is 0 go to game over state
         })
         let seed = self.zombieWave[si]
-        referenceNode.position = SCNVector3(seed.positionX, seed.positionY, seed.positionZ)
+        parentNode.position = SCNVector3(seed.positionX, seed.positionY, seed.positionZ )
         
         // mark seed as spawned
         self.zombieWave[si].hasSpawned = true
-        return referenceNode
+        return parentNode
     }
     
     
@@ -599,6 +628,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
 
         }
     }
+    
+    
     
     
     
