@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16C0F28A245BEF070059B247 /* ModelNameFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C0F289245BEF070059B247 /* ModelNameFetcher.swift */; };
 		9302697823FB812B00116608 /* BasePlacementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302697723FB812B00116608 /* BasePlacementController.swift */; };
 		9327130C2459F44700050DD4 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932713082459F44600050DD4 /* InventoryViewController.swift */; };
 		9327130D2459F44700050DD4 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932713092459F44600050DD4 /* ScanViewController.swift */; };
@@ -71,6 +72,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		16C0F289245BEF070059B247 /* ModelNameFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelNameFetcher.swift; sourceTree = "<group>"; };
 		9302697723FB812B00116608 /* BasePlacementController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePlacementController.swift; sourceTree = "<group>"; };
 		932713082459F44600050DD4 /* InventoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		932713092459F44600050DD4 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				939BE833240AFF8100B1F458 /* Player.swift */,
 				E0CE014C244EF982001A3C77 /* art.scnassets */,
 				E0591F6E2432D71500DBD38E /* BLOODY.TTF */,
+				16C0F289245BEF070059B247 /* ModelNameFetcher.swift */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -410,6 +413,7 @@
 				939BE834240AFF8100B1F458 /* Player.swift in Sources */,
 				93F860EA2447A51E003FCF5B /* MusicPlayer.swift in Sources */,
 				BFC8916723F8C24D0061699D /* MCHandler.swift in Sources */,
+				16C0F28A245BEF070059B247 /* ModelNameFetcher.swift in Sources */,
 				93AD7E1F2432B8B300E3A588 /* LeaderBoardController.swift in Sources */,
 				93AD7E202432B8B300E3A588 /* LeaderBoardViewCell.swift in Sources */,
 				E09688D923F7E750006F9CBF /* FirstViewController.swift in Sources */,
@@ -613,13 +617,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = L227T5HHPC;
+				DEVELOPMENT_TEAM = 3BM743GJUH;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior1.NT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -634,13 +638,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = L227T5HHPC;
+				DEVELOPMENT_TEAM = 3BM743GJUH;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior1.NT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
