@@ -367,15 +367,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 else if hitZombie?.health == 1 {
                     Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
                         node?.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                        self.removeFromParent()      
                         print("should be purple")
                     }
                 }
                 else if hitZombie?.health == 2 {
                     Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
                         node?.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
-                        node?.geometry?.material(named: "Body")?.diffuse.contents = UIColor.yellow
-                        node?.geometry?.material(named: "Head")?.diffuse.contents = UIColor.yellow
-                        node?.geometry?.material(named: "Material.012")?.diffuse.contents = UIColor.yellow
+                        self.removeFromParent()
                         print("should be yellow")
                     }
                 }
@@ -474,10 +473,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         if isZombie {
             if health == 1 {
                 referenceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
-                
+                print("Health is 1")
             }
             else if health == 2 {
-
+                print("Health is 2")
                 referenceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
             }
 
