@@ -27,6 +27,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var Shooter: Shooting = Shooting()
     
     //game stuff
+    var updateCounter: Int = 0
     var didSyncCrossHair = false
     var isSyncing:Bool = false
     var currentWave:Int = 0
@@ -39,6 +40,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var masterScore: Int = 0
     var recievedZombies: Bool = false
     var zombieWave: [ZombieSeed] = []
+    var doneSpawning: Bool = false
     @IBOutlet weak var confirmBaseButton: UIButton!
     
     
@@ -57,6 +59,23 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             sendGameStartMessage()
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        guard ARWorldTrackingConfiguration.isSupported else {
+            fatalError("AR Not supported on this device")
+        }
+        
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = .horizontal
+        arView.session.run(configuration)
+        arView.session.delegate = self
+        arView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+        
+        UIApplication.shared.isIdleTimerDisabled = true
+    }
+
     
     // MARK: sendGameStartMessage
     func sendGameStartMessage() {
@@ -90,21 +109,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        guard ARWorldTrackingConfiguration.isSupported else {
-            fatalError("AR Not supported on this device")
-        }
-        
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = .horizontal
-        arView.session.run(configuration)
-        arView.session.delegate = self
-        arView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
-        
-        UIApplication.shared.isIdleTimerDisabled = true
-    }
     
     //MARK: Prompt Stuff
     func changePrompt(text: String) {
@@ -177,31 +181,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     
     //MARK: handleShooting
     func handleShooting(sender: UITapGestureRecognizer) {
-        
+ 
         Shooter.fireProjectile(view: arView)
-        
-        let hitTestResults = self.arView.hitTest(center, options: [SCNHitTestOption.backFaceCulling: false])
-        print("ZOMBIE: Center is \(self.center)")
-        guard let node = hitTestResults.first?.node else {
-            print("ZOMBIE: Hit test returned nothing")
-            return
-        }
-        
-        if let name = node.name, name != "baseNode" {
-            guard let parentNode = node.parent else{
-                print("No parent Node")
-                return
-            }
-            guard let zIndex = parentNode.name else {return}
-            MusicPlayer.shared.playZombieDying()
-            let hitZombie = zombies[zIndex]
-            //assuming health is 1 for now
-            parentNode.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
-//            // update score
-//            // remove zombie logically
-            self.zombies.removeValue(forKey: zIndex)
-        }
-        
         
     }
     
@@ -210,20 +191,59 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     //MARK: Collision Detection
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         
-        print("** Collision!! " + contact.nodeA.name! + " hit " + contact.nodeB.name!)
+       // print("** Collision!! " + contact.nodeA.name! + " hit " + contact.nodeB.name!)
         
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue {
             
+            contact.nodeB.physicsBody?.categoryBitMask = 0
+            contact.nodeA.physicsBody?.categoryBitMask = 0
             //handle logic to differentiate b/w  targets
             
             //increment score based on target
             
+            //remove zombie logically; mark as dead
+            guard let nodeAName = contact.nodeA.name else {
+                print("NO NAME !!!")
+                return
+            }
+            
+            if nodeAName.hasPrefix("bullet") {
+                //node b is the zombie
+                guard let zIndex = contact.nodeB.name else {
+                    print("NodeB has no name")
+                    return
+                }
+                guard let zi = Int(zIndex) else {
+                    print("Couldn't convert \(zIndex) to Int")
+                    return
+                }
+                self.zombieWave[zi].isDead = true
+            } else {
+                //node a is the zombie
+                guard let zIndex = contact.nodeA.name else {
+                    print("NodeA has no name")
+                    return
+                }
+                guard let zi = Int(zIndex) else {
+                    print("Couldn't convert \(zIndex) to Int")
+                    return
+                }
+                self.zombieWave[zi].isDead = true
+            }
+            
+            
             DispatchQueue.main.async {
                 contact.nodeA.removeFromParentNode()
                 contact.nodeB.removeFromParentNode()
+                self.updateCounter += 1
+                if(self.updateCounter == 1) {
+                    self.updateZombiesTask()
+                    self.updateCounter = 0
+                }
             }
             
         }
+        
         
         
         
@@ -244,8 +264,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         let urlString = server + endPoint
         guard let url = URL(string: urlString) else {return}
         
-        
-
         let confirmBaseTask = urlSession.dataTask(with: url) {
             (data, response, error) in
             if let error = error {
@@ -269,8 +287,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         //change state
         print("waitForGame")
         self.gameState = GameState.WaitingForGame
-
-        //set up task that will monitor state from server
         
         DispatchQueue.main.async {
             self.taskTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkGameState), userInfo: nil, repeats: true)
@@ -363,49 +379,23 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 self.currentWave = waveNum
                 print("Current Wave Number: \(self.currentWave)")
                 
-                guard let wave = dict["zombieWave"] as? [Any] else {
+                guard let wave = dict["zombieWave"] as? [String: Any] else {
                     fatalError("Failed to get zombie wave!!")
                 }
+                
                 print("Wave: \(wave) of size: \(wave.count)")
-                for i in 0..<wave.count {
-                    guard let seed = wave[i] as? [String: Any] else {
+                for (key, _) in wave {
+                    guard let seed = wave[key] as? [String: Any] else {
                         fatalError("Failed to get seed!")
                     }
-                    guard let angle = seed["angle"] as? Float else {
-                        print("Failed at angle")
-                        return
-                        
-                    }
-                    guard let distance = seed["distance"] as? Double else {
-                        print("fail distance")
-                        return
-                            
-                    }
-                    guard let id = seed["id"] as? Int else {
-                        print("fail id")
-                        return
-                        
-                    }
-                    guard let x = seed["positionX"] as? Double else {
-                        print("fail x")
-                        return
-                        
-                    }
-                    guard let y = seed["positionY"] as? Double else {
-                        fatalError("Fail y")
-                    }
-                    guard let z = seed["positionZ"] as? Double else {
-                        fatalError("Fail x")
-                    }
-
-                    let tempSeed = ZombieSeed(angle: angle, distance: Float(distance), id: id, positionX: Float(x), positionY: Float(y), positionZ: Float(z), hasSpawned: false)
-                    self.zombieWave.append(tempSeed)
+                    self.setUpSeed(seed: seed)
+                    
                 }
                 print("Final Wave: \(self.zombieWave)")
                 DispatchQueue.main.async {
                     self.recievedZombieWave()
                 }
-                
+
             } catch {
                 print("JSON error: \(error.localizedDescription)")
             }
@@ -497,32 +487,184 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         
         //set up task that will send and recives update from server for zombies
         
+//        self.zombieTimer = Timer.scheduledTimer(timeInterval:5, target: self, selector: #selector(self.updateZombiesTask), userInfo: nil, repeats: true)
     }
     
-    func updateZombiesTask() {
+    
+    //MARK: Zombie Update Task
+    @objc func updateZombiesTask() {
+        
         print("In updateZombiesTask")
         let endPoint = "/update-wave/"
         guard let gameID = self.gameID else {return}
         let urlString = server + endPoint + String(gameID)
         guard let url = URL(string: urlString) else {return}
+        
         var json: [String: Any] = [:]
-        for seed in self.zombieWave {
+        for (index, seed) in self.zombieWave.enumerated() {
             if seed.isDead {
                 //will put health in here later
                 json[String(seed.id)] = true
+                self.zombieWave.remove(at: index)
             }
         }
-        let jsonData = try? JSONSerialization.data(withJSONObject: json)
         var request = URLRequest(url: url)
+
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted )
+            request.httpBody = jsonData
+            print("Seding: \(jsonData), \(json)")
+
+        } catch {
+            print(error.localizedDescription)
+        }
+        
         request.httpMethod = "POST"
-        request.httpBody = jsonData
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        //let updateZombiesTask = urlSession.dataTask(with: request)
+        let updateZombiesTask = urlSession.dataTask(with: request) {
+            (data, response, error) in
+            print("In handler updateZombie")
+            if let error = error {
+                print("error: \(error)")
+                return
+            }
+            
+            guard let data = data else {
+                print("Couldn't print data")
+                return
+            }
+            
+            do{
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                
+                guard let dict = json as? [String: Any] else {return}
+                guard let waveNum = dict["waveNumber"] as? Int else {return}
+                self.currentWave = waveNum
+                
+                guard let wave = dict["zombieWave"] as? [String: Any] else {
+                    print("Failed to get seed!")
+                    return
+                }
+
+                guard let temp = self.getSeedArray(wave: wave) else {return}
+            
+                DispatchQueue.main.async {
+                    self.updateFromReceived(ar: temp)
+                }
+                
+            } catch {
+                print("Error: \(error.localizedDescription)")
+            }
+            
+
+            
+        }
         
-        
+        updateZombiesTask.resume()
         
     }
     
+    func updateFromReceived(ar: [ZombieSeed]) {
+        for (idx,seed) in self.zombieWave.enumerated() {
+            for (index, s)  in ar.enumerated() {
+                if (s.id == seed.id) {
+                    break
+                }
+                if(index == (ar.count - 1)) {
+                    //delete form array
+                    self.zombieWave.remove(at: idx)
+                    
+                    //remove node
+                    guard let z = self.zombies[String(seed.id)] else {
+                        print("failed to find zombie object")
+                        return
+                    }
+                    guard let node = z.node else {
+                        print("Couldn't find node")
+                        return
+                    }
+                    node.removeFromParentNode()
+                }
+            }
+        }
+    }
+    
+    
+    func getSeedArray(wave: [String: Any]) -> [ZombieSeed]? {
+        var tAr: [ZombieSeed] = []
+        for (key,_) in wave {
+            guard let seed = wave[key] as? [String: Any]
+                else {
+                    print("Failed to get seed")
+                    return nil
+            }
+            guard let angle = seed["angle"] as? Float else {
+                print("Failed at angle")
+                return nil
+
+            }
+            guard let distance = seed["distance"] as? Double else {
+                print("fail distance")
+                return nil
+
+            }
+            guard let id = seed["id"] as? Int else {
+                print("fail id")
+                return nil
+
+            }
+            guard let x = seed["positionX"] as? Double else {
+                print("fail x")
+                return nil
+
+            }
+            guard let y = seed["positionY"] as? Double else {
+                fatalError("Fail y")
+            }
+            guard let z = seed["positionZ"] as? Double else {
+                fatalError("Fail x")
+            }
+
+            let tempSeed = ZombieSeed(angle: angle, distance: Float(distance), id: id, positionX: Float(x), positionY: Float(y), positionZ: Float(z), hasSpawned: false)
+            tAr.append(tempSeed)
+        }
+        
+        return tAr
+    }
+    
+    func setUpSeed(seed: [String: Any]) {
+        guard let angle = seed["angle"] as? Float else {
+            print("Failed at angle")
+            return
+
+        }
+        guard let distance = seed["distance"] as? Double else {
+            print("fail distance")
+            return
+
+        }
+        guard let id = seed["id"] as? Int else {
+            print("fail id")
+            return
+
+        }
+        guard let x = seed["positionX"] as? Double else {
+            print("fail x")
+            return
+
+        }
+        guard let y = seed["positionY"] as? Double else {
+            fatalError("Fail y")
+        }
+        guard let z = seed["positionZ"] as? Double else {
+            fatalError("Fail x")
+        }
+
+        let tempSeed = ZombieSeed(angle: angle, distance: Float(distance), id: id, positionX: Float(x), positionY: Float(y), positionZ: Float(z), hasSpawned: false)
+        self.zombieWave.append(tempSeed)
+    }
     
     //MARK: SpawnZombie Logic
     func getZombieSeedIndex() -> Int {
@@ -533,13 +675,17 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 return ret
             }
         }
+        self.doneSpawning = true
         return ret
     }
     
     @objc func zombieSpawningTask() {
         let zSeedIndex = self.getZombieSeedIndex()
         if(zSeedIndex == -1) {
-            //failed to return value index. Probablly no more seeds available
+            if self.doneSpawning {
+                print("Deactivating zombie spawning")
+                self.taskTimer.invalidate()
+            }
             return
         }
         
@@ -548,7 +694,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         node.name = name
         let zombie = Zombie(name: node.name!, health: 1, node: node)
         zombies[node.name!] = zombie
-        print("Done spawning zombie")
         self.arView.scene.rootNode.addChildNode(node)
         
     }
@@ -564,7 +709,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         for child in nodeArray {
             parentNode.addChildNode(child as SCNNode)
         }
-        parentNode.name = "parentZombie"
         
         //Add physics to node
         parentNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
@@ -614,8 +758,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     
     //MARK: AR SCNView Delegate
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        print("This function was called 1")
-        print("Base Anchor Name: \(anchor.name)")
         if let name = anchor.name, name.hasPrefix("baseNode") {
             self.anchorPoint = anchor
             self.baseNode = loadBase()
