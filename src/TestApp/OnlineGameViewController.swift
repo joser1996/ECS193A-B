@@ -58,10 +58,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         confirmBaseButton.isHidden = true
         confirmBaseButton.isEnabled = false
         changePrompt(text: "Please place Base.")
+
         //Init objects
-        
         client = ClientSide(gameID: self.gameID, name: self.playerName, vc: self)
-        
         baseObj = Base()
         
         if self.isHost {
@@ -71,7 +70,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         guard ARWorldTrackingConfiguration.isSupported else {
             fatalError("AR Not supported on this device")
         }
@@ -81,7 +79,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         arView.session.run(configuration)
         arView.session.delegate = self
         arView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
-        
         UIApplication.shared.isIdleTimerDisabled = true
     }
 
@@ -89,7 +86,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         super.viewWillDisappear(animated)
         arView.session.pause()
     }
-    
     
     //MARK: Prompt Stuff
     func changePrompt(text: String) {
@@ -104,7 +100,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     }
 
     
-    
     //MARK: handleTap
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         if isPlacingBase {
@@ -113,7 +108,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             changePrompt(text: "Confirm Base Location")
             confirmBaseButton.isHidden = false
             confirmBaseButton.isEnabled = true
-            
         } else if isSyncing {
             print("is in isSyncing")
             let tapLoc = sender.location(in: self.arView)
@@ -131,13 +125,18 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
 
     }
     
+    @IBAction func confirmBaseLocation(_ sender: UIButton) {
+        //No more Base Placing
+        self.isPlacingBase = false
+        self.confirmBaseButton.isHidden = true
+        self.confirmBaseButton.isEnabled = false
+        self.client.confirmBaseTask(this: self)
+    }
     
     //MARK: handleShooting
     func handleShooting(sender: UITapGestureRecognizer) {
         Shooter.fireProjectile(view: arView)
     }
-    
-    
     
     //MARK: Collision Detection
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
@@ -173,174 +172,17 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 }
                 self.client.zombieWave[zKey]?.isDead = true
             }
-            
-            
             DispatchQueue.main.async {
                 contact.nodeA.removeFromParentNode()
                 contact.nodeB.removeFromParentNode()
                 self.updateCounter += 1
                 if(self.updateCounter == 1) {
-                    self.updateZombiesTask()
+                    self.client.updateZombiesTask()
                     self.updateCounter = 0
                 }
             }
         }
     }
-    
-    
-    @IBAction func confirmBaseLocation(_ sender: UIButton) {
-        //No more Base Placing
-        self.isPlacingBase = false
-        self.confirmBaseButton.isHidden = true
-        self.confirmBaseButton.isEnabled = false
-        self.client.confirmBaseTask(this: self)
-    }
-    
-    
-    //MARK: Zombie Update Task
-    @objc func updateZombiesTask() {
-        
-        print("In updateZombiesTask")
-//        let endPoint = "/update-wave/"
-//        guard let gameID = self.gameID else {return}
-//        let urlString = client.server + endPoint + String(gameID)
-//        guard let url = URL(string: urlString) else {return}
-//
-//        var json: [String: Any] = [:]
-//        for (index, seed) in self.zombieWave.enumerated() {
-//            if seed.isDead {
-//                //will put health in here later
-//                json[String(seed.id)] = true
-//                self.zombieWave.remove(at: index)
-//            }
-//        }
-//        var request = URLRequest(url: url)
-//
-//        do {
-//            let jsonData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted )
-//            request.httpBody = jsonData
-//            print("Seding: \(jsonData), \(json)")
-//
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//
-//        request.httpMethod = "POST"
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        request.addValue("application/json", forHTTPHeaderField: "Accept")
-//
-//        let updateZombiesTask = urlSession.dataTask(with: request) {
-//            (data, response, error) in
-//            print("In handler updateZombie")
-//            if let error = error {
-//                print("error: \(error)")
-//                return
-//            }
-//
-//            guard let data = data else {
-//                print("Couldn't print data")
-//                return
-//            }
-//
-//            do{
-//                let json = try JSONSerialization.jsonObject(with: data, options: [])
-//
-//                guard let dict = json as? [String: Any] else {return}
-//                guard let waveNum = dict["waveNumber"] as? Int else {return}
-//                self.client.currentWave = waveNum
-//
-//                guard let wave = dict["zombieWave"] as? [String: Any] else {
-//                    print("Failed to get seed!")
-//                    return
-//                }
-//
-//                guard let temp = self.getSeedArray(wave: wave) else {return}
-//
-//                DispatchQueue.main.async {
-//                    self.updateFromReceived(ar: temp)
-//                }
-//
-//            } catch {
-//                print("Error: \(error.localizedDescription)")
-//            }
-//
-//
-//
-//        }
-//
-//        updateZombiesTask.resume()
-        
-    }
-    
-    func updateFromReceived(ar: [ZombieSeed]) {
-        print("In updatedFromRecieved")
-//        for (idx,seed) in self.client.zombieWave {
-//            for (index, s)  in ar.enumerated() {
-//                if (s.id == seed.id) {
-//                    break
-//                }
-//                if(index == (ar.count - 1)) {
-//                    //delete form array
-//                    self.client.zombieWave.remove(at: idx)
-//
-//                    //remove node
-//                    guard let z = self.zombies[String(seed.id)] else {
-//                        print("failed to find zombie object")
-//                        return
-//                    }
-//                    guard let node = z.node else {
-//                        print("Couldn't find node")
-//                        return
-//                    }
-//                    node.removeFromParentNode()
-//                }
-//            }
-//        }
-    }
-    
-    
-    func getSeedArray(wave: [String: Any]) -> [ZombieSeed]? {
-        var tAr: [ZombieSeed] = []
-        for (key,_) in wave {
-            guard let seed = wave[key] as? [String: Any]
-                else {
-                    print("Failed to get seed")
-                    return nil
-            }
-            guard let angle = seed["angle"] as? Float else {
-                print("Failed at angle")
-                return nil
-
-            }
-            guard let distance = seed["distance"] as? Double else {
-                print("fail distance")
-                return nil
-
-            }
-            guard let id = seed["id"] as? Int else {
-                print("fail id")
-                return nil
-
-            }
-            guard let x = seed["positionX"] as? Double else {
-                print("fail x")
-                return nil
-
-            }
-            guard let y = seed["positionY"] as? Double else {
-                fatalError("Fail y")
-            }
-            guard let z = seed["positionZ"] as? Double else {
-                fatalError("Fail x")
-            }
-
-            let tempSeed = ZombieSeed(angle: angle, distance: Float(distance), id: id, positionX: Float(x), positionY: Float(y), positionZ: Float(z), hasSpawned: false)
-            tAr.append(tempSeed)
-        }
-        
-        return tAr
-    }
-    
     
     
     //MARK: AR SCNView Delegate
@@ -353,27 +195,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         }
     }
     
-    
-    
-    
-    
-//    //MARK: AR Session Delegate
-//    func session(_ session: ARSession, didUpdate frame: ARFrame) {
-//
-//        switch frame.worldMappingStatus {
-//        case .notAvailable, .limited:
-//            print("Mapping stateus: NA or Limited")
-//        case .extending:
-//            print("Extending map")
-//
-//        case .mapped:
-//            print("Mapped state")
-//
-//        @unknown default:
-//            print("Unkown world Mapping State")
-//        }
-//
-//    }
     
     func sessionWasInterrupted(_ session: ARSession) {
         print("Session was interrupted")
