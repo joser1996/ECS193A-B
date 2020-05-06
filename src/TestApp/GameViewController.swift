@@ -165,7 +165,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         
         sceneViewGame.session.run(configuration, options: op)
         sceneViewGame.session.delegate = self
-        
+        sceneViewGame.debugOptions = [ARSCNDebugOptions.showFeaturePoints, .showBoundingBoxes]
         updatePromptLabel(prompt: "Tap on the crosshair")
     }
 
@@ -327,7 +327,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         
             let hitTestResults = sceneViewGame.hitTest(center)
             let node = hitTestResults.first?.node
-        
+      
+            print("HIT: node \(node)")
+            print("HIT: name \(node?.name)")
+            print("HIT: parent \(node?.parent)")
+            print("")
+            
             if let name = node?.name, name != "baseNode" {
                 guard let parentNode = node?.parent else {
                     print("No parent node")
