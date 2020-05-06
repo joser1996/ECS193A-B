@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		16C0F28A245BEF070059B247 /* ModelNameFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C0F289245BEF070059B247 /* ModelNameFetcher.swift */; };
 		9302697823FB812B00116608 /* BasePlacementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302697723FB812B00116608 /* BasePlacementController.swift */; };
+		931D1F20246332C90082BC1F /* ClientSide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D1F1F246332C90082BC1F /* ClientSide.swift */; };
+		931D1F222463385B0082BC1F /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931D1F212463385B0082BC1F /* Base.swift */; };
 		9327130C2459F44700050DD4 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932713082459F44600050DD4 /* InventoryViewController.swift */; };
 		9327130D2459F44700050DD4 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 932713092459F44600050DD4 /* ScanViewController.swift */; };
 		9327130E2459F44700050DD4 /* InventoryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9327130A2459F44600050DD4 /* InventoryViewCell.swift */; };
@@ -74,6 +76,8 @@
 /* Begin PBXFileReference section */
 		16C0F289245BEF070059B247 /* ModelNameFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelNameFetcher.swift; sourceTree = "<group>"; };
 		9302697723FB812B00116608 /* BasePlacementController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePlacementController.swift; sourceTree = "<group>"; };
+		931D1F1F246332C90082BC1F /* ClientSide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientSide.swift; sourceTree = SOURCE_ROOT; };
+		931D1F212463385B0082BC1F /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = SOURCE_ROOT; };
 		932713082459F44600050DD4 /* InventoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewController.swift; sourceTree = "<group>"; };
 		932713092459F44600050DD4 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		9327130A2459F44600050DD4 /* InventoryViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewCell.swift; sourceTree = "<group>"; };
@@ -196,6 +200,8 @@
 		93C74FA423D91CFE003BF585 /* TestApp */ = {
 			isa = PBXGroup;
 			children = (
+				931D1F212463385B0082BC1F /* Base.swift */,
+				931D1F1F246332C90082BC1F /* ClientSide.swift */,
 				9367826F2461215F00BBEA87 /* Shooting.swift */,
 				93271314245A294B00050DD4 /* David_Screeching.mp3 */,
 				932713102459FD0400050DD4 /* Resnet50.mlmodel */,
@@ -421,6 +427,7 @@
 				E0CE0155245A3203001A3C77 /* InventoryViewCell.swift in Sources */,
 				939BE830240ACB2100B1F458 /* PlayerSession.swift in Sources */,
 				9327130D2459F44700050DD4 /* ScanViewController.swift in Sources */,
+				931D1F222463385B0082BC1F /* Base.swift in Sources */,
 				9327130E2459F44700050DD4 /* InventoryViewCell.swift in Sources */,
 				9302697823FB812B00116608 /* BasePlacementController.swift in Sources */,
 				9327130F2459F44700050DD4 /* CGImagePropertyOrientation+UIImageOrientation.swift in Sources */,
@@ -440,6 +447,7 @@
 				E074C2E7240E0AC80049D7BE /* PauseViewController.swift in Sources */,
 				932713122459FD0500050DD4 /* Resnet50.mlmodel in Sources */,
 				93369F1A244261C9001935E6 /* OnlineMultiplayerController.swift in Sources */,
+				931D1F20246332C90082BC1F /* ClientSide.swift in Sources */,
 				E0CE0158245A3203001A3C77 /* SqueezeNet.mlmodel in Sources */,
 				E0CE0159245A3203001A3C77 /* ScanViewController.swift in Sources */,
 			);
@@ -617,13 +625,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 3BM743GJUH;
+				DEVELOPMENT_TEAM = L227T5HHPC;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior1.NT;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -638,13 +646,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 3BM743GJUH;
+				DEVELOPMENT_TEAM = L227T5HHPC;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior1.NT;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
