@@ -291,7 +291,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P7x-jy-HGF">
-                                <rect key="frame" x="40" y="0.0" width="856" height="414"/>
+                                <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="m0N-NO-rzg" appends="YES" id="NKL-fy-J4Y"/>
                                 </connections>
@@ -341,7 +341,7 @@
                             <constraint firstItem="zRI-WH-efu" firstAttribute="leading" secondItem="vfK-8u-ZDM" secondAttribute="leading" constant="558" id="HoY-ZU-m1G"/>
                             <constraint firstItem="ZNO-7A-yfI" firstAttribute="leading" secondItem="vfK-8u-ZDM" secondAttribute="leading" constant="178" id="LLy-SM-iga"/>
                             <constraint firstItem="DUn-4U-2Am" firstAttribute="top" secondItem="ZNO-7A-yfI" secondAttribute="bottom" constant="8" id="PgE-HO-nGh"/>
-                            <constraint firstItem="P7x-jy-HGF" firstAttribute="leading" secondItem="FzT-ot-4hG" secondAttribute="leadingMargin" constant="-20" id="XL7-ug-3Eg"/>
+                            <constraint firstItem="P7x-jy-HGF" firstAttribute="leading" secondItem="FzT-ot-4hG" secondAttribute="leadingMargin" constant="-60" id="XL7-ug-3Eg"/>
                             <constraint firstAttribute="bottomMargin" secondItem="P7x-jy-HGF" secondAttribute="bottom" constant="-21" id="d1c-Qo-9l4"/>
                             <constraint firstItem="xxg-yv-G9M" firstAttribute="centerX" secondItem="DUn-4U-2Am" secondAttribute="centerX" id="gTu-ce-6co"/>
                             <constraint firstItem="vfK-8u-ZDM" firstAttribute="bottom" secondItem="ZNO-7A-yfI" secondAttribute="bottom" constant="300" id="hhe-6r-SQp"/>
@@ -367,7 +367,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1276.6304347826087" y="1108.6956521739132"/>
+            <point key="canvasLocation" x="1275.6696428571429" y="1108.6956521739132"/>
         </scene>
         <!--Pause View Controller-->
         <scene sceneID="Tya-MI-ogb">
@@ -536,7 +536,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="otw-he-EVd">
-                                <rect key="frame" x="44" y="0.0" width="896" height="415"/>
+                                <rect key="frame" x="0.0" y="0.0" width="896" height="415"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="896" id="IqH-Qu-DVO"/>
@@ -609,7 +609,7 @@
                             <constraint firstItem="JAl-3S-OJD" firstAttribute="top" secondItem="9ek-pu-vyv" secondAttribute="bottom" constant="89" id="SfU-r5-WJ2"/>
                             <constraint firstItem="otw-he-EVd" firstAttribute="top" secondItem="8af-Hr-fgO" secondAttribute="top" id="VzO-Z3-EGq"/>
                             <constraint firstItem="nDD-cf-33C" firstAttribute="top" secondItem="JAl-3S-OJD" secondAttribute="bottom" constant="70" id="WAh-ae-ZZj"/>
-                            <constraint firstItem="otw-he-EVd" firstAttribute="leading" secondItem="8af-Hr-fgO" secondAttribute="leading" id="cRS-Zc-f1A"/>
+                            <constraint firstItem="otw-he-EVd" firstAttribute="leading" secondItem="8af-Hr-fgO" secondAttribute="leading" constant="-44" id="cRS-Zc-f1A"/>
                             <constraint firstItem="JAl-3S-OJD" firstAttribute="top" secondItem="Toh-5N-3rn" secondAttribute="top" constant="174" id="gec-qi-QKP"/>
                             <constraint firstItem="JAl-3S-OJD" firstAttribute="centerX" secondItem="Toh-5N-3rn" secondAttribute="centerX" id="lvJ-c3-vua"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2Hj-fT-P7q" secondAttribute="trailing" constant="20" symbolic="YES" id="vc0-Jo-Dj2"/>
@@ -635,7 +635,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1281.4092953523239" y="66.400000000000006"/>
+            <point key="canvasLocation" x="1279.0178571428571" y="65.217391304347828"/>
         </scene>
         <!--OnlineMultiplayer-->
         <scene sceneID="WBS-Fb-CVr">
