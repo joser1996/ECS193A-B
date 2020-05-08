@@ -11,6 +11,9 @@ import ARKit
 
 class Shooting {
     
+    let modelNames = ModelNameFetcher()
+    var projectile: String! = "bullet"
+    
     func getUserVector(view: ARSCNView) -> (SCNVector3, SCNVector3) {
         if let frame = view.session.currentFrame {
             let mat = SCNMatrix4(frame.camera.transform)
@@ -22,9 +25,12 @@ class Shooting {
     }
     
     func getBullet() -> SCNNode {
-        let bullet = SCNSphere(radius: 0.02)
-        bullet.firstMaterial?.diffuse.contents = UIColor.red
-        let bulletNode = SCNNode(geometry: bullet)
+//        let bullet = SCNSphere(radius: 0.02)
+//        bullet.firstMaterial?.diffuse.contents = UIColor.red
+//        let bulletNode = SCNNode(geometry: bullet)
+        let modelName: String! = "minecraftupdate2" //modelNames.getItemModelName(projectile)
+        let sceneURL = Bundle.main.url(forResource: modelName!, withExtension: "scn", subdirectory: "art.scnassets")!
+        let bulletNode = SCNReferenceNode(url: sceneURL)!
         bulletNode.name = "bullet"
         bulletNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         bulletNode.physicsBody?.isAffectedByGravity = false
@@ -41,6 +47,7 @@ class Shooting {
         node = getBullet()
         let (direction, position) = getUserVector(view: view)
         node.position = position
+        //node.scale = SCNVector3(x: 0.01, y: 0.01, z: 0.01)
         
         var nodeDirection = SCNVector3()
         nodeDirection = SCNVector3(direction.x*6, direction.y*6,direction.z*6)
