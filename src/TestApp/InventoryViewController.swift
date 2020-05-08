@@ -121,15 +121,23 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let scanVC = segue.destination as? ScanViewController {
+            scanVC.existingItems = [String](items.values)
+        }
+    }
+    
     @IBAction func exitScanAndSaveItem(unwindSegue: UIStoryboardSegue) {
         if let sourceVC = unwindSegue.source as? ScanViewController {
 
             let spacelessItem = sourceVC.item.replacingOccurrences(of: " ", with: "-")
-            print(spacelessItem)
-            items[[-1, -1]] = spacelessItem
-            addToInventory(spacelessItem)
+
+            if !items.values.contains(spacelessItem) {
+                items[[-1, -1]] = spacelessItem
+                addToInventory(spacelessItem)
             
-            collectionView.reloadData()
+                collectionView.reloadData()
+            }
         }
     }
 
