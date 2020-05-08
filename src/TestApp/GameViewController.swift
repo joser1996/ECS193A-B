@@ -57,6 +57,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         let node = loadZombie(position.x, -0.4, position.z, true, paramHealth)
         let name = generateZombieName()
         node.name = name
+        
         let zombie = Zombie(name: name, health: paramHealth, node: node)
         zombies[name] = zombie
         
@@ -165,7 +166,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         
         sceneViewGame.session.run(configuration, options: op)
         sceneViewGame.session.delegate = self
-        sceneViewGame.debugOptions = [ARSCNDebugOptions.showFeaturePoints, .showBoundingBoxes]
         updatePromptLabel(prompt: "Tap on the crosshair")
     }
 
@@ -327,11 +327,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         
             let hitTestResults = sceneViewGame.hitTest(center)
             let node = hitTestResults.first?.node
-      
-            print("HIT: node \(node)")
-            print("HIT: name \(node?.name)")
-            print("HIT: parent \(node?.parent)")
-            print("")
             
             if let name = node?.name, name != "baseNode" {
                 guard let parentNode = node?.parent else {
@@ -371,16 +366,22 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 }
                 else if hitZombie?.health == 1 {
                     Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
-                        node?.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
-                        self.removeFromParent()      
-                        print("should be purple")
+                        let parentNode = node?.parent
+                        node?.removeFromParentNode()
+                        for child in parentNode!.childNodes {
+                            child.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                        }
+                        self.removeFromParent()
                     }
                 }
                 else if hitZombie?.health == 2 {
                     Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
-                        node?.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                        let parentNode = node?.parent
+                        node?.removeFromParentNode()
+                        for child in parentNode!.childNodes {
+                            child.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                        }
                         self.removeFromParent()
-                        print("should be yellow")
                     }
                 }
                 else if hitZombie?.health == 3 {
@@ -463,6 +464,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         referenceNode.load()
         referenceNode.name = "boxNode"
         referenceNode.position = SCNVector3(x,y,z)
+        referenceNode.parent?.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
         
         return referenceNode
         }
