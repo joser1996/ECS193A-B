@@ -40,7 +40,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var masterScore: Int = 0
   
     // Inventory
-    let modelNames = ModelNameFetcher()
     var inventoryItems: [IndexPath: String] = [[0, 0]: "bullet"]
     var selectedItem: IndexPath = [0, 0]
     
@@ -252,6 +251,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         if let sourceVC = unwindSegue.source as? InventoryViewController {
             inventoryItems = sourceVC.items // store inventory items to load next time inventory opens
             selectedItem = sourceVC.selectedItem
+            Shooter.projectile = inventoryItems[selectedItem]
         }
     }
     

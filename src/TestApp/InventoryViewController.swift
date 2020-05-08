@@ -58,9 +58,8 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
     
     // Handling selection    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt: IndexPath) {
-        let cellsToReload = [didSelectItemAt, selectedItem]
         selectedItem = didSelectItemAt
-        collectionView.reloadItems(at: cellsToReload)
+        collectionView.reloadData()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
