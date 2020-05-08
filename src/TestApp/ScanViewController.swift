@@ -22,6 +22,7 @@ class ScanViewController: UIViewController, UINavigationControllerDelegate, UIIm
     @IBOutlet weak var addItemButton: UIButton!
     
     var item: String! = nil
+    var existingItems: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +30,6 @@ class ScanViewController: UIViewController, UINavigationControllerDelegate, UIIm
         classificationLabel.text = nil
         
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-//            presentPhotoPicker(sourceType: .photoLibrary)
-            // Label: unable to scan
             return
         }
         
@@ -120,10 +119,15 @@ class ScanViewController: UIViewController, UINavigationControllerDelegate, UIIm
             } else if classifications[0].confidence > 0.55 {
                 // Display top classifications ranked by confidence in the UI
                 let possibleItems = classifications[0].identifier.split(separator: ",", maxSplits: 2)
-                let description = String(format: "Item found: %@", String(possibleItems[0]))
-                self.classificationLabel.text = description
-                self.item = String(possibleItems[0])
-                self.addItemButton.isEnabled = true
+                if (self.existingItems.contains(String(possibleItems[0]))) {
+                    self.classificationLabel.text = String(format: "Repeat item found: %@", String(possibleItems[0]))
+                    self.addItemButton.isEnabled = false
+                }
+                else {
+                    self.classificationLabel.text = String(format: "Item found: %@", String(possibleItems[0]))
+                    self.item = String(possibleItems[0])
+                    self.addItemButton.isEnabled = true
+                }
             }
             else {
                 self.classificationLabel.text = "Could not detect item."
