@@ -183,9 +183,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 }
             }
             if isAZombie {
-                contact.nodeB.addParticleSystem(explosion!)
-            } else {
                 contact.nodeA.addParticleSystem(explosion!)
+            } else {
+                contact.nodeB.addParticleSystem(explosion!)
             }
         }
     }

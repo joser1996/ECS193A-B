@@ -501,7 +501,8 @@ class ClientSide {
         }
         
         //Add physics to node
-        parentNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        let bound = SCNPhysicsShape(geometry: SCNBox(width: 0.03, height: 0.05, length: 0.03, chamferRadius: 0), options: [:])
+        parentNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: bound)
         parentNode.physicsBody?.isAffectedByGravity = false
         
         //collision

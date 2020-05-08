@@ -39,7 +39,8 @@ class Shooting {
         
         bulletNode.name = "bullet"
         bulletNode.scale = SCNVector3(x: 0.01, y: 0.01, z: 0.01)
-        bulletNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        let bound = SCNPhysicsShape(geometry: SCNSphere(radius: 0.05), options: [:])
+        bulletNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: bound)
         bulletNode.physicsBody?.isAffectedByGravity = false
         
         //do collision bit mask here
