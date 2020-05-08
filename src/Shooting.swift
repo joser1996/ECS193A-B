@@ -11,6 +11,9 @@ import ARKit
 
 class Shooting {
     
+    var projectile: String! = "bullet"
+    let modelNames = ModelNameFetcher()
+    
     func getUserVector(view: ARSCNView) -> (SCNVector3, SCNVector3) {
         if let frame = view.session.currentFrame {
             let mat = SCNMatrix4(frame.camera.transform)
@@ -22,10 +25,20 @@ class Shooting {
     }
     
     func getBullet() -> SCNNode {
-        let bullet = SCNSphere(radius: 0.02)
-        bullet.firstMaterial?.diffuse.contents = UIColor.red
-        let bulletNode = SCNNode(geometry: bullet)
+        let modelName = modelNames.getItemModelName(projectile)
+        guard let zScene = SCNScene(named: "art.scnassets/\(modelName ?? "bullet.dae")") else {
+            fatalError("Couldn't load zombie")
+        }
+        
+        let bulletNode = SCNNode()
+        let nodeArray = zScene.rootNode.childNodes
+        
+        for child in nodeArray {
+            bulletNode.addChildNode(child as SCNNode)
+        }
+        
         bulletNode.name = "bullet"
+        bulletNode.scale = SCNVector3(x: 0.01, y: 0.01, z: 0.01)
         bulletNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         bulletNode.physicsBody?.isAffectedByGravity = false
         

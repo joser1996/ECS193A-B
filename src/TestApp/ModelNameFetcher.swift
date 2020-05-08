@@ -10,18 +10,18 @@ import Foundation
 
 class ModelNameFetcher {
     let modelNames = [
-        "cup": "mug-model",
-        "coffee-mug": "mug-model",
-        "bullet": "bullet-model",
-        "keyboard": "keyboard-model",
-        "pencil": "pencil-model",
-        "stop-sign": "stop-sign-model",
-        "water-bottle": "water-bottle-model",
-        "rubiks-cube": "rubiks-cube-model",
-        "glasses": "glasses-model",
-        "sunglasses": "glasses-model",
-        "tv-remote": "TV_remote-model",
-        "lamp": "lamp-model"
+        "cup": "mug",
+        "coffee-mug": "mug",
+        "bullet": "bullet",
+        "keyboard": "keyboard",
+        "pencil": "pencil",
+        "stop-sign": "stop-sign",
+        "water-bottle": "water-bottle",
+        "rubiks-cube": "rubiks-cube",
+        "glasses": "glasses",
+        "sunglasses": "glasses",
+        "tv-remote": "TV_remote",
+        "lamp": "lamp"
     ]
     
     func getItemModelName(_ itemName: String) -> String! {
