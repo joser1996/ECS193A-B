@@ -145,8 +145,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue {
             
-            contact.nodeB.physicsBody?.categoryBitMask = 0
-            contact.nodeA.physicsBody?.categoryBitMask = 0
+            contact.nodeB.physicsBody?.categoryBitMask = 7
+            contact.nodeA.physicsBody?.categoryBitMask = 7
             //handle logic to differentiate b/w  targets
             
             //increment score based on target
@@ -156,7 +156,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 print("NO NAME !!!")
                 return
             }
-            
+            var isAZombie:Bool = false
+            let explosion = SCNParticleSystem(named: "Explode", inDirectory: nil)
             if nodeAName.hasPrefix("bullet") {
                 //node b is the zombie
                 guard let zKey = contact.nodeB.name else {
@@ -166,6 +167,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 self.client.zombieWave[zKey]?.isDead = true
             } else {
                 //node a is the zombie
+                isAZombie = true
                 guard let zKey = contact.nodeA.name else {
                     print("NodeA has no name")
                     return
@@ -180,6 +182,11 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                     self.client.updateZombiesTask()
                     self.updateCounter = 0
                 }
+            }
+            if isAZombie {
+                contact.nodeB.addParticleSystem(explosion!)
+            } else {
+                contact.nodeA.addParticleSystem(explosion!)
             }
         }
     }
