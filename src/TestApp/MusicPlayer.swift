@@ -31,6 +31,36 @@ class MusicPlayer {
         
     }
     
+    func startSong() {
+        if let bundle = Bundle.main.path(forResource: "NightOfDIzzySpells", ofType: "mp3") {
+            let song = NSURL(fileURLWithPath: bundle)
+            do{
+                print("In do")
+                player = try AVAudioPlayer(contentsOf: song as URL)
+                guard let player = player else {
+                    print("Failed here dude")
+                    return
+                    
+                }
+                player.numberOfLoops = -1
+                player.prepareToPlay()
+                var ret = player.play()
+                if ret { print("Couldn't play") }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func pauseSong() {
+        guard let player = player else {return}
+        player.pause()
+    }
+    
+    func resumeSong() {
+        guard let player = player else {return}
+        player.play()
+    }
     func stopBackgroundMusic() {
         guard let player = player else {return}
         player.stop()
@@ -56,5 +86,6 @@ class MusicPlayer {
         }
     }
     
+
 }
 

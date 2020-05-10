@@ -321,6 +321,9 @@ class ClientSide {
         //print("Setting up background task")
         self.taskTimer = Timer.scheduledTimer(timeInterval:1, target: self, selector: #selector(self.zombieSpawningTask), userInfo: nil, repeats: true)
         self.gameState = GameState.ActiveGame
+        
+        //start backgroung music
+        MusicPlayer.shared.startSong()
     }
     
     /*
@@ -540,14 +543,6 @@ class ClientSide {
         self.zombieWave[sk]?.hasSpawned = true
         return parentNode
     }
-    
-    
-    //    func mainGamePrep() {
-    //        self.listenForWaveTask()
-    //        while(!self.recievedZombies) {
-    //            print("Waiting for zombies")
-    //        }
-    //    }
     
     
 }

@@ -37,6 +37,7 @@
 		93C74FB223D91D01003BF585 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93C74FB023D91D01003BF585 /* LaunchScreen.storyboard */; };
 		93C74FBD23D91D01003BF585 /* TestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C74FBC23D91D01003BF585 /* TestAppTests.swift */; };
 		93C74FC823D91D01003BF585 /* TestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C74FC723D91D01003BF585 /* TestAppUITests.swift */; };
+		93F3CB9C2468AD2A00A5CCF1 /* NightOfDIzzySpells.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 93F3CB9B2468AD2A00A5CCF1 /* NightOfDIzzySpells.mp3 */; };
 		93F8280624651B48002E41CE /* Explode.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 93F8280524651B48002E41CE /* Explode.scnp */; };
 		93F860EA2447A51E003FCF5B /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F860E92447A51E003FCF5B /* MusicPlayer.swift */; };
 		93F860EC244E54C4003FCF5B /* OnlineGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F860EB244E54C4003FCF5B /* OnlineGameViewController.swift */; };
@@ -113,6 +114,7 @@
 		93C74FC323D91D01003BF585 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C74FC723D91D01003BF585 /* TestAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppUITests.swift; sourceTree = "<group>"; };
 		93C74FC923D91D01003BF585 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93F3CB9B2468AD2A00A5CCF1 /* NightOfDIzzySpells.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = NightOfDIzzySpells.mp3; sourceTree = "<group>"; };
 		93F8280524651B48002E41CE /* Explode.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = Explode.scnp; sourceTree = "<group>"; };
 		93F860E92447A51E003FCF5B /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
 		93F860EB244E54C4003FCF5B /* OnlineGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineGameViewController.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				9342F3882453E997008AA9DC /* wind.mp3 */,
+				93F3CB9B2468AD2A00A5CCF1 /* NightOfDIzzySpells.mp3 */,
 				E0CE014A244EF94F001A3C77 /* wind.mp3 */,
 			);
 			path = Sounds;
@@ -411,6 +414,7 @@
 				E0591F6F2432D71500DBD38E /* BLOODY.TTF in Resources */,
 				9313E98D24650EBD00677902 /* explosion.scnp in Resources */,
 				93F8280624651B48002E41CE /* Explode.scnp in Resources */,
+				93F3CB9C2468AD2A00A5CCF1 /* NightOfDIzzySpells.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
