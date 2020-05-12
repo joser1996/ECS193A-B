@@ -112,11 +112,10 @@ class OnlineMultiplayerController: UIViewController {
         
     }
     
-
-    
+    //silent push notifications
+    //Orientation
+    //Reward System
     @IBAction func hostGameRequest(_ sender: UIButton) {
-    
-        
         if !nameEntered {
             print("No Name was entered")
             return
@@ -126,8 +125,8 @@ class OnlineMultiplayerController: UIViewController {
         
         let endPoint = "/host-request/" + name
         
-        let gameName = "game33"
-        let pass = "pass33"
+        let gameName = "game37"
+        let pass = "pass37"
         let urlString = server + endPoint + "/" + gameName + "/" + pass
         guard let url = URL(string: urlString) else {return}
 
