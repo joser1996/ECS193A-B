@@ -72,7 +72,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneViewGame.delegate = self
-        mcService = previousViewController.mcService
+ //       mcService = previousViewController.mcService
 //        mcService.receivedDataHandler = receivedData
         
         self.GameOver.isHidden = true
@@ -470,7 +470,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     // MARK: - AR session management
     private func loadZombie(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
-        let sceneURL = Bundle.main.url(forResource: "walking zombie", withExtension: "scn", subdirectory: "art.scnassets")!
+        let sceneURL = Bundle.main.url(forResource: "minecraftupdate2", withExtension: "scn", subdirectory: "art.scnassets")!
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
         referenceNode.name = "boxNode"
