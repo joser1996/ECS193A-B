@@ -84,7 +84,9 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         if let name = anchor.name, name.hasPrefix("cube") {
             anchorPoint = anchor
             baseNode = loadBase()
-            //self.connectionLabel.text = "Map More Of The Area"
+            DispatchQueue.main.async {
+                self.connectionLabel.text = "Map More Of The Area By Moving Camera Around"
+            }
             node.addChildNode(baseNode)
         }
     }
