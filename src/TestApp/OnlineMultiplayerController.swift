@@ -125,7 +125,10 @@ class OnlineMultiplayerController: UIViewController {
         guard let name = self.playerName else {return}
         
         let endPoint = "/host-request/" + name
-        let urlString = server + endPoint
+        
+        let gameName = "game33"
+        let pass = "pass33"
+        let urlString = server + endPoint + "/" + gameName + "/" + pass
         guard let url = URL(string: urlString) else {return}
 
         let hostReqTask = urlSession.dataTask(with: url) {

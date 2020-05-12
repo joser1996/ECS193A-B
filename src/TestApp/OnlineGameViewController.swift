@@ -56,6 +56,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         arView.scene.physicsWorld.contactDelegate = self
         confirmBaseButton.isHidden = true
         confirmBaseButton.isEnabled = false
+        promptLabel.font = UIFont(name: "Bloody", size: 35)
+        promptLabel.textColor = UIColor.red
         changePrompt(text: "Please place Base.")
 
         //Init objects
@@ -96,6 +98,15 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     }
     func showPrompt() {
         self.promptLabel.isHidden = false
+    }
+    
+    func notifyUser(prompt: String) {
+        changePrompt(text: prompt)
+        showPrompt()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5){
+            self.hidePrompt()
+        }
+        
     }
 
     
@@ -176,11 +187,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             DispatchQueue.main.async {
                 contact.nodeA.removeFromParentNode()
                 contact.nodeB.removeFromParentNode()
-                self.updateCounter += 1
-                if(self.updateCounter == 1) {
-                    self.client.updateZombiesTask()
-                    self.updateCounter = 0
-                }
+                self.client.updateZombiesTask()
+                //elf.updateCounter = 0
+                
             }
             if isAZombie {
                 contact.nodeA.addParticleSystem(explosion!)

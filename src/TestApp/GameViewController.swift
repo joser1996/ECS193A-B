@@ -61,10 +61,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         let zombie = Zombie(name: name, health: paramHealth, node: node)
         zombies[name] = zombie
         
-        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: zombie, action: "create"), requiringSecureCoding: false)
-              else { fatalError("can't encode zombie") }
+        //guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: zombie, action: "create"), requiringSecureCoding: false)
+          //    else { fatalError("can't encode zombie") }
         
-        self.mcService.sendToAllPeers(data)
+        //self.mcService.sendToAllPeers(data)
         
         self.sceneViewGame.scene.rootNode.addChildNode(node)
     }
@@ -72,86 +72,87 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneViewGame.delegate = self
-        mcService = previousViewController.mcService
-        mcService.receivedDataHandler = receivedData
+ //       mcService = previousViewController.mcService
+//        mcService.receivedDataHandler = receivedData
         
         self.GameOver.isHidden = true
-        if isMaster {   // Only master generates game data, sends to slave
+        // Only master generates game data, sends to slave
 
-            var wave = 1
-            var zombieCount = 0
-            var timerOne = 1
-            var sleep = 7
-            
-            _ = loadBase()
-            
-            self.zombieTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-                if zombieCount == 0 && sleep != 0 {
+        var wave = 1
+        var zombieCount = 0
+        var timerOne = 1
+        var sleep = 7
+        
+        let base = loadBase()
+        //base.parent.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+        
+        self.zombieTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            if zombieCount == 0 && sleep != 0 {
+                sleep -= 1
+            }
+            else if zombieCount == 10 + wave * 10 {
+                if sleep == 0 {
+                    for _ in 1...(10 + wave * 10) {
+                        self.spawnZombie(paramHealth: Int.random(in: 1...3))
+                    }
+                    wave += 1
+                    zombieCount = 0
+                    timerOne = 0
+                    sleep = 20
+                }
+                else {
                     sleep -= 1
                 }
-                else if zombieCount == 10 + wave * 10 {
-                    if sleep == 0 {
-                        for _ in 1...(10 + wave * 10) {
-                            self.spawnZombie(paramHealth: Int.random(in: 1...3))
-                        }
-                        wave += 1
-                        zombieCount = 0
-                        timerOne = 0
-                        sleep = 20
+            }
+            else if timerOne == 0 {
+                // Zombie spawn code
+                self.spawnZombie(paramHealth: Int.random(in: 1...3))
+                zombieCount += 1
+                
+                // Reset timer
+                if zombieCount < (10 + wave * 10)/4 {
+                    if wave < 3 {
+                        timerOne = Int.random(in: 4...6)
+                    }
+                    else if wave < 5 {
+                        timerOne = Int.random(in: 3...5)
+                    }
+                    else if wave < 10 {
+                        timerOne = Int.random(in: 2...4)
                     }
                     else {
-                        sleep -= 1
+                        timerOne = Int.random(in: 1...3)
                     }
                 }
-                else if timerOne == 0 {
-                    // Zombie spawn code
-                    self.spawnZombie(paramHealth: Int.random(in: 1...3))
-                    zombieCount += 1
-                    
-                    // Reset timer
-                    if zombieCount < (10 + wave * 10)/4 {
-                        if wave < 3 {
-                            timerOne = Int.random(in: 4...6)
-                        }
-                        else if wave < 5 {
-                            timerOne = Int.random(in: 3...5)
-                        }
-                        else if wave < 10 {
-                            timerOne = Int.random(in: 2...4)
-                        }
-                        else {
-                            timerOne = Int.random(in: 1...3)
-                        }
+                else if zombieCount < (10 + wave * 10)/2 {
+                    if wave < 5 {
+                        timerOne = Int.random(in: 3...5)
                     }
-                    else if zombieCount < (10 + wave * 10)/2 {
-                        if wave < 5 {
-                            timerOne = Int.random(in: 3...5)
-                        }
-                        else if wave < 10 {
-                            timerOne = Int.random(in: 2...4)
-                        }
-                        else {
-                            timerOne = Int.random(in: 1...3)
-                        }
+                    else if wave < 10 {
+                        timerOne = Int.random(in: 2...4)
                     }
-                    else if zombieCount < 3 * (10 + wave * 10)/4 {
-                        if wave < 10 {
-                            timerOne = Int.random(in: 2...4)
-                        }
-                        else {
-                            timerOne = Int.random(in: 1...3)
-                        }
+                    else {
+                        timerOne = Int.random(in: 1...3)
+                    }
+                }
+                else if zombieCount < 3 * (10 + wave * 10)/4 {
+                    if wave < 10 {
+                        timerOne = Int.random(in: 2...4)
                     }
                     else {
                         timerOne = Int.random(in: 1...3)
                     }
                 }
                 else {
-                    timerOne -= 1
+                    timerOne = Int.random(in: 1...3)
                 }
+            }
+            else {
+                timerOne -= 1
             }
         }
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -178,9 +179,9 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         super.viewWillDisappear(animated)
         sceneViewGame.session.pause()
         
-        if isMaster {
+        /*if isMaster {
             self.zombieTimer.invalidate()
-        }
+        }*/
     }
 
 
@@ -336,22 +337,21 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 
                 guard let zIndex = parentNode.name else {return}
                 let hitZombie = zombies[zIndex]
-                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: hitZombie, action: "damage"), requiringSecureCoding: false)
+                /*guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: hitZombie, action: "damage"), requiringSecureCoding: false)
                       else { fatalError("can't encode zombie") }
-                self.mcService.sendToAllPeers(data)
+                self.mcService.sendToAllPeers(data)*/
                 
-                print("Hit zombie")
                 hitZombie?.health? -= 1
                 if hitZombie?.health == 0 {
                     MusicPlayer.shared.playZombieDying()
                     parentNode.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
                     
-                    if isMaster {
-                        masterScore += hitZombie?.maxHealth ?? 0
-                        guard let data2 = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(score: masterScore), requiringSecureCoding: false)
-                            else { fatalError("can't encode score")}
-                        self.mcService.sendToAllPeers(data2)
-                    }
+
+                    masterScore += hitZombie?.maxHealth ?? 0
+                    /*guard let data2 = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(score: masterScore), requiringSecureCoding: false)
+                        else { fatalError("can't encode score")}
+                    self.mcService.sendToAllPeers(data2)*/
+                    
                     let myScore = String(masterScore)
                     if (masterScore < 10) {
                         Score.text = "Score: 00" + myScore
@@ -386,7 +386,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 }
                 else if hitZombie?.health == 3 {
                     Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
-                        node?.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                    
                     }
                 }
             }
@@ -400,11 +400,11 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         }
     }
     
-    var mapProvider: MCPeerID?
+    //var mapProvider: MCPeerID?
     
     // TODO: ADD Functionality to share the World Map data
     /// - Tag: ReceiveData
-    func receivedData(_ data: Data, from peer: MCPeerID) {
+    /*func receivedData(_ data: Data, from peer: MCPeerID) {
         do {
             if let packet = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? GamePacket {
                 if let zombie = packet.zombie, packet.action == "create" {
@@ -457,21 +457,21 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         } catch {
             print("can't zombie data received from \(peer)")
         }
-    }
+    }*/
     private func loadBase(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
         let sceneURL = Bundle.main.url(forResource: "base copy", withExtension: "scn", subdirectory: "art.scnassets")!
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
         referenceNode.name = "boxNode"
         referenceNode.position = SCNVector3(x,y,z)
-        referenceNode.parent?.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+       
         
         return referenceNode
         }
     
     // MARK: - AR session management
     private func loadZombie(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
-        let sceneURL = Bundle.main.url(forResource: "minecraftupdate2", withExtension: "scn", subdirectory: "art.scnassets")!
+        let sceneURL = Bundle.main.url(forResource: "zombie", withExtension: "scn", subdirectory: "art.scnassets")!
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
         referenceNode.name = "boxNode"
@@ -503,11 +503,11 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             referenceNode.runAction(zombieSequence, completionHandler:{
                 self.health -= 1
                 
-                guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(health: self.health), requiringSecureCoding: false)
+               /* guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(health: self.health), requiringSecureCoding: false)
                 else { fatalError("can't encode health") }
                 
                 self.mcService.sendToAllPeers(data)
-                
+                */
                 if (self.health == 0) {
                     //print("Game Over\n")
                     print("Score: \(self.masterScore)")

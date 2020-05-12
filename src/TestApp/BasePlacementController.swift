@@ -20,30 +20,30 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     @IBOutlet weak var shareMapButton: UIButton!
     @IBOutlet weak var connectionLabel: UILabel!
     @IBOutlet weak var gameModeState: UISwitch!
-    @IBOutlet weak var selectPlayerButton: UIButton!
+    //@IBOutlet weak var selectPlayerButton: UIButton!
     @IBOutlet weak var promptLabel: UILabel!
     
     var baseNode: SCNNode!
     var anchorPoint: ARAnchor!
-    var isHosting: Bool = true
+    //var isHosting: Bool = true
     var worldMap: ARWorldMap!
     var activePlayers: [Player]!
     
     // MARK: Multipeer Implementation
-    var mcService : MultipeerSession!
+    //var mcService : MultipeerSession!
     
     //MARK: View Life Cycle
     //View Life Cycle modeled after AR Multipeer Demo
     override func viewDidLoad() {
         super.viewDidLoad()
         MusicPlayer.shared.stopBackgroundMusic()
-        mcService = MultipeerSession(receivedDataHandler: receivedData)
+        //mcService = MultipeerSession(receivedDataHandler: receivedData)
         sceneView.delegate = self
         shareMapButton.isEnabled = false
-        connectionLabel.text = "Searching for peers..."
-        if isHosting {
+        connectionLabel.text = "Place Base Down By Tapping On Screen"
+        /*if isHosting {
             promptLabel.text = "Place Base Down"
-        }
+        }*/
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -84,6 +84,9 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         if let name = anchor.name, name.hasPrefix("cube") {
             anchorPoint = anchor
             baseNode = loadBase()
+            DispatchQueue.main.async {
+                self.connectionLabel.text = "Map More Of The Area By Moving Camera Around"
+            }
             node.addChildNode(baseNode)
         }
     }
@@ -92,7 +95,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     //MARK: - AR Session Delegate
     //Inform View of changes in quality of device position tracking
     //code to update in this case goes in this functon
-    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+    /*func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         
         // Update the UI to provide feedback on the state of the AR experience.
         let trackingState = camera.trackingState
@@ -117,47 +120,47 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         default:
             print("default")
         }
-    }
+    }*/
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        print("Player Count: \(Player.playerCount)")
-        if (!mcService.connectedPeers.isEmpty && mapProvider == nil) {
+        //print("Player Count: \(Player.playerCount)")
+        /*if (!mcService.connectedPeers.isEmpty && mapProvider == nil) {
             let peerNames = mcService.connectedPeers.map({ $0.displayName }).joined(separator: ", ")
             print("Connected with \(peerNames).")
             connectionLabel.text = "Connected with: \(peerNames)"
-        }
+        }*/
         
         switch frame.worldMappingStatus {
         case .notAvailable, .limited:
             print("MappingStatus: NA or Limited")
         case .extending:
 
-            shareMapButton.isEnabled = (baseNode != nil) || (Player.playerCount != 0)
+            shareMapButton.isEnabled = (baseNode != nil) //|| (Player.playerCount != 0)
             print("MappingStatus: Extending")
 
         case .mapped:
 
-            shareMapButton.isEnabled = (baseNode != nil) || (Player.playerCount != 0)
+            shareMapButton.isEnabled = (baseNode != nil) //|| (Player.playerCount != 0)
 
             print("MappingStatus: Mapped")
         @unknown default:
             print("Unknown worldMappingStatus")
         }
         
-        if mapProvider != nil {
+        /*if mapProvider != nil {
             shareMapButton.setTitle("Map Received! Proceed to game...", for: UIControl.State.normal)
-        }
+        }*/
     }
     
     
     // MARK: - AR session management
-    private func loadCube() -> SCNNode {
+    /*private func loadCube() -> SCNNode {
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         let boxNode = SCNNode()
         boxNode.geometry = box
         boxNode.name = "boxNode"
         return boxNode
-    }
+    }*/
     
     private func loadBase() -> SCNNode {
         let sceneURL = Bundle.main.url(forResource: "base copy", withExtension: "scn", subdirectory: "art.scnassets")!
@@ -168,7 +171,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     }
     // MARK: - Session Observer
     func sessionWasInterrupted(_ session: ARSession) {
-        print("Sessin was interrupted")
+        print("Session was interrupted")
     }
     
     func sessionInterruptionEnded(_ session: ARSession) {
@@ -216,10 +219,10 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     // MARK: - Common View Stuff
     @IBAction func handleSceneTap(_ sender: UITapGestureRecognizer) {
         
-        if !isHosting {
+        /*if !isHosting {
             print("Can't set base.")
             return
-        }
+        }*/
         
         // Hit test to find a place for a virtual object.
         guard let hitTestResult = sceneView
@@ -240,7 +243,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     var mapProvider: MCPeerID?
     
     /// - Tag: ReceiveData
-    func receivedData(_ data: Data, from peer: MCPeerID) {
+    /*func receivedData(_ data: Data, from peer: MCPeerID) {
         print("Data received from \(peer)")
         do {
             if let sharedWorldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data) {
@@ -264,22 +267,22 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         } catch {
             print("can't decode data recieved from \(peer)")
         }
-    }
+    }*/
     
     @IBAction func handleShareMap(_ sender: Any) {
         if mapProvider == nil {
             sceneView.session.getCurrentWorldMap { worldMap, error in
-                guard let map = worldMap
+                /*guard let map = worldMap
                     else { print("Error: \(error!.localizedDescription)"); return }
                 guard let data = try? NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
                     else { fatalError("can't encode map") }
-                //self.mcService.sendToAllPeers(data)
+                self.mcService.sendToAllPeers(data)
                 if self.activePlayers != nil {
                     self.mcService.sendToConnectedPeers(data, self.activePlayers)
                 }
                 else {
                     print("No active Players!!")
-                }
+                }*/
             }
         }
     }
@@ -296,8 +299,8 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
                 }
                 
                 gameVC.previousViewController = self
-                gameVC.isMaster = (mapProvider == nil)
-                print("Passing self to next controller")
+                //gameVC.isMaster = (mapProvider == nil)
+                //print("Passing self to next controller")
             }
             else if let playerVC = segue.destination as? PlayerSession {
                 playerVC.previousVC = self
@@ -306,40 +309,40 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     }
     
     
-    @IBAction func gameModeState(_ sender: UISwitch) {
+    /*@IBAction func gameModeState(_ sender: UISwitch) {
         //On means Hosting a game
-        let gameState: Bool = sender.isOn
+        //let gameState: Bool = sender.isOn
         //Off means Joining Game
-        print("Switch: \(gameState)")
-        if(gameState == true){
-            setForHosting()
-            self.isHosting = true
+        //print("Switch: \(gameState)")
+        //if(gameState == true){
+        setForHosting()
+        /*    self.isHosting = true
         }
         else{
             self.isHosting = false
             setForJoining()
-        }
+        }*/
         
     }
     
     
     func setForHosting() {
-        selectPlayerButton.isHidden = false
-        selectPlayerButton.isEnabled = true
+        //selectPlayerButton.isHidden = false
+        //selectPlayerButton.isEnabled = true
         
         shareMapButton.isHidden = false
         promptLabel.text = "Place Base Down"
     }
 
     func setForJoining() {
-        selectPlayerButton.isHidden = true
-        selectPlayerButton.isEnabled = false
+        //selectPlayerButton.isHidden = true
+        //selectPlayerButton.isEnabled = false
         
         shareMapButton.isHidden = true
         shareMapButton.isEnabled = false
         
         promptLabel.text = "Waiting For Map From Host"
-    }
+    }*/
     
 
 }
