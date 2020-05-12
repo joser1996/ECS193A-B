@@ -83,8 +83,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         var timerOne = 1
         var sleep = 7
         
-        let base = loadBase()
-        //base.parent.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+        _ = loadBase()
+
         
         self.zombieTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             if zombieCount == 0 && sleep != 0 {
@@ -479,12 +479,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         
         if isZombie {
             if health == 1 {
-                referenceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
-                print("Health is 1")
+                for child in referenceNode.childNodes {
+                    child.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                }
             }
             else if health == 2 {
-                print("Health is 2")
-                referenceNode.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                for child in referenceNode.childNodes {
+                    child.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                }
             }
 
             
