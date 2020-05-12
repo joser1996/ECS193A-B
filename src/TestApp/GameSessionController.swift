@@ -17,6 +17,7 @@ class GameSessionController: UIViewController, UITableViewDataSource {
     
     let NUM_PLAYERS = 4
     let BASE_SERVER_URL = "http://server162.site:59435"
+    let TIMER_LENGTH = 3
     
     var isNewGame: Bool!
     var gameId: Int!
@@ -41,12 +42,12 @@ class GameSessionController: UIViewController, UITableViewDataSource {
         else {
             helpText.text = "Waiting for host to start game..."
             startGame.isHidden = true
-            gameStateTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: true, block: { _ in
+            gameStateTimer = Timer.scheduledTimer(withTimeInterval: TIMER_LENGTH, repeats: true, block: { _ in
                 self.checkGameState()
             })
         }
         
-        playerNameTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { _ in
+        playerNameTimer = Timer.scheduledTimer(withTimeInterval: TIMER_LENGTH, repeats: true, block: { _ in
             self.fetchPlayerNames()
         })
     }

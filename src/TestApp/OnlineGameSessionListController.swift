@@ -116,26 +116,40 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
                     return
                 }
                 
+                var didJoinSuccessfully = 0
+                var error: String!
+                
                 do {
                     if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
                         if let id = convertedJsonIntoDict["gameId"] as? Int {
                             self.newGameId = id
                         }
-                        if let didConnect = convertedJsonIntoDict["didConnect"] as? Int, didConnect == 0 {
-                            print("ERROR: Failed to connect")
+                        if let didConnect = convertedJsonIntoDict["didConnect"] as? Int {
+                            didJoinSuccessfully = didConnect
+                        }
+                        if let err = convertedJsonIntoDict["err"] as? String {
+                            error = err
                         }
                     }
                 } catch let error as NSError {
                     print(error.localizedDescription)
                 }
                 
-                DispatchQueue.main.async{
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "ViewController") as! GameSessionController
-                    vc.isNewGame = isNewGame
-                    vc.gameId = isNewGame ? self.newGameId : self.gameInfo[self.gameSessionName]
-                    vc.playerName = self.playerName
-                    self.navigationController!.pushViewController(vc, animated: true)
+                if (error != nil) {
+                    DispatchQueue.main.async{
+                        self.notify(error!)
+                    }
+                }
+                else {
+                    DispatchQueue.main.async{
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let vc = storyboard.instantiateViewController(withIdentifier: "ViewController") as! GameSessionController
+                        vc.isNewGame = isNewGame
+                        vc.gameId = isNewGame ? self.newGameId : self.gameInfo[self.gameSessionName]
+                        vc.playerName = self.playerName
+                        vc.gameSessionName = self.gameSessionName
+                        self.navigationController!.pushViewController(vc, animated: true)
+                    }
                 }
             }
             task.resume()
@@ -157,6 +171,13 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
         
         alertController.addAction(confirmAction)
         alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
+    }
+    
+    func notify(_ text: String) {
+        let alertController = UIAlertController(title: text, message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .cancel) {(_) in }
+        alertController.addAction(action)
         self.present(alertController, animated: true)
     }
 }
