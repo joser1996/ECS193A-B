@@ -16,14 +16,14 @@ class PlayerSession: UIViewController {
     
     var players: [Player] = []
     var previousVC: BasePlacementController!
-    var mpService: MultipeerSession!
+    //var mpService: MultipeerSession!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
         
-        mpService = previousVC.mcService
+        //mpService = previousVC.mcService
         players = makePlayerArray()
         tableView.allowsMultipleSelection = true
         
@@ -48,12 +48,12 @@ class PlayerSession: UIViewController {
         var tempArr: [Player] = []
         
         //populate array here
-        let peers = mpService.connectedPeers
+        /*let peers = mpService.connectedPeers
         if !peers.isEmpty {
             for peer in peers {
                 tempArr.append(Player(name: peer.displayName))
             }
-        }
+        }*/
         
         return tempArr
     }
