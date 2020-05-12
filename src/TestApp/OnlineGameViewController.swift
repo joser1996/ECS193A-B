@@ -52,6 +52,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     //MARK: Controller Set up
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //turn of wind
+        MusicPlayer.shared.stopBackgroundMusic()
         arView.delegate = self
         arView.scene.physicsWorld.contactDelegate = self
         confirmBaseButton.isHidden = true
