@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		16C0F28A245BEF070059B247 /* ModelNameFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16C0F289245BEF070059B247 /* ModelNameFetcher.swift */; };
+		16ECE1BE246619B00079251F /* OnlineGameSessionListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16ECE1BD246619B00079251F /* OnlineGameSessionListController.swift */; };
+		16ECE1C02466847D0079251F /* OnlineGameSessionTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16ECE1BF2466847D0079251F /* OnlineGameSessionTableCell.swift */; };
+		16ECE1C224673E250079251F /* GameSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16ECE1C124673E250079251F /* GameSessionController.swift */; };
 		9302697823FB812B00116608 /* BasePlacementController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9302697723FB812B00116608 /* BasePlacementController.swift */; };
 		9313E98D24650EBD00677902 /* explosion.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 9313E98C24650EBD00677902 /* explosion.scnp */; };
 		9313E98F246510C600677902 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 9313E98E246510C600677902 /* spark.png */; };
@@ -78,6 +81,9 @@
 
 /* Begin PBXFileReference section */
 		16C0F289245BEF070059B247 /* ModelNameFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelNameFetcher.swift; sourceTree = "<group>"; };
+		16ECE1BD246619B00079251F /* OnlineGameSessionListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineGameSessionListController.swift; sourceTree = "<group>"; };
+		16ECE1BF2466847D0079251F /* OnlineGameSessionTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineGameSessionTableCell.swift; sourceTree = "<group>"; };
+		16ECE1C124673E250079251F /* GameSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionController.swift; sourceTree = "<group>"; };
 		9302697723FB812B00116608 /* BasePlacementController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasePlacementController.swift; sourceTree = "<group>"; };
 		9313E98C24650EBD00677902 /* explosion.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = explosion.scnp; sourceTree = "<group>"; };
 		9313E98E246510C600677902 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
@@ -265,6 +271,9 @@
 				E0CE014C244EF982001A3C77 /* art.scnassets */,
 				E0591F6E2432D71500DBD38E /* BLOODY.TTF */,
 				16C0F289245BEF070059B247 /* ModelNameFetcher.swift */,
+				16ECE1BD246619B00079251F /* OnlineGameSessionListController.swift */,
+				16ECE1BF2466847D0079251F /* OnlineGameSessionTableCell.swift */,
+				16ECE1C124673E250079251F /* GameSessionController.swift */,
 			);
 			path = TestApp;
 			sourceTree = "<group>";
@@ -450,9 +459,12 @@
 				931D1F222463385B0082BC1F /* Base.swift in Sources */,
 				9327130E2459F44700050DD4 /* InventoryViewCell.swift in Sources */,
 				9302697823FB812B00116608 /* BasePlacementController.swift in Sources */,
+				16ECE1BE246619B00079251F /* OnlineGameSessionListController.swift in Sources */,
 				9327130F2459F44700050DD4 /* CGImagePropertyOrientation+UIImageOrientation.swift in Sources */,
 				939BE832240AFECF00B1F458 /* PlayerCell.swift in Sources */,
+				16ECE1C224673E250079251F /* GameSessionController.swift in Sources */,
 				E0591F67242004E700DBD38E /* LeaderBoard.swift in Sources */,
+				16ECE1C02466847D0079251F /* OnlineGameSessionTableCell.swift in Sources */,
 				E0CE0157245A3203001A3C77 /* Resnet50.mlmodel in Sources */,
 				93C74FAA23D91CFE003BF585 /* GameViewController.swift in Sources */,
 				93C74FA623D91CFE003BF585 /* AppDelegate.swift in Sources */,
@@ -645,13 +657,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = L227T5HHPC;
+				DEVELOPMENT_TEAM = 7Y4Y877UQ6;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior.N;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -666,13 +678,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = L227T5HHPC;
+				DEVELOPMENT_TEAM = 7Y4Y877UQ6;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior.N;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
