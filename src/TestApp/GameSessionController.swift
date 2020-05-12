@@ -17,7 +17,7 @@ class GameSessionController: UIViewController, UITableViewDataSource {
     
     let NUM_PLAYERS = 4
     let BASE_SERVER_URL = "http://server162.site:59435"
-    let TIMER_LENGTH = 3
+    let TIMER_LENGTH: Double = 3
     
     var isNewGame: Bool!
     var gameId: Int!

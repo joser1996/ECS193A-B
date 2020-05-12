@@ -23,7 +23,6 @@
 		932713122459FD0500050DD4 /* Resnet50.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 932713102459FD0400050DD4 /* Resnet50.mlmodel */; };
 		932713132459FD0500050DD4 /* SqueezeNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 932713112459FD0500050DD4 /* SqueezeNet.mlmodel */; };
 		93271315245A294B00050DD4 /* David_Screeching.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 93271314245A294B00050DD4 /* David_Screeching.mp3 */; };
-		93369F1A244261C9001935E6 /* OnlineMultiplayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */; };
 		933EFEB32469F8E800C594E5 /* Resnet50.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 933EFEB22469F8E600C594E5 /* Resnet50.mlmodel */; };
 		933F3582246A3CF800B71101 /* BLOODY.TTF in Resources */ = {isa = PBXBuildFile; fileRef = E0591F6E2432D71500DBD38E /* BLOODY.TTF */; };
 		9342F3892453E997008AA9DC /* wind.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9342F3882453E997008AA9DC /* wind.mp3 */; };
@@ -52,7 +51,6 @@
 		E0591F67242004E700DBD38E /* LeaderBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0591F64242004E700DBD38E /* LeaderBoard.swift */; };
 		E074C2E7240E0AC80049D7BE /* PauseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E074C2E6240E0AC80049D7BE /* PauseViewController.swift */; };
 		E09688D923F7E750006F9CBF /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09688D823F7E750006F9CBF /* FirstViewController.swift */; };
-		E09688DB23F7E77A006F9CBF /* NewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09688DA23F7E77A006F9CBF /* NewViewController.swift */; };
 		E0CE014B244EF950001A3C77 /* wind.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E0CE014A244EF94F001A3C77 /* wind.mp3 */; };
 		E0CE014D244EF982001A3C77 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = E0CE014C244EF982001A3C77 /* art.scnassets */; };
 		E0CE0155245A3203001A3C77 /* InventoryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CE014E245A3201001A3C77 /* InventoryViewCell.swift */; };
@@ -98,7 +96,6 @@
 		932713102459FD0400050DD4 /* Resnet50.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Resnet50.mlmodel; sourceTree = "<group>"; };
 		932713112459FD0500050DD4 /* SqueezeNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = SqueezeNet.mlmodel; sourceTree = "<group>"; };
 		93271314245A294B00050DD4 /* David_Screeching.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = David_Screeching.mp3; sourceTree = "<group>"; };
-		93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineMultiplayerController.swift; sourceTree = "<group>"; };
 		933EFEB22469F8E600C594E5 /* Resnet50.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Resnet50.mlmodel; sourceTree = "<group>"; };
 		9342F3882453E997008AA9DC /* wind.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wind.mp3; sourceTree = "<group>"; };
 		9367826F2461215F00BBEA87 /* Shooting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shooting.swift; sourceTree = SOURCE_ROOT; };
@@ -136,7 +133,6 @@
 		E0591F712432D7FB00DBD38E /* BLOODY.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = BLOODY.TTF; sourceTree = "<group>"; };
 		E074C2E6240E0AC80049D7BE /* PauseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseViewController.swift; sourceTree = "<group>"; };
 		E09688D823F7E750006F9CBF /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		E09688DA23F7E77A006F9CBF /* NewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewViewController.swift; sourceTree = "<group>"; };
 		E0CE014A244EF94F001A3C77 /* wind.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wind.mp3; sourceTree = "<group>"; };
 		E0CE014C244EF982001A3C77 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		E0CE014E245A3201001A3C77 /* InventoryViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryViewCell.swift; sourceTree = "<group>"; };
@@ -258,7 +254,6 @@
 				E0CE0151245A3202001A3C77 /* SqueezeNet.mlmodel */,
 				93C74FAB23D91CFE003BF585 /* Main.storyboard */,
 				93F860EB244E54C4003FCF5B /* OnlineGameViewController.swift */,
-				93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */,
 				93F860E92447A51E003FCF5B /* MusicPlayer.swift */,
 				E0591F6A2432BD2A00DBD38E /* LeaderBoardViewCell.swift */,
 				E0591F682432BC9200DBD38E /* LeaderBoardController.swift */,
@@ -268,7 +263,6 @@
 				939BE82F240ACB2100B1F458 /* PlayerSession.swift */,
 				E074C2E6240E0AC80049D7BE /* PauseViewController.swift */,
 				E09688D823F7E750006F9CBF /* FirstViewController.swift */,
-				E09688DA23F7E77A006F9CBF /* NewViewController.swift */,
 				93C74FAE23D91D01003BF585 /* Assets.xcassets */,
 				93C74FB023D91D01003BF585 /* LaunchScreen.storyboard */,
 				93C74FB323D91D01003BF585 /* Info.plist */,
@@ -476,7 +470,6 @@
 				E0CE0157245A3203001A3C77 /* Resnet50.mlmodel in Sources */,
 				93C74FAA23D91CFE003BF585 /* GameViewController.swift in Sources */,
 				93C74FA623D91CFE003BF585 /* AppDelegate.swift in Sources */,
-				E09688DB23F7E77A006F9CBF /* NewViewController.swift in Sources */,
 				936782702461215F00BBEA87 /* Shooting.swift in Sources */,
 				932713132459FD0500050DD4 /* SqueezeNet.mlmodel in Sources */,
 				E0591F65242004E700DBD38E /* GamePacket.swift in Sources */,
@@ -486,7 +479,6 @@
 				9327130C2459F44700050DD4 /* InventoryViewController.swift in Sources */,
 				E074C2E7240E0AC80049D7BE /* PauseViewController.swift in Sources */,
 				932713122459FD0500050DD4 /* Resnet50.mlmodel in Sources */,
-				93369F1A244261C9001935E6 /* OnlineMultiplayerController.swift in Sources */,
 				931D1F20246332C90082BC1F /* ClientSide.swift in Sources */,
 				E0CE0158245A3203001A3C77 /* SqueezeNet.mlmodel in Sources */,
 				E0CE0159245A3203001A3C77 /* ScanViewController.swift in Sources */,

@@ -32,6 +32,7 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
         tableView.allowsSelection = true
         
         joinGameButton.isEnabled = false
+        joinGameButton.setTitleColor(UIColor.gray, for: .normal)
         
         let url = URL(string: "\(BASE_SERVER_URL)/fetch-active-games")
         guard let requestUrl = url else { fatalError() }
@@ -78,6 +79,7 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         gameSessionName = data[indexPath.row]
         joinGameButton.isEnabled = true
+        joinGameButton.setTitleColor(UIColor.systemRed, for: .normal)
     }
     
     @IBAction func createNewGame(_ sender: Any) {
@@ -180,4 +182,11 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
         alertController.addAction(action)
         self.present(alertController, animated: true)
     }
+}
+
+enum GameState {
+    case BasePlacing
+    case Initial
+    case WaitingForGame
+    case ActiveGame
 }
