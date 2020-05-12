@@ -585,6 +585,14 @@ class ClientSide {
             print("Base has been hit!!!")
             
             // if health is 0 go to game over state
+            guard let name = parentNode.name else {
+                print("Mult: No name")
+                return
+            }
+            DispatchQueue.main.async {
+                self.zombieWave[name]?.isDead = true
+                self.updateZombiesTask()
+            }
         })
         
         let sd = self.zombieWave[sk]
