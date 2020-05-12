@@ -84,7 +84,9 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         if let name = anchor.name, name.hasPrefix("cube") {
             anchorPoint = anchor
             baseNode = loadBase()
-            //self.connectionLabel.text = "Map More Of The Area"
+            DispatchQueue.main.async {
+                self.connectionLabel.text = "Map More Of The Area By Moving Camera Around"
+            }
             node.addChildNode(baseNode)
         }
     }
@@ -152,13 +154,13 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     
     
     // MARK: - AR session management
-    private func loadCube() -> SCNNode {
+    /*private func loadCube() -> SCNNode {
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         let boxNode = SCNNode()
         boxNode.geometry = box
         boxNode.name = "boxNode"
         return boxNode
-    }
+    }*/
     
     private func loadBase() -> SCNNode {
         let sceneURL = Bundle.main.url(forResource: "base copy", withExtension: "scn", subdirectory: "art.scnassets")!
