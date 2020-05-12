@@ -296,8 +296,6 @@ class ClientSide {
                 guard let dict = json as? [String: Any] else {
                     fatalError("Failed in lisenForTask:convert JSON to Dict")
                 }
-                print("Mult: \(dict)")
-                print("Mult: \(dict["isReady"])")
                 guard let isReady = dict["isReady"] as? Bool else {
                     fatalError("Failed in listenForStartTask: extracting isReady")
                 }
@@ -576,7 +574,7 @@ class ClientSide {
         )
         
         //Movement
-        let moveAction = SCNAction.move(to: basePosition, duration: 150)
+        let moveAction = SCNAction.move(to: basePosition, duration: 15)
         let deletion = SCNAction.removeFromParentNode()
         let zombieSequence = SCNAction.sequence([moveAction, deletion])
         
