@@ -154,13 +154,13 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     
     
     // MARK: - AR session management
-    private func loadCube() -> SCNNode {
+    /*private func loadCube() -> SCNNode {
         let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
         let boxNode = SCNNode()
         boxNode.geometry = box
         boxNode.name = "boxNode"
         return boxNode
-    }
+    }*/
     
     private func loadBase() -> SCNNode {
         let sceneURL = Bundle.main.url(forResource: "base copy", withExtension: "scn", subdirectory: "art.scnassets")!

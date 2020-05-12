@@ -83,7 +83,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         var timerOne = 1
         var sleep = 7
         
-        _ = loadBase()
+        let base = loadBase()
+        //base.parent.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
         
         self.zombieTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
             if zombieCount == 0 && sleep != 0 {
@@ -463,14 +464,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         referenceNode.load()
         referenceNode.name = "boxNode"
         referenceNode.position = SCNVector3(x,y,z)
-       // referenceNode.parent?.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+       
         
         return referenceNode
         }
     
     // MARK: - AR session management
     private func loadZombie(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
-        let sceneURL = Bundle.main.url(forResource: "minecraftupdate2", withExtension: "scn", subdirectory: "art.scnassets")!
+        let sceneURL = Bundle.main.url(forResource: "zombie", withExtension: "scn", subdirectory: "art.scnassets")!
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
         referenceNode.name = "boxNode"
