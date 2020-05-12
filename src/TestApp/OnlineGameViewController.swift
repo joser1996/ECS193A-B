@@ -56,6 +56,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         arView.scene.physicsWorld.contactDelegate = self
         confirmBaseButton.isHidden = true
         confirmBaseButton.isEnabled = false
+        promptLabel.font = UIFont(name: "Bloody", size: 35)
+        promptLabel.textColor = UIColor.red
         changePrompt(text: "Please place Base.")
 
         //Init objects
@@ -96,6 +98,15 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     }
     func showPrompt() {
         self.promptLabel.isHidden = false
+    }
+    
+    func notifyUser(prompt: String) {
+        changePrompt(text: prompt)
+        showPrompt()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5){
+            self.hidePrompt()
+        }
+        
     }
 
     
