@@ -21,6 +21,7 @@
 		932713132459FD0500050DD4 /* SqueezeNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 932713112459FD0500050DD4 /* SqueezeNet.mlmodel */; };
 		93271315245A294B00050DD4 /* David_Screeching.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 93271314245A294B00050DD4 /* David_Screeching.mp3 */; };
 		93369F1A244261C9001935E6 /* OnlineMultiplayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */; };
+		933EFEB32469F8E800C594E5 /* Resnet50.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 933EFEB22469F8E600C594E5 /* Resnet50.mlmodel */; };
 		9342F3892453E997008AA9DC /* wind.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9342F3882453E997008AA9DC /* wind.mp3 */; };
 		936782702461215F00BBEA87 /* Shooting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9367826F2461215F00BBEA87 /* Shooting.swift */; };
 		936DCE6724351BA7002FD853 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 936DCE6624351BA7002FD853 /* AVFoundation.framework */; };
@@ -92,6 +93,7 @@
 		932713112459FD0500050DD4 /* SqueezeNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = SqueezeNet.mlmodel; sourceTree = "<group>"; };
 		93271314245A294B00050DD4 /* David_Screeching.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = David_Screeching.mp3; sourceTree = "<group>"; };
 		93369F19244261C9001935E6 /* OnlineMultiplayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineMultiplayerController.swift; sourceTree = "<group>"; };
+		933EFEB22469F8E600C594E5 /* Resnet50.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Resnet50.mlmodel; sourceTree = "<group>"; };
 		9342F3882453E997008AA9DC /* wind.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wind.mp3; sourceTree = "<group>"; };
 		9367826F2461215F00BBEA87 /* Shooting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shooting.swift; sourceTree = SOURCE_ROOT; };
 		936DCE6624351BA7002FD853 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -222,6 +224,7 @@
 				931D1F212463385B0082BC1F /* Base.swift */,
 				931D1F1F246332C90082BC1F /* ClientSide.swift */,
 				9367826F2461215F00BBEA87 /* Shooting.swift */,
+				933EFEB22469F8E600C594E5 /* Resnet50.mlmodel */,
 				93271314245A294B00050DD4 /* David_Screeching.mp3 */,
 				932713102459FD0400050DD4 /* Resnet50.mlmodel */,
 				932713112459FD0500050DD4 /* SqueezeNet.mlmodel */,
@@ -449,6 +452,7 @@
 				E09688D923F7E750006F9CBF /* FirstViewController.swift in Sources */,
 				E0CE015B245A3203001A3C77 /* InventoryViewController.swift in Sources */,
 				E0CE0155245A3203001A3C77 /* InventoryViewCell.swift in Sources */,
+				933EFEB32469F8E800C594E5 /* Resnet50.mlmodel in Sources */,
 				939BE830240ACB2100B1F458 /* PlayerSession.swift in Sources */,
 				9327130D2459F44700050DD4 /* ScanViewController.swift in Sources */,
 				931D1F222463385B0082BC1F /* Base.swift in Sources */,

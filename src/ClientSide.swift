@@ -238,7 +238,7 @@ class ClientSide {
      Sends message to server confirming reciept of zombie wave.
      */
     func recievedZombieWave() {
-        print("In recievedZombieWave")
+        print("Mult: In recievedZombieWave")
         guard let gameID = self.gameID else {return}
         let endPoint = "/received-zombie/" + String(gameID)
         let urlString = server + endPoint
@@ -254,7 +254,7 @@ class ClientSide {
             
             guard let data = data else {return}
             print("JSON From recZombieTask")
-            print(data)
+            print("Mult: ack response \(data)")
             DispatchQueue.main.async {
                 self.listenForStartTaskHelper()
             }
@@ -263,7 +263,7 @@ class ClientSide {
     }
 
     /*
-     Sets up timer that polls server every 3 seconds waiting for the
+     Sets up timer that polls server every 1 seconds waiting for the
      start signal that allows the spawning of zombies. Start won't be
      sent unitl all player have sent confirmation of zombie wave
      reciept
@@ -280,7 +280,7 @@ class ClientSide {
         let endPoint = "/game-ready/"
         guard let gameID = self.gameID else {return}
         let urlString = server + endPoint + String(gameID)
-        print("Game: game-ready")
+        print("Mult: game-ready")
         guard let url = URL(string: urlString) else {return}
         
         let listenForStartTask = self.urlSession.dataTask(with: url){
@@ -296,7 +296,8 @@ class ClientSide {
                 guard let dict = json as? [String: Any] else {
                     fatalError("Failed in lisenForTask:convert JSON to Dict")
                 }
-                
+                print("Mult: \(dict)")
+                print("Mult: \(dict["isReady"])")
                 guard let isReady = dict["isReady"] as? Bool else {
                     fatalError("Failed in listenForStartTask: extracting isReady")
                 }
@@ -318,12 +319,15 @@ class ClientSide {
      second
      */
     func startGameNow() {
-        //print("Setting up background task")
+        print("Mult: Setting up background task")
+        self.doneSpawning = false
         self.taskTimer = Timer.scheduledTimer(timeInterval:1, target: self, selector: #selector(self.zombieSpawningTask), userInfo: nil, repeats: true)
         self.gameState = GameState.ActiveGame
         
         //start backgroung music
-        MusicPlayer.shared.startSong()
+        if(!(MusicPlayer.shared.player?.isPlaying ?? true)) {
+            MusicPlayer.shared.startSong()
+        }
     }
     
     /*
@@ -391,10 +395,15 @@ class ClientSide {
                 }
                 
                 self.compareAndUpdate(wave: wave)
-                
+                print("Number of Zombies: \(self.zombieWave.count)")
+                if self.zombieWave.count == 0 {
+                    DispatchQueue.main.async {
+                        self.getNextWave()
+                    }
+                }
                 
             } catch {
-                
+                print("JSON Error: \(error.localizedDescription)")
             }
         }
         task.resume()
@@ -437,6 +446,54 @@ class ClientSide {
                 }
             }
         }
+    }
+    
+    
+    func getNextWave() {
+        print("Mult:")
+        guard let gameID = self.gameID else {return}
+        let endPoint = "/new-wave/" + String(self.currentWave) + "/" + String(gameID)
+
+        let urlString =  self.server + endPoint
+        print("Mult: Getting New Wave \(urlString)")
+        guard let url = URL(string: urlString) else {return}
+        
+        let newWaveReq = self.urlSession.dataTask(with: url) {
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+            guard let data = data else {return}
+            do{
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                print("Mult: \(json)")
+                guard let dict = json as? [String: Any] else {return}
+                guard let waveNum = dict["waveNumber"] as? Int else {
+                    print("Mult: Failed to get waveNum")
+                    return
+                    
+                }
+                self.currentWave = waveNum
+                print("Mult: Current Wave Num: \(self.currentWave)")
+                
+                guard let wave = dict["zombieWave"] as? [String: Any] else {
+                    fatalError("Mult: Failed to get new wave!!!")
+                }
+                guard let seedDict = self.buildSeedDictionary(wave: wave) else {
+                    print("Mult: Failed to build dictionary from seeds")
+                    return
+                }
+                
+                self.zombieWave = seedDict
+            } catch {
+                print("Mult: JSON Error: \(error.localizedDescription)")
+            }
+            DispatchQueue.main.async {
+                self.recievedZombieWave()
+            }
+        }
+        newWaveReq.resume()
     }
     
     func buildSeedDictionary(wave: [String: Any]) -> [String: ZombieSeed]?{

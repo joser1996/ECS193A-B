@@ -176,11 +176,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             DispatchQueue.main.async {
                 contact.nodeA.removeFromParentNode()
                 contact.nodeB.removeFromParentNode()
-                self.updateCounter += 1
-                if(self.updateCounter == 1) {
-                    self.client.updateZombiesTask()
-                    self.updateCounter = 0
-                }
+                self.client.updateZombiesTask()
+                //elf.updateCounter = 0
+                
             }
             if isAZombie {
                 contact.nodeA.addParticleSystem(explosion!)
