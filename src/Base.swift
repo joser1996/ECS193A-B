@@ -14,11 +14,12 @@ class Base {
     var anchorPoint: ARAnchor!
     
     func loadBase()  {
-        let box = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0)
-        let boxNode = SCNNode()
-        boxNode.geometry = box
-        boxNode.name = "baseNode"
-        self.baseNode =  boxNode
+        let sceneURL = Bundle.main.url(forResource: "base copy", withExtension: "scn", subdirectory: "art.scnassets")!
+        let referenceNode = SCNReferenceNode(url: sceneURL)!
+        referenceNode.load()
+        referenceNode.name = "baseNode"
+            
+        self.baseNode =  referenceNode
     }
     
     func basePlacing(sender: UITapGestureRecognizer, arView: ARSCNView) {
