@@ -489,6 +489,7 @@ class ClientSide {
             }
             DispatchQueue.main.async {
                 self.recievedZombieWave()
+                self.referenceVC.notifyUser(prompt: "Wave \(self.currentWave)")
             }
         }
         newWaveReq.resume()
