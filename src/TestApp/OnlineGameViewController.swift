@@ -96,6 +96,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     
     func decrementHealth() -> Int{
         self.baseObj.health -= 1
+        if self.baseObj.health < 0 {
+            self.baseObj.health = 0
+        }
         let health = self.baseObj.health
         //print("Health: \(health)")
         if (health == 2) {
@@ -124,7 +127,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             for controller in self.navigationController!.viewControllers as Array {
                 if controller.isKind(of: FirstViewController.self) {
                     _ = self.navigationController!.popToViewController(controller, animated: false)
-                    
                 }
             }
         }
@@ -145,7 +147,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     func notifyUser(prompt: String) {
         changePrompt(text: prompt)
         showPrompt()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3){
             self.hidePrompt()
         }
         
