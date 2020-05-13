@@ -27,7 +27,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var isHost: Bool = false
     var didSyncCrossHair = false
     var isSyncing:Bool = false
-
+    var isGameOver:Bool = false
     //game Objects
     var client: ClientSide!
     var baseObj: Base!
@@ -101,6 +101,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         if (health == 2) {
             //get rid of rightmost heart
             heart3.image = UIImage(named: "Image-1")
+        } else if (health == 1) {
             //get rid of middle heart
             heart2.image = UIImage(named: "Image-1")
         } else {
@@ -110,12 +111,18 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         return health
     }
     
+    
+    //MARK: Game Over
     func gameOver() {
         MusicPlayer.shared.stopSong()
-        for controller in self.navigationController!.viewControllers as Array {
-            if controller.isKind(of: FirstViewController.self) {
-                _ = self.navigationController!.popToViewController(controller, animated: false)
-                
+        self.notifyUser(prompt: "Game Over")
+        self.isGameOver = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            for controller in self.navigationController!.viewControllers as Array {
+                if controller.isKind(of: FirstViewController.self) {
+                    _ = self.navigationController!.popToViewController(controller, animated: false)
+                    
+                }
             }
         }
     }
@@ -185,6 +192,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         
        // print("** Collision!! " + contact.nodeA.name! + " hit " + contact.nodeB.name!)
+        if isGameOver {
+            return
+        }
         
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue {
             

@@ -363,7 +363,7 @@ class ClientSide {
             let jsonData = try JSONSerialization.data(withJSONObject: json)
             request.httpBody = jsonData
         } catch {
-            print("Error: \(error.localizedDescription)")
+            print("Error Health: \(error.localizedDescription)")
         }
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -493,7 +493,6 @@ class ClientSide {
             print("Failed to build updated wave from server")
             return
         }
-        
         
         for (key, _) in self.zombieWave {
             // check to see if my seed is in updated wave
@@ -645,6 +644,9 @@ class ClientSide {
         let zombieSequence = SCNAction.sequence([moveAction, deletion])
         
         parentNode.runAction(zombieSequence, completionHandler:{
+            if self.referenceVC.isGameOver {
+                return
+            }
             //decrease player health
             print("Base has been hit!!!")
             // if health is 0 go to game over state
