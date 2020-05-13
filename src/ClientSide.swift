@@ -408,12 +408,9 @@ class ClientSide {
     }
     
     func updateHealthFromServer(sHealth: Int, cHealth: Int) {
-        var clientHealth = cHealth
         if (sHealth < cHealth) {
-            while sHealth != clientHealth {
-                DispatchQueue.main.async {
-                    clientHealth = self.referenceVC.decrementHealth()
-                }
+            DispatchQueue.main.async {
+                self.referenceVC.setHealth(health: sHealth)
             }
         }
     }

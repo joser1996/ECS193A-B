@@ -117,6 +117,22 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         return health
     }
     
+    func setHealth(health: Int) {
+        if (health == 2) {
+            //get rid of rightmost heart
+            heart3.image = UIImage(named: "Image-1")
+        } else if (health == 1) {
+            //get rid of middle heart
+            heart3.image = UIImage(named: "Image-1")
+            heart2.image = UIImage(named: "Image-1")
+        } else {
+            //get rid of leftmost heart
+            heart3.image = UIImage(named: "Image-1")
+            heart2.image = UIImage(named: "Image-1")
+            heart1.image = UIImage(named: "Image-1")
+        }
+    }
+    
     
     //MARK: Game Over
     func gameOver() {
