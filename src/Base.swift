@@ -10,6 +10,8 @@ import Foundation
 import ARKit
 class Base {
     
+    
+    var health: Int = 3
     var baseNode: SCNNode!
     var anchorPoint: ARAnchor!
     

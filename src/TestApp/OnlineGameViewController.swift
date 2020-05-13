@@ -27,7 +27,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var isHost: Bool = false
     var didSyncCrossHair = false
     var isSyncing:Bool = false
-
+    var isGameOver:Bool = false
     //game Objects
     var client: ClientSide!
     var baseObj: Base!
@@ -47,11 +47,17 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     @IBOutlet weak var confirmBaseButton: UIButton!
     @IBOutlet weak var promptLabel: UILabel!
     @IBOutlet weak var arView: ARSCNView!
+    @IBOutlet weak var heart1: UIImageView!
+    @IBOutlet weak var heart2: UIImageView!
+    @IBOutlet weak var heart3: UIImageView!
     
 
     //MARK: Controller Set up
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //turn of wind
+        MusicPlayer.shared.stopBackgroundMusic()
         arView.delegate = self
         arView.scene.physicsWorld.contactDelegate = self
         confirmBaseButton.isHidden = true
@@ -86,6 +92,42 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         arView.session.pause()
+    }
+    
+    func decrementHealth() -> Int{
+        self.baseObj.health -= 1
+        let health = self.baseObj.health
+        //print("Health: \(health)")
+        if (health == 2) {
+            //get rid of rightmost heart
+            heart3.image = UIImage(named: "Image-1")
+        } else if (health == 1) {
+            //get rid of middle heart
+            heart3.image = UIImage(named: "Image-1")
+            heart2.image = UIImage(named: "Image-1")
+        } else {
+            //get rid of leftmost heart
+            heart3.image = UIImage(named: "Image-1")
+            heart2.image = UIImage(named: "Image-1")
+            heart1.image = UIImage(named: "Image-1")
+        }
+        return health
+    }
+    
+    
+    //MARK: Game Over
+    func gameOver() {
+        MusicPlayer.shared.stopSong()
+        self.notifyUser(prompt: "Game Over")
+        self.isGameOver = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            for controller in self.navigationController!.viewControllers as Array {
+                if controller.isKind(of: FirstViewController.self) {
+                    _ = self.navigationController!.popToViewController(controller, animated: false)
+                    
+                }
+            }
+        }
     }
     
     //MARK: Prompt Stuff
@@ -135,6 +177,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
 
     }
     
+    //MARK: Confirm Base
     @IBAction func confirmBaseLocation(_ sender: UIButton) {
         //No more Base Placing
         self.isPlacingBase = false
@@ -152,6 +195,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
         
        // print("** Collision!! " + contact.nodeA.name! + " hit " + contact.nodeB.name!)
+        if isGameOver {
+            return
+        }
         
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue {
             
@@ -188,7 +234,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 contact.nodeA.removeFromParentNode()
                 contact.nodeB.removeFromParentNode()
                 self.client.updateZombiesTask()
-                //elf.updateCounter = 0
                 
             }
             if isAZombie {
@@ -247,6 +292,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         arView.session.run(config, options:[.resetTracking, .removeExistingAnchors])
     }
     
+    //MARK: Inventory
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let inventoryVC = segue.destination as? InventoryViewController {
             inventoryVC.gameID = gameID
