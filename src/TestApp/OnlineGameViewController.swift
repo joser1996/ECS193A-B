@@ -103,9 +103,12 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             heart3.image = UIImage(named: "Image-1")
         } else if (health == 1) {
             //get rid of middle heart
+            heart3.image = UIImage(named: "Image-1")
             heart2.image = UIImage(named: "Image-1")
         } else {
             //get rid of leftmost heart
+            heart3.image = UIImage(named: "Image-1")
+            heart2.image = UIImage(named: "Image-1")
             heart1.image = UIImage(named: "Image-1")
         }
         return health

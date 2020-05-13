@@ -483,7 +483,7 @@ class ClientSide {
                     self.updateHealthFromServer(sHealth: health, cHealth: self.referenceVC.baseObj.health)
                 }
                 
-                if self.zombieWave.count == 0 {
+                if self.zombieWave.count == 0 && !isGameOver {
                     DispatchQueue.main.async {
                         self.getNextWave()
                     }
@@ -681,9 +681,10 @@ class ClientSide {
 
             DispatchQueue.main.async {
                 self.zombieWave[name]?.isDead = true
-                self.updateZombiesTask()
                 let health: Int = self.referenceVC.decrementHealth()
                 self.updateHealthTask(health: health)
+                self.updateZombiesTask()
+
             }
         })
         
