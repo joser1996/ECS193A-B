@@ -231,7 +231,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 contact.nodeA.removeFromParentNode()
                 contact.nodeB.removeFromParentNode()
                 self.client.updateZombiesTask()
-                //elf.updateCounter = 0
                 
             }
             if isAZombie {

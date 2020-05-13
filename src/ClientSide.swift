@@ -446,7 +446,22 @@ class ClientSide {
             
             do {
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
-                guard let dict = json as? [String : Any] else {return}
+                guard let obj = json as? [String : Any] else {return}
+                guard let dict = obj["ZombieUpdate"] as? [String: Any] else {
+                    print("MOO: ZombieUpdate key Failed")
+                    return
+                }
+                
+                guard let health = obj["Health"] as? Int else {
+                    print("MOO: Health key failed")
+                    return
+                }
+                
+                guard let isGameOver = obj["isGameOver"] as? Bool else {
+                        print("MOO: Failed isGameOver key")
+                        return
+                }
+                
                 guard let waveNum = dict["waveNumber"] as? Int else {
                     return
                 }
@@ -459,6 +474,13 @@ class ClientSide {
                 
                 self.compareAndUpdate(wave: wave)
                 print("Number of Zombies: \(self.zombieWave.count)")
+                
+                if isGameOver {
+                    self.referenceVC.gameOver()
+                } else {
+                    self.updateHealthFromServer(sHealth: health, cHealth: self.referenceVC.baseObj.health)
+                }
+                
                 if self.zombieWave.count == 0 {
                     DispatchQueue.main.async {
                         self.getNextWave()
