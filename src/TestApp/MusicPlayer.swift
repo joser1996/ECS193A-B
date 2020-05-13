@@ -44,12 +44,17 @@ class MusicPlayer {
                 }
                 player.numberOfLoops = -1
                 player.prepareToPlay()
-                var ret = player.play()
+                let ret = player.play()
                 if ret { print("Couldn't play") }
             } catch {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    func stopSong() {
+        guard let player = player else {return}
+        player.stop()
     }
     
     func pauseSong() {
