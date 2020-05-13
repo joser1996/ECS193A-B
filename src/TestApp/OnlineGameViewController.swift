@@ -47,6 +47,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     @IBOutlet weak var confirmBaseButton: UIButton!
     @IBOutlet weak var promptLabel: UILabel!
     @IBOutlet weak var arView: ARSCNView!
+    @IBOutlet weak var heart1: UIImageView!
+    @IBOutlet weak var heart2: UIImageView!
+    @IBOutlet weak var heart3: UIImageView!
     
 
     //MARK: Controller Set up
@@ -89,6 +92,32 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         arView.session.pause()
+    }
+    
+    func decrementHealth() -> Int{
+        self.baseObj.health -= 1
+        let health = self.baseObj.health
+        //print("Health: \(health)")
+        if (health == 2) {
+            //get rid of rightmost heart
+            heart3.image = UIImage(named: "Image-1")
+            //get rid of middle heart
+            heart2.image = UIImage(named: "Image-1")
+        } else {
+            //get rid of leftmost heart
+            heart1.image = UIImage(named: "Image-1")
+        }
+        return health
+    }
+    
+    func gameOver() {
+        MusicPlayer.shared.stopSong()
+        for controller in self.navigationController!.viewControllers as Array {
+            if controller.isKind(of: FirstViewController.self) {
+                _ = self.navigationController!.popToViewController(controller, animated: false)
+                
+            }
+        }
     }
     
     //MARK: Prompt Stuff
@@ -138,6 +167,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
 
     }
     
+    //MARK: Confirm Base
     @IBAction func confirmBaseLocation(_ sender: UIButton) {
         //No more Base Placing
         self.isPlacingBase = false
@@ -250,6 +280,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         arView.session.run(config, options:[.resetTracking, .removeExistingAnchors])
     }
     
+    //MARK: Inventory
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let inventoryVC = segue.destination as? InventoryViewController {
             inventoryVC.gameID = gameID

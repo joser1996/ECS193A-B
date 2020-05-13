@@ -351,6 +351,71 @@ class ClientSide {
         referenceVC.arView.scene.rootNode.addChildNode(node)
     }
 
+    func updateHealthTask(health: Int) {
+        let endPoint = "/update-health/"
+        guard let gameID = self.gameID else {return}
+        let urlString = server + endPoint + String(gameID)
+        guard let url = URL(string: urlString) else {return}
+        let json: [String: Any] = ["Health": health]
+        var request = URLRequest(url: url)
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: json)
+            request.httpBody = jsonData
+        } catch {
+            print("Error: \(error.localizedDescription)")
+        }
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        let task = self.urlSession.dataTask(with: request) {
+            (data, response, error) in
+            if let error = error {
+                print("Error\(error)")
+                return
+            }
+            
+            guard let data = data else {return}
+            
+            do {
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                guard let dict = json as? [String: Any] else {
+                    print("Failed json to dict")
+                    return
+                }
+                guard let serverHealth = dict["Health"] as? Int else {
+                    print("Failed to get Health")
+                    return
+                }
+                
+                guard let gameOver = dict["isGameOver"] as? Bool else {
+                    print("Failed to get isGameOver")
+                    return
+                }
+                DispatchQueue.main.async {
+                    if gameOver {
+                        self.referenceVC.gameOver()
+                    } else {
+                        self.updateHealthFromServer(sHealth: serverHealth, cHealth: health)
+                    }
+                }
+                
+            } catch {
+                print("JSON Error: \(error.localizedDescription)")
+            }
+        }
+        task.resume()
+    }
+    
+    func updateHealthFromServer(sHealth: Int, cHealth: Int) {
+        var clientHealth = cHealth
+        if (sHealth < cHealth) {
+            while sHealth != clientHealth {
+                clientHealth = self.referenceVC.decrementHealth()
+            }
+        }
+    }
+    
     func updateZombiesTask() {
         let endPoint = "/update-wave/"
         guard let gameID = self.gameID else {return}
@@ -581,18 +646,18 @@ class ClientSide {
         
         parentNode.runAction(zombieSequence, completionHandler:{
             //decrease player health
-            
-            // TODO: send update to server to update health
             print("Base has been hit!!!")
-            
             // if health is 0 go to game over state
             guard let name = parentNode.name else {
                 print("Mult: No name")
                 return
             }
+
             DispatchQueue.main.async {
                 self.zombieWave[name]?.isDead = true
                 self.updateZombiesTask()
+                let health: Int = self.referenceVC.decrementHealth()
+                self.updateHealthTask(health: health)
             }
         })
         
