@@ -90,9 +90,9 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             if zombieCount == 0 && sleep != 0 {
                 sleep -= 1
             }
-            else if zombieCount == 10 + wave * 10 {
+            else if zombieCount ==  wave * 10 {
                 if sleep == 0 {
-                    for _ in 1...(10 + wave * 10) {
+                    for _ in 1...( wave * 10) {
                         self.spawnZombie(paramHealth: Int.random(in: 1...3))
                     }
                     wave += 1
@@ -110,7 +110,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 zombieCount += 1
                 
                 // Reset timer
-                if zombieCount < (10 + wave * 10)/4 {
+                if zombieCount < (wave * 10)/4 {
                     if wave < 3 {
                         timerOne = Int.random(in: 4...6)
                     }
@@ -124,7 +124,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         timerOne = Int.random(in: 1...3)
                     }
                 }
-                else if zombieCount < (10 + wave * 10)/2 {
+                else if zombieCount < (wave * 10)/2 {
                     if wave < 5 {
                         timerOne = Int.random(in: 3...5)
                     }
@@ -135,7 +135,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         timerOne = Int.random(in: 1...3)
                     }
                 }
-                else if zombieCount < 3 * (10 + wave * 10)/4 {
+                else if zombieCount < 3 * (wave * 10)/4 {
                     if wave < 10 {
                         timerOne = Int.random(in: 2...4)
                     }
