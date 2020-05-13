@@ -186,7 +186,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
 
 
     @IBAction func pause_button(_ sender: Any) {
-        self.zombieTimer.invalidate()
+        //self.zombieTimer.invalidate()
         sceneViewGame.session.pause()
              let storyboard = UIStoryboard(name: "Main", bundle: nil)
               let vc = storyboard.instantiateViewController(withIdentifier: "PauseViewController") as! PauseViewController
@@ -241,7 +241,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 //self.sceneViewGame?.session.pause()
                 //self.sceneViewGame?.removeFromSuperview()
                 //self.sceneViewGame = nil
-                //self.zombieTimer.invalidate()
+                self.zombieTimer.invalidate()
                 self.navigationController?.popToRootViewController(animated: true)
             }
         }
