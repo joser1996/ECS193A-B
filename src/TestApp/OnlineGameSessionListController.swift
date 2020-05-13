@@ -21,8 +21,10 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
     var gameSessionName: String!
     var newGameId: Int!
     var gameSessionPassword: String!
+    var refreshTimer: Timer!
     
     let BASE_SERVER_URL = "http://server162.site:59435"
+    let TIMER_LENGTH: Double = 3
     
     
     override func viewDidLoad() {
@@ -34,34 +36,11 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
         joinGameButton.isEnabled = false
         joinGameButton.setTitleColor(UIColor.gray, for: .normal)
         
-        let url = URL(string: "\(BASE_SERVER_URL)/fetch-active-games")
-        guard let requestUrl = url else { fatalError() }
-        var request = URLRequest(url: requestUrl)
-        request.httpMethod = "GET"
-
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
-            if let error = error {
-                print("Error took place \(error)")
-                return
-            }
-            
-            do {
-                if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
-
-                    print(convertedJsonIntoDict)
-                    self.gameInfo = convertedJsonIntoDict as! [String : Int]
-                    self.data = Array(self.gameInfo.keys)
-                }
-            } catch let error as NSError {
-                print(error.localizedDescription)
-            }
-            
-            DispatchQueue.main.async{
-                self.tableView.reloadData()
-            }
-        }
-        task.resume()
+        fetchSessionList()
+        
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: TIMER_LENGTH, repeats: true, block: { _ in
+            self.fetchSessionList()
+        })
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -118,7 +97,6 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
                     return
                 }
                 
-                var didJoinSuccessfully = 0
                 var error: String!
                 
                 do {
@@ -126,8 +104,8 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
                         if let id = convertedJsonIntoDict["gameId"] as? Int {
                             self.newGameId = id
                         }
-                        if let didConnect = convertedJsonIntoDict["didConnect"] as? Int {
-                            didJoinSuccessfully = didConnect
+                        if let didConnect = convertedJsonIntoDict["didConnect"] as? Int, didConnect == 0 {
+                            error = "Failed to join game"
                         }
                         if let err = convertedJsonIntoDict["err"] as? String {
                             error = err
@@ -150,6 +128,7 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
                         vc.gameId = isNewGame ? self.newGameId : self.gameInfo[self.gameSessionName]
                         vc.playerName = self.playerName
                         vc.gameSessionName = self.gameSessionName
+                        self.refreshTimer?.invalidate()
                         self.navigationController!.pushViewController(vc, animated: true)
                     }
                 }
@@ -174,6 +153,41 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
         alertController.addAction(confirmAction)
         alertController.addAction(cancelAction)
         self.present(alertController, animated: true)
+    }
+    
+    func fetchSessionList() {
+        let url = URL(string: "\(BASE_SERVER_URL)/fetch-active-games")
+        guard let requestUrl = url else { fatalError() }
+        var request = URLRequest(url: requestUrl)
+        request.httpMethod = "GET"
+
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            if let error = error {
+                print("Error took place \(error)")
+                return
+            }
+            
+            do {
+                if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+
+                    self.gameInfo = convertedJsonIntoDict as! [String : Int]
+                    
+                    for name in self.gameInfo.keys {
+                        if (!self.data.contains(name)) {
+                            self.data.append(name)
+                        }
+                    }
+                }
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+            
+            DispatchQueue.main.async{
+                self.tableView.reloadData()
+            }
+        }
+        task.resume()
     }
     
     func notify(_ text: String) {
