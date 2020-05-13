@@ -411,7 +411,9 @@ class ClientSide {
         var clientHealth = cHealth
         if (sHealth < cHealth) {
             while sHealth != clientHealth {
-                clientHealth = self.referenceVC.decrementHealth()
+                DispatchQueue.main.async {
+                    clientHealth = self.referenceVC.decrementHealth()
+                }
             }
         }
     }
