@@ -96,6 +96,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     
     func decrementHealth() -> Int{
         self.baseObj.health -= 1
+        if self.baseObj.health < 0 {
+            self.baseObj.health = 0
+        }
         let health = self.baseObj.health
         //print("Health: \(health)")
         if (health == 2) {
@@ -114,6 +117,22 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         return health
     }
     
+    func setHealth(health: Int) {
+        if (health == 2) {
+            //get rid of rightmost heart
+            heart3.image = UIImage(named: "Image-1")
+        } else if (health == 1) {
+            //get rid of middle heart
+            heart3.image = UIImage(named: "Image-1")
+            heart2.image = UIImage(named: "Image-1")
+        } else {
+            //get rid of leftmost heart
+            heart3.image = UIImage(named: "Image-1")
+            heart2.image = UIImage(named: "Image-1")
+            heart1.image = UIImage(named: "Image-1")
+        }
+    }
+    
     
     //MARK: Game Over
     func gameOver() {
@@ -124,7 +143,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             for controller in self.navigationController!.viewControllers as Array {
                 if controller.isKind(of: FirstViewController.self) {
                     _ = self.navigationController!.popToViewController(controller, animated: false)
-                    
                 }
             }
         }
@@ -145,7 +163,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     func notifyUser(prompt: String) {
         changePrompt(text: prompt)
         showPrompt()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3){
             self.hidePrompt()
         }
         
