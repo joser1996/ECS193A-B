@@ -78,80 +78,92 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         self.GameOver.isHidden = true
         // Only master generates game data, sends to slave
 
+
+        _ = loadBase()
+        
         var wave = 1
+
+        
+       _ = zombieStuff(wave)
+        
+    }
+    
+    
+    func zombieStuff(_ waves: Int) {
+        
         var zombieCount = 0
         var timerOne = 1
         var sleep = 7
-        
-        _ = loadBase()
+        var wave = waves
 
-        
-        self.zombieTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if zombieCount == 0 && sleep != 0 {
-                sleep -= 1
-            }
-            else if zombieCount == 10 + wave * 10 {
-                if sleep == 0 {
-                    for _ in 1...(10 + wave * 10) {
-                        self.spawnZombie(paramHealth: Int.random(in: 1...3))
-                    }
-                    wave += 1
-                    zombieCount = 0
-                    timerOne = 0
-                    sleep = 20
-                }
-                else {
+            self.zombieTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                if zombieCount == 0 && sleep != 0 {
                     sleep -= 1
                 }
-            }
-            else if timerOne == 0 {
-                // Zombie spawn code
-                self.spawnZombie(paramHealth: Int.random(in: 1...3))
-                zombieCount += 1
-                
-                // Reset timer
-                if zombieCount < (10 + wave * 10)/4 {
-                    if wave < 3 {
-                        timerOne = Int.random(in: 4...6)
-                    }
-                    else if wave < 5 {
-                        timerOne = Int.random(in: 3...5)
-                    }
-                    else if wave < 10 {
-                        timerOne = Int.random(in: 2...4)
+                else if zombieCount ==  wave * 2 {
+                    if sleep == 0 {
+                        for _ in 1...(wave * 2) {
+                            self.spawnZombie(paramHealth: Int.random(in: 1...3))
+                        }
+                        wave += 1
+                        zombieCount = 0
+                        timerOne = 0
+                        sleep = 20
                     }
                     else {
-                        timerOne = Int.random(in: 1...3)
+                        sleep -= 1
                     }
                 }
-                else if zombieCount < (10 + wave * 10)/2 {
-                    if wave < 5 {
-                        timerOne = Int.random(in: 3...5)
+                else if timerOne == 0 {
+                    // Zombie spawn code
+                    self.spawnZombie(paramHealth: Int.random(in: 1...3))
+                    zombieCount += 1
+                    
+                    // Reset timer
+                    if zombieCount < (wave * 10)/4 {
+                        if wave < 3 {
+                            timerOne = Int.random(in: 4...6)
+                        }
+                        else if wave < 5 {
+                            timerOne = Int.random(in: 3...5)
+                        }
+                        else if wave < 10 {
+                            timerOne = Int.random(in: 2...4)
+                        }
+                        else {
+                            timerOne = Int.random(in: 1...3)
+                        }
                     }
-                    else if wave < 10 {
-                        timerOne = Int.random(in: 2...4)
+                    else if zombieCount < (wave * 10)/2 {
+                        if wave < 5 {
+                            timerOne = Int.random(in: 3...5)
+                        }
+                        else if wave < 10 {
+                            timerOne = Int.random(in: 2...4)
+                        }
+                        else {
+                            timerOne = Int.random(in: 1...3)
+                        }
                     }
-                    else {
-                        timerOne = Int.random(in: 1...3)
-                    }
-                }
-                else if zombieCount < 3 * (10 + wave * 10)/4 {
-                    if wave < 10 {
-                        timerOne = Int.random(in: 2...4)
+                    else if zombieCount < 3 * (wave * 10)/4 {
+                        if wave < 10 {
+                            timerOne = Int.random(in: 2...4)
+                        }
+                        else {
+                            timerOne = Int.random(in: 1...3)
+                        }
                     }
                     else {
                         timerOne = Int.random(in: 1...3)
                     }
                 }
                 else {
-                    timerOne = Int.random(in: 1...3)
+                    timerOne -= 1
                 }
             }
-            else {
-                timerOne -= 1
-            }
         }
-    }
+        
+    
     
     
     override func viewDidAppear(_ animated: Bool) {
@@ -499,7 +511,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 previousViewController.anchorPoint.transform.columns.3.y,
                 previousViewController.anchorPoint.transform.columns.3.z
             )
-            let _: Void = referenceNode.look(at: basePosition, up: SCNVector3(0,1,0), localFront: basePosition)
+            referenceNode.look(at: basePosition, up: SCNVector3(0,1,0), localFront: basePosition)
             let moveAction = SCNAction.move(to: basePosition, duration: 10)
             let deletion = SCNAction.removeFromParentNode()
             let zombieSequence = SCNAction.sequence([moveAction, deletion])
@@ -530,7 +542,7 @@ extension GameViewController : PauseViewControllerDelegate {
     func pauseMenuUnPauseButtonPressed()
     {
         sceneViewGame.session.run(sceneViewGame.session.configuration!)
-        //self.zombieTimer.fire()
+        
     }
  }
 

@@ -329,15 +329,15 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="OSz-Ul-Yvf">
                                 <rect key="frame" x="406" y="309" width="60" height="64"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="5oB-zM-jJf">
-                                <rect key="frame" x="338" y="309" width="60" height="64"/>
-                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="CTO-da-3Ic">
                                 <rect key="frame" x="270" y="309" width="60" height="64"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="aTg-vd-YpK"/>
                                     <constraint firstAttribute="width" constant="60" id="xPB-oF-ffm"/>
                                 </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="5oB-zM-jJf">
+                                <rect key="frame" x="338" y="309" width="60" height="64"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -356,6 +356,7 @@
                             <constraint firstItem="OSz-Ul-Yvf" firstAttribute="leading" secondItem="5oB-zM-jJf" secondAttribute="trailing" constant="8" id="DY9-3t-gye"/>
                             <constraint firstItem="zRI-WH-efu" firstAttribute="top" secondItem="ZNO-7A-yfI" secondAttribute="top" id="E62-y5-dxN"/>
                             <constraint firstItem="5oB-zM-jJf" firstAttribute="height" secondItem="CTO-da-3Ic" secondAttribute="height" id="FJ8-c8-yCm"/>
+                            <constraint firstItem="5oB-zM-jJf" firstAttribute="centerX" secondItem="FzT-ot-4hG" secondAttribute="centerX" id="HDt-h0-NmX"/>
                             <constraint firstItem="OSz-Ul-Yvf" firstAttribute="height" secondItem="CTO-da-3Ic" secondAttribute="height" id="HW0-Ka-kfW"/>
                             <constraint firstItem="zRI-WH-efu" firstAttribute="leading" secondItem="vfK-8u-ZDM" secondAttribute="leading" constant="564" id="HoY-ZU-m1G"/>
                             <constraint firstItem="5oB-zM-jJf" firstAttribute="leading" secondItem="CTO-da-3Ic" secondAttribute="trailing" constant="8" id="Oxa-Bd-AGI"/>
