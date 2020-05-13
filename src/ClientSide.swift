@@ -456,7 +456,7 @@ class ClientSide {
                     print("MOO: Health key failed")
                     return
                 }
-                
+                print("MOO: Shoot health\(health)")
                 guard let isGameOver = obj["isGameOver"] as? Bool else {
                         print("MOO: Failed isGameOver key")
                         return
@@ -476,7 +476,9 @@ class ClientSide {
                 print("Number of Zombies: \(self.zombieWave.count)")
                 
                 if isGameOver {
-                    self.referenceVC.gameOver()
+                    DispatchQueue.main.async {
+                        self.referenceVC.gameOver()
+                    }
                 } else {
                     self.updateHealthFromServer(sHealth: health, cHealth: self.referenceVC.baseObj.health)
                 }
