@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SRH-zQ-hXw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SRH-zQ-hXw">
     <device id="retina6_1" orientation="landscape" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -326,6 +326,18 @@
                                     <segue destination="2AA-4x-gBd" kind="show" id="qsa-9q-slO"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="OSz-Ul-Yvf">
+                                <rect key="frame" x="350" y="309" width="60" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="5oB-zM-jJf">
+                                <rect key="frame" x="418" y="309" width="60" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="CTO-da-3Ic">
+                                <rect key="frame" x="486" y="309" width="60" height="64"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -357,6 +369,9 @@
                     <connections>
                         <outlet property="arView" destination="P7x-jy-HGF" id="wON-VG-5kD"/>
                         <outlet property="confirmBaseButton" destination="DUn-4U-2Am" id="c6o-eN-4HO"/>
+                        <outlet property="heart1" destination="OSz-Ul-Yvf" id="4xf-54-Hn1"/>
+                        <outlet property="heart2" destination="5oB-zM-jJf" id="z6L-Ax-4w4"/>
+                        <outlet property="heart3" destination="CTO-da-3Ic" id="PMT-Xl-gjJ"/>
                         <outlet property="promptLabel" destination="ZNO-7A-yfI" id="dwb-CI-ohg"/>
                     </connections>
                 </viewController>
@@ -543,10 +558,10 @@
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellReuseIdentifier" id="yLl-l4-wEM" customClass="OnlineGameSessionTableCell" customModule="TestApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="896" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="896" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yLl-l4-wEM" id="teL-ri-n3H">
-                                            <rect key="frame" x="44" y="0.0" width="808" height="44"/>
+                                            <rect key="frame" x="44" y="0.0" width="808" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U9r-b7-PV5">
@@ -629,10 +644,10 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="gameSessionCell" id="jlJ-f0-Hbo" customClass="OnlineGameSessionTableCell" customModule="TestApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="697" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="697" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jlJ-f0-Hbo" id="xhW-8f-QHS">
-                                            <rect key="frame" x="0.0" y="0.0" width="697" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="697" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="THZ-Vy-opF">
@@ -965,13 +980,13 @@
     <resources>
         <image name="Image" width="48" height="48"/>
         <image name="Image-1" width="48" height="48"/>
-        <image name="bag.fill" catalog="system" width="64" height="64"/>
-        <image name="camera" catalog="system" width="64" height="48"/>
-        <image name="magnifyingglass" catalog="system" width="64" height="56"/>
-        <image name="plus" catalog="system" width="64" height="56"/>
+        <image name="bag.fill" catalog="system" width="128" height="128"/>
+        <image name="camera" catalog="system" width="128" height="96"/>
+        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
         <image name="shutterstock_1200949210" width="6500" height="3657"/>
-        <image name="trash.fill" catalog="system" width="60" height="64"/>
-        <image name="viewfinder" catalog="system" width="64" height="56"/>
-        <image name="xmark" catalog="system" width="64" height="56"/>
+        <image name="trash.fill" catalog="system" width="121" height="128"/>
+        <image name="viewfinder" catalog="system" width="128" height="114"/>
+        <image name="xmark" catalog="system" width="128" height="113"/>
     </resources>
 </document>
