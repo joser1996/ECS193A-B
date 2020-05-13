@@ -393,7 +393,7 @@ class ClientSide {
                     return
                 }
                 DispatchQueue.main.async {
-                    if gameOver {
+                    if gameOver && !self.referenceVC.isGameOver{
                         self.referenceVC.gameOver()
                     } else {
                         self.updateHealthFromServer(sHealth: serverHealth, cHealth: health)
@@ -408,12 +408,9 @@ class ClientSide {
     }
     
     func updateHealthFromServer(sHealth: Int, cHealth: Int) {
-        var clientHealth = cHealth
         if (sHealth < cHealth) {
-            while sHealth != clientHealth {
-                DispatchQueue.main.async {
-                    clientHealth = self.referenceVC.decrementHealth()
-                }
+            DispatchQueue.main.async {
+                self.referenceVC.setHealth(health: sHealth)
             }
         }
     }
@@ -477,7 +474,7 @@ class ClientSide {
                 self.compareAndUpdate(wave: wave)
                 print("Number of Zombies: \(self.zombieWave.count)")
                 
-                if isGameOver {
+                if isGameOver  && !self.referenceVC.isGameOver{
                     DispatchQueue.main.async {
                         self.referenceVC.gameOver()
                     }
@@ -685,7 +682,9 @@ class ClientSide {
                 self.zombieWave[name]?.isDead = true
                 let health: Int = self.referenceVC.decrementHealth()
                 self.updateHealthTask(health: health)
-                self.updateZombiesTask()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.updateZombiesTask()
+                }
 
             }
         })

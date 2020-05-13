@@ -138,8 +138,8 @@ class LeaderBoard: NSObject, NSCoding{
                 let cells: [LeaderBoardCell] = []
                 let lb = LeaderBoard(scoreBoard: cells)
                 
-                let p1: Player = Player(name: "Big Chungus")
-                let p2: Player = Player(name: "Tom")
+                let p1: Player = Player(name: "Player1")
+                let p2: Player = Player(name: "Player2")
                 
                 p1.score = 100
                 p2.score = 75
