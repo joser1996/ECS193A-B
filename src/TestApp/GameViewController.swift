@@ -186,10 +186,11 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
 
 
     @IBAction func pause_button(_ sender: Any) {
+        self.zombieTimer.invalidate()
         sceneViewGame.session.pause()
              let storyboard = UIStoryboard(name: "Main", bundle: nil)
               let vc = storyboard.instantiateViewController(withIdentifier: "PauseViewController") as! PauseViewController
-              self.navigationController!.pushViewController(vc, animated: true)
+        self.navigationController!.pushViewController(vc, animated: true)
         //let viewController = PauseViewController(delegate: self)
         //navigationController?.pushViewController(viewController, animated: true)
     }
@@ -240,6 +241,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 //self.sceneViewGame?.session.pause()
                 //self.sceneViewGame?.removeFromSuperview()
                 //self.sceneViewGame = nil
+                //self.zombieTimer.invalidate()
                 self.navigationController?.popToRootViewController(animated: true)
             }
         }
@@ -371,7 +373,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         for child in parentNode!.childNodes {
                             child.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
                         }
-                        self.removeFromParent()
+                        //self.removeFromParent()
                     }
                 }
                 else if hitZombie?.health == 2 {
@@ -381,7 +383,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         for child in parentNode!.childNodes {
                             child.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
                         }
-                        self.removeFromParent()
+                        //self.removeFromParent()
                     }
                 }
                 else if hitZombie?.health == 3 {
@@ -528,6 +530,7 @@ extension GameViewController : PauseViewControllerDelegate {
     func pauseMenuUnPauseButtonPressed()
     {
         sceneViewGame.session.run(sceneViewGame.session.configuration!)
+        //self.zombieTimer.fire()
     }
  }
 
