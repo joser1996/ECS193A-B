@@ -456,7 +456,7 @@ class ClientSide {
                     print("MOO: Health key failed")
                     return
                 }
-                print("MOO: Shoot health\(health)")
+                print("MOO: Shoot server health\(health)")
                 guard let isGameOver = obj["isGameOver"] as? Bool else {
                         print("MOO: Failed isGameOver key")
                         return
