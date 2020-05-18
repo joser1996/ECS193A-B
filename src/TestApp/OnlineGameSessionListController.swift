@@ -22,6 +22,7 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
     var newGameId: Int!
     var gameSessionPassword: String!
     var refreshTimer: Timer!
+    var selectedRow: IndexPath!
     
     let BASE_SERVER_URL = "http://server162.site:59435"
     let TIMER_LENGTH: Double = 3
@@ -59,6 +60,7 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
         gameSessionName = data[indexPath.row]
         joinGameButton.isEnabled = true
         joinGameButton.setTitleColor(UIColor.systemRed, for: .normal)
+        selectedRow = indexPath
     }
     
     @IBAction func createNewGame(_ sender: Any) {
@@ -185,6 +187,9 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
             
             DispatchQueue.main.async{
                 self.tableView.reloadData()
+                if (self.selectedRow != nil) {
+                    self.tableView.selectRow(at: self.selectedRow!, animated: true, scrollPosition: UITableView.ScrollPosition.none)
+                }
             }
         }
         task.resume()
