@@ -22,6 +22,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var center = CGPoint(x: 0, y: 0)
     var health = 3
     var isWithinBase = true
+    var wave = 1
     
     var zombies : [String: Zombie] = [:]
     var zombieIndex : Int = 0
@@ -80,11 +81,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
 
 
         _ = loadBase()
-        
-        var wave = 1
-
-        
-       _ = zombieStuff(wave)
+        _ = zombieStuff(wave)
         
     }
     
@@ -95,6 +92,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         var timerOne = 1
         var sleep = 7
         var wave = waves
+        self.wave = wave
 
             self.zombieTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                 if zombieCount == 0 && sleep != 0 {
@@ -383,7 +381,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         let parentNode = node?.parent
                         node?.removeFromParentNode()
                         for child in parentNode!.childNodes {
-                            child.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                            child.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
                         }
                         //self.removeFromParent()
                     }
@@ -393,7 +391,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         let parentNode = node?.parent
                         node?.removeFromParentNode()
                         for child in parentNode!.childNodes {
-                            child.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                            child.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
                         }
                         //self.removeFromParent()
                     }
