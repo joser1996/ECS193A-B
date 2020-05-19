@@ -37,6 +37,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     @IBOutlet weak var GameOver: UILabel!
     @IBOutlet weak var ReturnToBase: UILabel!
     @IBOutlet weak var Score: UILabel!
+    @IBOutlet weak var PauseButton: UIButton!
+    
     
     @IBOutlet weak var Heart1: UIImageView!
     @IBOutlet weak var Heart2: UIImageView!
@@ -72,6 +74,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        PauseButton.isHidden = true
         sceneViewGame.delegate = self
  //       mcService = previousViewController.mcService
 //        mcService.receivedDataHandler = receivedData
@@ -81,8 +84,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
 
 
         _ = loadBase()
-        _ = zombieStuff(wave)
-        
+
+           
     }
     
     
@@ -92,7 +95,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         var timerOne = 1
         var sleep = 7
         var wave = waves
-        self.wave = wave
+
 
             self.zombieTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
                 if zombieCount == 0 && sleep != 0 {
@@ -104,9 +107,13 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                             self.spawnZombie(paramHealth: Int.random(in: 1...3))
                         }
                         wave += 1
+                        self.wave = wave
                         zombieCount = 0
                         timerOne = 0
                         sleep = 20
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                            self.PauseButton.isHidden = false
+                        }
                     }
                     else {
                         sleep -= 1
@@ -114,11 +121,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 }
                 else if timerOne == 0 {
                     // Zombie spawn code
+                    self.PauseButton.isHidden = true
                     self.spawnZombie(paramHealth: Int.random(in: 1...3))
                     zombieCount += 1
                     
                     // Reset timer
-                    if zombieCount < (wave * 10)/4 {
+                    if zombieCount < (wave * 2)/4 {
                         if wave < 3 {
                             timerOne = Int.random(in: 4...6)
                         }
@@ -132,7 +140,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                             timerOne = Int.random(in: 1...3)
                         }
                     }
-                    else if zombieCount < (wave * 10)/2 {
+                    else if zombieCount < (wave * 2)/2 {
                         if wave < 5 {
                             timerOne = Int.random(in: 3...5)
                         }
@@ -143,7 +151,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                             timerOne = Int.random(in: 1...3)
                         }
                     }
-                    else if zombieCount < 3 * (wave * 10)/4 {
+                    else if zombieCount < 3 * (wave * 2)/4 {
                         if wave < 10 {
                             timerOne = Int.random(in: 2...4)
                         }
@@ -166,6 +174,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
         
@@ -178,6 +187,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         sceneViewGame.session.run(configuration, options: op)
         sceneViewGame.session.delegate = self
         updatePromptLabel(prompt: "Tap on the crosshair")
+        
+        _ = zombieStuff(wave)
     }
 
 
@@ -196,7 +207,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
 
 
     @IBAction func pause_button(_ sender: Any) {
-        //self.zombieTimer.invalidate()
+        self.zombieTimer.invalidate()
         sceneViewGame.session.pause()
              let storyboard = UIStoryboard(name: "Main", bundle: nil)
               let vc = storyboard.instantiateViewController(withIdentifier: "PauseViewController") as! PauseViewController
@@ -247,6 +258,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             self.Heart2.isHidden = true
             self.Heart1.isHidden = true
             self.GameOver.isHidden = false
+            PauseButton.isHidden = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 //self.sceneViewGame?.session.pause()
                 //self.sceneViewGame?.removeFromSuperview()

@@ -179,12 +179,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H4H-Bd-cuV">
-                                <rect key="frame" x="341.66666666666669" y="0.0" width="53" height="36"/>
+                                <rect key="frame" x="340.66666666666669" y="0.0" width="55" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="4hU-3u-p89"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Pause"/>
+                                <fontDescription key="fontDescription" name="Bloody" family="Bloody" pointSize="23"/>
+                                <state key="normal" title="Pause">
+                                    <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="pause_button:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gU8-6c-t31"/>
                                 </connections>
@@ -199,7 +201,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game Over" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JBN-ce-ZWN">
-                                <rect key="frame" x="173.66666666666663" y="68" width="389" height="96"/>
+                                <rect key="frame" x="173.33333333333334" y="68" width="389.66666666666663" height="96"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="96" id="EQk-C4-e8L"/>
                                 </constraints>
@@ -267,6 +269,7 @@
                         <outlet property="Heart1" destination="bUa-vA-D2e" id="NQ8-Fa-CWW"/>
                         <outlet property="Heart2" destination="BG9-LX-H4G" id="zqf-Rv-yDq"/>
                         <outlet property="Heart3" destination="dgp-VK-Zgv" id="mzr-y4-Nhy"/>
+                        <outlet property="PauseButton" destination="H4H-Bd-cuV" id="i8I-NS-QIS"/>
                         <outlet property="ReturnToBase" destination="auM-9d-17x" id="7gC-eL-5ka"/>
                         <outlet property="Score" destination="4Sn-Rh-ap2" id="s0i-NS-m8x"/>
                         <outlet property="sceneViewGame" destination="B0d-WQ-vey" id="T0L-Hz-CKv"/>
