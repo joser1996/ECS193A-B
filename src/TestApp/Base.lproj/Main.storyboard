@@ -465,16 +465,16 @@
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="None To Mourn" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5c-AI-BHU">
-                                <rect key="frame" x="235.66666666666663" y="37" width="265" height="81"/>
+                                <rect key="frame" x="102.66666666666669" y="20" width="530.66666666666652" height="98"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="81" id="ofu-qG-yPk"/>
+                                    <constraint firstAttribute="height" constant="98" id="ofu-qG-yPk"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Bloody" family="Bloody" pointSize="40"/>
+                                <fontDescription key="fontDescription" name="Bloody" family="Bloody" pointSize="80"/>
                                 <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="highlightedColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                             <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w6C-lv-xPS">
-                                <rect key="frame" x="219.66666666666663" y="141" width="297" height="56"/>
+                                <rect key="frame" x="219.66666666666663" y="140" width="297" height="56"/>
                                 <fontDescription key="fontDescription" name="Bloody" family="Bloody" pointSize="40"/>
                                 <state key="normal" title="Single Player">
                                     <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -494,7 +494,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAA-yo-egg">
-                                <rect key="frame" x="219.66666666666663" y="235" width="297" height="68"/>
+                                <rect key="frame" x="219.66666666666663" y="222" width="297" height="68"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="68" id="rcW-Ct-meZ"/>
                                 </constraints>
@@ -511,7 +511,7 @@
                         <constraints>
                             <constraint firstItem="zAA-yo-egg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="w6C-lv-xPS" secondAttribute="leading" id="0E4-9k-9MK"/>
                             <constraint firstItem="pLH-Uc-scS" firstAttribute="top" secondItem="zcq-EU-yrl" secondAttribute="top" id="2ox-UH-Adc"/>
-                            <constraint firstItem="w6C-lv-xPS" firstAttribute="centerY" secondItem="eaP-wx-Yic" secondAttribute="centerY" constant="-38" id="Bdt-bt-gLL"/>
+                            <constraint firstItem="w6C-lv-xPS" firstAttribute="centerY" secondItem="eaP-wx-Yic" secondAttribute="centerY" constant="-39" id="Bdt-bt-gLL"/>
                             <constraint firstItem="irA-BI-ZgP" firstAttribute="centerX" secondItem="eaP-wx-Yic" secondAttribute="centerX" id="Csx-VE-uGy"/>
                             <constraint firstItem="w6C-lv-xPS" firstAttribute="centerX" secondItem="eaP-wx-Yic" secondAttribute="centerX" id="FYl-gV-x0D"/>
                             <constraint firstItem="w6C-lv-xPS" firstAttribute="centerX" secondItem="eaP-wx-Yic" secondAttribute="centerX" id="GYK-0f-1Rn"/>
@@ -521,12 +521,12 @@
                             <constraint firstItem="irA-BI-ZgP" firstAttribute="centerX" secondItem="eaP-wx-Yic" secondAttribute="centerX" id="Un1-y6-V5D"/>
                             <constraint firstItem="0Y4-96-t8p" firstAttribute="centerY" secondItem="pLH-Uc-scS" secondAttribute="centerY" id="Vdv-ET-Bft"/>
                             <constraint firstItem="0Y4-96-t8p" firstAttribute="centerY" secondItem="eaP-wx-Yic" secondAttribute="centerY" id="X1T-aA-6b7"/>
-                            <constraint firstItem="L5c-AI-BHU" firstAttribute="top" secondItem="zcq-EU-yrl" secondAttribute="top" constant="37" id="bOQ-kL-mh1"/>
+                            <constraint firstItem="L5c-AI-BHU" firstAttribute="top" secondItem="zcq-EU-yrl" secondAttribute="top" constant="20" id="bOQ-kL-mh1"/>
                             <constraint firstItem="zcq-EU-yrl" firstAttribute="bottom" secondItem="irA-BI-ZgP" secondAttribute="bottom" constant="58" id="bWn-PU-ave"/>
                             <constraint firstItem="0Y4-96-t8p" firstAttribute="top" secondItem="eaP-wx-Yic" secondAttribute="topMargin" constant="-9" id="bg8-gS-ye9"/>
                             <constraint firstItem="L5c-AI-BHU" firstAttribute="centerX" secondItem="eaP-wx-Yic" secondAttribute="centerX" id="cv8-cX-KkM"/>
                             <constraint firstItem="0Y4-96-t8p" firstAttribute="leading" secondItem="eaP-wx-Yic" secondAttribute="leading" id="dZS-9X-uy3"/>
-                            <constraint firstItem="irA-BI-ZgP" firstAttribute="top" secondItem="zAA-yo-egg" secondAttribute="bottom" constant="8" id="jJD-Be-a65"/>
+                            <constraint firstItem="irA-BI-ZgP" firstAttribute="top" secondItem="zAA-yo-egg" secondAttribute="bottom" constant="21" id="jJD-Be-a65"/>
                             <constraint firstItem="0Y4-96-t8p" firstAttribute="centerX" secondItem="eaP-wx-Yic" secondAttribute="centerX" id="jLr-rk-lSL"/>
                             <constraint firstAttribute="trailing" secondItem="0Y4-96-t8p" secondAttribute="trailing" id="k3z-5m-nxN"/>
                             <constraint firstItem="L5c-AI-BHU" firstAttribute="centerX" secondItem="eaP-wx-Yic" secondAttribute="centerX" id="p7D-0T-3Vh"/>
@@ -539,7 +539,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nja-8o-62h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="494.19642857142856" y="66.666666666666671"/>
+            <point key="canvasLocation" x="494.02173913043481" y="66.666666666666671"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="oB6-c4-Cio">
