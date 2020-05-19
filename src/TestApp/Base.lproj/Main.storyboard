@@ -474,7 +474,7 @@
                                 <color key="highlightedColor" systemColor="systemPurpleColor" red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                             <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w6C-lv-xPS">
-                                <rect key="frame" x="219.66666666666663" y="140" width="297" height="56"/>
+                                <rect key="frame" x="198.66666666666663" y="140" width="339" height="56"/>
                                 <fontDescription key="fontDescription" name="Bloody" family="Bloody" pointSize="40"/>
                                 <state key="normal" title="Single Player">
                                     <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -494,11 +494,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zAA-yo-egg">
-                                <rect key="frame" x="219.66666666666663" y="222" width="297" height="68"/>
+                                <rect key="frame" x="198.66666666666663" y="222" width="339" height="68"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="68" id="rcW-Ct-meZ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Bloody" family="Bloody" pointSize="35"/>
+                                <fontDescription key="fontDescription" name="Bloody" family="Bloody" pointSize="40"/>
                                 <state key="normal" title="Online Multiplayer">
                                     <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
