@@ -41,6 +41,7 @@
 		93C74FB223D91D01003BF585 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93C74FB023D91D01003BF585 /* LaunchScreen.storyboard */; };
 		93C74FBD23D91D01003BF585 /* TestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C74FBC23D91D01003BF585 /* TestAppTests.swift */; };
 		93C74FC823D91D01003BF585 /* TestAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C74FC723D91D01003BF585 /* TestAppUITests.swift */; };
+		93F36633247F098800257F6B /* shoot.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 93F36632247F098800257F6B /* shoot.mp3 */; };
 		93F3CB9C2468AD2A00A5CCF1 /* NightOfDIzzySpells.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 93F3CB9B2468AD2A00A5CCF1 /* NightOfDIzzySpells.mp3 */; };
 		93F8280624651B48002E41CE /* Explode.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 93F8280524651B48002E41CE /* Explode.scnp */; };
 		93F860EA2447A51E003FCF5B /* MusicPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F860E92447A51E003FCF5B /* MusicPlayer.swift */; };
@@ -119,6 +120,7 @@
 		93C74FC323D91D01003BF585 /* TestAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C74FC723D91D01003BF585 /* TestAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppUITests.swift; sourceTree = "<group>"; };
 		93C74FC923D91D01003BF585 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93F36632247F098800257F6B /* shoot.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shoot.mp3; sourceTree = "<group>"; };
 		93F3CB9B2468AD2A00A5CCF1 /* NightOfDIzzySpells.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = NightOfDIzzySpells.mp3; sourceTree = "<group>"; };
 		93F8280524651B48002E41CE /* Explode.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = Explode.scnp; sourceTree = "<group>"; };
 		93F860E92447A51E003FCF5B /* MusicPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayer.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 		936DCE6824351BD2002FD853 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				93F36632247F098800257F6B /* shoot.mp3 */,
 				9342F3882453E997008AA9DC /* wind.mp3 */,
 				93F3CB9B2468AD2A00A5CCF1 /* NightOfDIzzySpells.mp3 */,
 				E0CE014A244EF94F001A3C77 /* wind.mp3 */,
@@ -416,6 +419,7 @@
 				93C74FAF23D91D01003BF585 /* Assets.xcassets in Resources */,
 				93271315245A294B00050DD4 /* David_Screeching.mp3 in Resources */,
 				93C74FAD23D91CFE003BF585 /* Main.storyboard in Resources */,
+				93F36633247F098800257F6B /* shoot.mp3 in Resources */,
 				933F3582246A3CF800B71101 /* BLOODY.TTF in Resources */,
 				9342F3892453E997008AA9DC /* wind.mp3 in Resources */,
 				9313E98D24650EBD00677902 /* explosion.scnp in Resources */,
