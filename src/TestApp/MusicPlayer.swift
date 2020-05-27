@@ -12,6 +12,7 @@ import AVFoundation
 class MusicPlayer {
     static let shared = MusicPlayer()
     var player: AVAudioPlayer?
+    var sfxPlayer: AVAudioPlayer?
     
     func playBackgroundMusic() {
         if let bundle = Bundle.main.path(forResource: "wind", ofType: "mp3") {
@@ -31,6 +32,20 @@ class MusicPlayer {
         
     }
     
+    func shotSFX() {
+        if let bundle = Bundle.main.path(forResource: "shoot", ofType: "mp3") {
+            let sfx = NSURL(fileURLWithPath: bundle)
+            do{
+                sfxPlayer = try AVAudioPlayer(contentsOf: sfx as URL)
+                guard let player = sfxPlayer else {return}
+                player.numberOfLoops = 0
+                player.prepareToPlay()
+                player.play()
+            } catch {
+                print(error)
+            }
+        }
+    }
     func startSong() {
         if let bundle = Bundle.main.path(forResource: "NightOfDIzzySpells", ofType: "mp3") {
             let song = NSURL(fileURLWithPath: bundle)
@@ -43,6 +58,7 @@ class MusicPlayer {
                     
                 }
                 player.numberOfLoops = -1
+                player.volume = 0.5
                 player.prepareToPlay()
                 let ret = player.play()
                 if ret { print("Couldn't play") }
@@ -90,6 +106,8 @@ class MusicPlayer {
             
         }
     }
+    
+
     
 
 }

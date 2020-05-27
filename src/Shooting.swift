@@ -64,7 +64,7 @@ class Shooting {
         node.physicsBody?.applyForce(nodeDirection, asImpulse: true)
         node.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.35), SCNAction.removeFromParentNode()]))
         view.scene.rootNode.addChildNode(node)
-        
+        MusicPlayer.shared.shotSFX()
     }
 }
 
