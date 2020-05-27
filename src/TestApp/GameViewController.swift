@@ -38,6 +38,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     @IBOutlet weak var ReturnToBase: UILabel!
     @IBOutlet weak var Score: UILabel!
     @IBOutlet weak var PauseButton: UIButton!
+    @IBOutlet weak var NextWave: UILabel!
     
     
     @IBOutlet weak var Heart1: UIImageView!
@@ -75,6 +76,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         PauseButton.isHidden = true
+        NextWave.isHidden = true
         sceneViewGame.delegate = self
  //       mcService = previousViewController.mcService
 //        mcService.receivedDataHandler = receivedData
@@ -110,7 +112,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         timerOne = 0
                         sleep = 20
                         DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                            self.PauseButton.isHidden = false
+                            if (self.health != 0) {
+                                self.PauseButton.isHidden = false
+                                self.NextWave.isHidden = false
+                            }
                         }
                     }
                     else {
@@ -120,6 +125,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 else if timerOne == 0 {
                     // Zombie spawn code
                     self.PauseButton.isHidden = true
+                    self.NextWave.isHidden = true
                     self.spawnZombie(paramHealth: Int.random(in: 1...3))
                     zombieCount += 1
                     
@@ -257,7 +263,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             self.Heart2.isHidden = true
             self.Heart1.isHidden = true
             self.GameOver.isHidden = false
-            PauseButton.isHidden = true
+            self.PauseButton.isHidden = true
+            self.NextWave.isHidden = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 //self.sceneViewGame?.session.pause()
                 //self.sceneViewGame?.removeFromSuperview()
@@ -494,11 +501,27 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     // MARK: - AR session management
     private func loadZombie(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
-        let sceneURL = Bundle.main.url(forResource: "zombie", withExtension: "scn", subdirectory: "art.scnassets")!
+        var sceneURL = Bundle.main.url(forResource: "", withExtension: "scn", subdirectory: "art.scnassets")!
+        switch Int.random(in: 1...4) {
+        case 1:
+            sceneURL = Bundle.main.url(forResource: "zombie_headless", withExtension: "scn", subdirectory: "art.scnassets")!
+            print("headless")
+        case 2:
+            sceneURL = Bundle.main.url(forResource: "zombie_1_arm", withExtension: "scn", subdirectory: "art.scnassets")!
+            print("no leg")
+        case 3:
+            sceneURL = Bundle.main.url(forResource: "zombie_1_leg", withExtension: "scn", subdirectory: "art.scnassets")!
+            print("no arm")
+        case 4:
+            sceneURL = Bundle.main.url(forResource: "zombie", withExtension: "scn", subdirectory: "art.scnassets")!
+        default:
+            sceneURL = Bundle.main.url(forResource: "zombie", withExtension: "scn", subdirectory: "art.scnassets")!
+        }
+        
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
         referenceNode.name = "boxNode"
-        print("Health: \(health)")
+        //print("Health: \(health)")
         
         if isZombie {
             if health == 1 {
