@@ -40,7 +40,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         //mcService = MultipeerSession(receivedDataHandler: receivedData)
         sceneView.delegate = self
         shareMapButton.isEnabled = false
-        connectionLabel.text = "Place Base Down By Tapping On Screen"
+        connectionLabel.text = "Place Your Base By Tapping On Screen"
         /*if isHosting {
             promptLabel.text = "Place Base Down"
         }*/
@@ -137,15 +137,20 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
 
             shareMapButton.isEnabled = (baseNode != nil) //|| (Player.playerCount != 0)
             print("MappingStatus: Extending")
+            
 
         case .mapped:
-
+            if (baseNode != nil)
+            {
+                 self.connectionLabel.text = "Press Start"
+            }
             shareMapButton.isEnabled = (baseNode != nil) //|| (Player.playerCount != 0)
 
             print("MappingStatus: Mapped")
         @unknown default:
             print("Unknown worldMappingStatus")
         }
+
         
         /*if mapProvider != nil {
             shareMapButton.setTitle("Map Received! Proceed to game...", for: UIControl.State.normal)

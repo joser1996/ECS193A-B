@@ -14,8 +14,8 @@
             filePath = "TestApp/GameViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "479"
-            endingLineNumber = "479"
+            startingLineNumber = "504"
+            endingLineNumber = "504"
             landmarkName = "loadZombie(_:_:_:_:_:)"
             landmarkType = "7">
          </BreakpointContent>
