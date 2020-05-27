@@ -77,11 +77,13 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
         let confirmAction = UIAlertAction(title: "Enter", style: .default) {
             (_) in
             self.playerName = alertController.textFields?[0].text
+            self.playerName = self.playerName.replacingOccurrences(of: " ", with: "-")
             self.gameSessionPassword = alertController.textFields?[1].text
             
             var url = URL(string: "")
             if (isNewGame) {
                 self.gameSessionName = alertController.textFields?[2].text
+                self.gameSessionName = self.gameSessionName.replacingOccurrences(of: " ", with: "-")
                 url = URL(string: "\(self.BASE_SERVER_URL)/host-request/\(self.playerName!)/\(self.gameSessionName!)/\(self.gameSessionPassword!)")
             }
             else {
