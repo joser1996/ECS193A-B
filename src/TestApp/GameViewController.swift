@@ -77,6 +77,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         super.viewDidLoad()
         PauseButton.isHidden = true
         NextWave.isHidden = true
+        ReturnToBase.isHidden = true
         sceneViewGame.delegate = self
  //       mcService = previousViewController.mcService
 //        mcService.receivedDataHandler = receivedData
@@ -258,7 +259,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             self.Heart2.isHidden = true
             self.Heart1.isHidden = true
         }
-        else if self.health == 0 {
+        else if self.health <= 0 {
             self.Heart3.isHidden = true
             self.Heart2.isHidden = true
             self.Heart1.isHidden = true
@@ -330,15 +331,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             }
         }
         else if isWithinBase {
-            guard let frame = sceneViewGame.session.currentFrame else { return }
-            let camMatrix = SCNMatrix4(frame.camera.transform)
-            let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
-            
-            let bullet = SCNSphere(radius: 0.02)
-            bullet.firstMaterial?.diffuse.contents = UIColor.red
-            let bulletNode = SCNNode(geometry: bullet)
-            bulletNode.position = position
-            bulletNode.position.y -= 0.1
+            guard let frame = sceneViewGame.session.currentFrame else {return}
+            let bulletNode = loadBullet(frame)
             sceneViewGame.scene.rootNode.addChildNode(bulletNode)
             
             let shootTestResults = sceneViewGame.hitTest(center, types: .featurePoint)
@@ -497,7 +491,23 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
        
         
         return referenceNode
-        }
+    }
+    
+    private func loadBullet (_ frame: ARFrame) -> SCNNode {
+ 
+        let camMatrix = SCNMatrix4(frame.camera.transform)
+        let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
+        
+        let bulletURL = Bundle.main.url(forResource: "bullet-model", withExtension: "scn", subdirectory: "art.scnassets")!
+        let bulletNode = SCNReferenceNode(url: bulletURL)!
+        bulletNode.load()
+        
+        bulletNode.name = "bullet"
+        bulletNode.scale = SCNVector3(x: 0.01, y: 0.01, z: 0.01)
+        bulletNode.position = position
+        bulletNode.position.y -= 0.1
+        return bulletNode
+    }
     
     // MARK: - AR session management
     private func loadZombie(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
