@@ -15,7 +15,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var initMap:ARWorldMap!
     // MARK: Multipeer Implementation
     var mcService : MultipeerSession!
-    var isMaster: Bool!
     
     var previousViewController: BasePlacementController!
     var didSyncCrosshair = false
@@ -59,6 +58,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         let distance = Float.random(in: 1.5 ..< 2)
         let position = (x: distance * cos(angle * Float.pi / 180), y: -0.4, z: distance * sin(angle * Float.pi / 180))
         let node = loadZombie(position.x, -0.4, position.z, true, paramHealth)
+        let basePosition = SCNVector3(
+            previousViewController.anchorPoint.transform.columns.3.x,
+            previousViewController.anchorPoint.transform.columns.3.y,
+            previousViewController.anchorPoint.transform.columns.3.z
+        )
+        //if (node.name != "bulletNode") {
+            node.look(at: basePosition)
+        //}
         let name = generateZombieName()
         node.name = name
         
@@ -74,16 +81,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         NextWave.isHidden = true
         ReturnToBase.isHidden = true
         sceneViewGame.delegate = self
- //       mcService = previousViewController.mcService
-//        mcService.receivedDataHandler = receivedData
-        
+
         self.GameOver.isHidden = true
-        // Only master generates game data, sends to slave
 
-
-        theBase = loadBase()
-
-           
+        _ = loadBase()
     }
     
     
@@ -322,7 +323,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                     feature.worldTransform.columns.3.x,
                     feature.worldTransform.columns.3.y,
                     feature.worldTransform.columns.3.z)
-                bulletNode.runAction(SCNAction.sequence([SCNAction.move(to: targetPosition, duration: 0.15), SCNAction.removeFromParentNode()]))
+                    bulletNode.runAction(SCNAction.sequence([SCNAction.move(to: targetPosition, duration: 0.15), SCNAction.removeFromParentNode()]))
             }
             else {
                 bulletNode.runAction(SCNAction.removeFromParentNode())
@@ -425,21 +426,20 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         var sceneURL = Bundle.main.url(forResource: "", withExtension: "scn", subdirectory: "art.scnassets")!
         switch Int.random(in: 1...4) {
         case 1:
-            sceneURL = Bundle.main.url(forResource: "zombie_headless", withExtension: "scn", subdirectory: "art.scnassets")!
+            sceneURL = Bundle.main.url(forResource: "zombie_headless_180", withExtension: "scn", subdirectory: "art.scnassets")!
         case 2:
-            sceneURL = Bundle.main.url(forResource: "zombie_1_arm", withExtension: "scn", subdirectory: "art.scnassets")!
+            sceneURL = Bundle.main.url(forResource: "zombie_1_arm_180", withExtension: "scn", subdirectory: "art.scnassets")!
         case 3:
-            sceneURL = Bundle.main.url(forResource: "zombie_1_leg", withExtension: "scn", subdirectory: "art.scnassets")!
+            sceneURL = Bundle.main.url(forResource: "zombie_1_leg_180", withExtension: "scn", subdirectory: "art.scnassets")!
         case 4:
-            sceneURL = Bundle.main.url(forResource: "zombie", withExtension: "scn", subdirectory: "art.scnassets")!
+            sceneURL = Bundle.main.url(forResource: "walking_zombie_180", withExtension: "scn", subdirectory: "art.scnassets")!
         default:
-            sceneURL = Bundle.main.url(forResource: "zombie", withExtension: "scn", subdirectory: "art.scnassets")!
+            sceneURL = Bundle.main.url(forResource: "walking_zombie_180", withExtension: "scn", subdirectory: "art.scnassets")!
         }
         
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
         referenceNode.name = "boxNode"
-        //print("Health: \(health)")
         
         if isZombie {
             if health == 1 {
@@ -462,6 +462,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 previousViewController.anchorPoint.transform.columns.3.y,
                 previousViewController.anchorPoint.transform.columns.3.z
             )
+            
             let moveAction = SCNAction.move(to: basePosition, duration: 10)
             let deletion = SCNAction.removeFromParentNode()
             let zombieSequence = SCNAction.sequence([moveAction, deletion])
@@ -485,3 +486,4 @@ extension GameViewController : PauseViewControllerDelegate {
         
     }
  }
+
