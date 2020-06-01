@@ -26,7 +26,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     var zombies : [String: Zombie] = [:]
     var zombieIndex : Int = 0
-    
+    var theBase = SCNNode()
     var zombieTimer : Timer! = nil
     var masterScore : Int = 0
     
@@ -77,6 +77,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         super.viewDidLoad()
         PauseButton.isHidden = true
         NextWave.isHidden = true
+        ReturnToBase.isHidden = true
         sceneViewGame.delegate = self
  //       mcService = previousViewController.mcService
 //        mcService.receivedDataHandler = receivedData
@@ -85,7 +86,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         // Only master generates game data, sends to slave
 
 
-        _ = loadBase()
+        theBase = loadBase()
 
            
     }
@@ -258,7 +259,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             self.Heart2.isHidden = true
             self.Heart1.isHidden = true
         }
-        else if self.health == 0 {
+        else if self.health <= 0 {
             self.Heart3.isHidden = true
             self.Heart2.isHidden = true
             self.Heart1.isHidden = true
@@ -330,15 +331,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             }
         }
         else if isWithinBase {
-            guard let frame = sceneViewGame.session.currentFrame else { return }
-            let camMatrix = SCNMatrix4(frame.camera.transform)
-            let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
-            
-            let bullet = SCNSphere(radius: 0.02)
-            bullet.firstMaterial?.diffuse.contents = UIColor.red
-            let bulletNode = SCNNode(geometry: bullet)
-            bulletNode.position = position
-            bulletNode.position.y -= 0.1
+            guard let frame = sceneViewGame.session.currentFrame else {return}
+            let bulletNode = loadBullet(frame)
             sceneViewGame.scene.rootNode.addChildNode(bulletNode)
             
             let shootTestResults = sceneViewGame.hitTest(center, types: .featurePoint)
@@ -399,7 +393,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         let parentNode = node?.parent
                         node?.removeFromParentNode()
                         for child in parentNode!.childNodes {
-                            child.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                            child.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "PurpleSkin")
                         }
                         //self.removeFromParent()
                     }
@@ -409,7 +403,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         let parentNode = node?.parent
                         node?.removeFromParentNode()
                         for child in parentNode!.childNodes {
-                            child.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                            child.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "YellowSkin")
                         }
                         //self.removeFromParent()
                     }
@@ -497,7 +491,23 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
        
         
         return referenceNode
-        }
+    }
+    
+    private func loadBullet (_ frame: ARFrame) -> SCNNode {
+ 
+        let camMatrix = SCNMatrix4(frame.camera.transform)
+        let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
+        
+        let bulletURL = Bundle.main.url(forResource: "bullet-model", withExtension: "scn", subdirectory: "art.scnassets")!
+        let bulletNode = SCNReferenceNode(url: bulletURL)!
+        bulletNode.load()
+        
+        bulletNode.name = "bullet"
+        bulletNode.scale = SCNVector3(x: 0.01, y: 0.01, z: 0.01)
+        bulletNode.position = position
+        bulletNode.position.y -= 0.1
+        return bulletNode
+    }
     
     // MARK: - AR session management
     private func loadZombie(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
@@ -505,13 +515,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         switch Int.random(in: 1...4) {
         case 1:
             sceneURL = Bundle.main.url(forResource: "zombie_headless", withExtension: "scn", subdirectory: "art.scnassets")!
-            print("headless")
         case 2:
             sceneURL = Bundle.main.url(forResource: "zombie_1_arm", withExtension: "scn", subdirectory: "art.scnassets")!
-            print("no leg")
         case 3:
             sceneURL = Bundle.main.url(forResource: "zombie_1_leg", withExtension: "scn", subdirectory: "art.scnassets")!
-            print("no arm")
         case 4:
             sceneURL = Bundle.main.url(forResource: "zombie", withExtension: "scn", subdirectory: "art.scnassets")!
         default:
@@ -526,12 +533,13 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         if isZombie {
             if health == 1 {
                 for child in referenceNode.childNodes {
-                    child.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                    child.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "PurpleSkin")
                 }
             }
             else if health == 2 {
                 for child in referenceNode.childNodes {
-                    child.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                    child.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "YellowSkin")
+                    
                 }
             }
 
@@ -543,7 +551,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 previousViewController.anchorPoint.transform.columns.3.y,
                 previousViewController.anchorPoint.transform.columns.3.z
             )
-            referenceNode.look(at: basePosition, up: SCNVector3(0,1,0), localFront: basePosition)
+           // let newBasePosition = referenceNode.convertPosition(basePosition, to: nil)
+            //referenceNode.look(at: newBasePosition, up: SCNVector3(0,1,0), localFront: newBasePosition)
+            /*let lookAt = SCNLookAtConstraint(target: theBase)
+            lookAt.isGimbalLockEnabled = true
+            referenceNode.constraints = [lookAt)
+            referenceNode.init(target: theBase)*/
             let moveAction = SCNAction.move(to: basePosition, duration: 10)
             let deletion = SCNAction.removeFromParentNode()
             let zombieSequence = SCNAction.sequence([moveAction, deletion])
@@ -578,8 +591,8 @@ extension GameViewController : PauseViewControllerDelegate {
     }
  }
 
-extension GameViewController : ScanViewControllerDelegate {
+/*extension GameViewController : ScanViewControllerDelegate {
     func returnToGame() {
         sceneViewGame.session.run(sceneViewGame.session.configuration!)
     }
-}
+}*/
