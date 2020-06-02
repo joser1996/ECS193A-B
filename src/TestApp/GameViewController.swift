@@ -15,7 +15,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var initMap:ARWorldMap!
     // MARK: Multipeer Implementation
     var mcService : MultipeerSession!
-    var isMaster: Bool!
     
     var previousViewController: BasePlacementController!
     var didSyncCrosshair = false
@@ -26,7 +25,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     
     var zombies : [String: Zombie] = [:]
     var zombieIndex : Int = 0
-    
+    var theBase = SCNNode()
     var zombieTimer : Timer! = nil
     var masterScore : Int = 0
     
@@ -59,16 +58,19 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         let distance = Float.random(in: 1.5 ..< 2)
         let position = (x: distance * cos(angle * Float.pi / 180), y: -0.4, z: distance * sin(angle * Float.pi / 180))
         let node = loadZombie(position.x, -0.4, position.z, true, paramHealth)
+        let basePosition = SCNVector3(
+            previousViewController.anchorPoint.transform.columns.3.x,
+            previousViewController.anchorPoint.transform.columns.3.y,
+            previousViewController.anchorPoint.transform.columns.3.z
+        )
+        //if (node.name != "bulletNode") {
+            node.look(at: basePosition)
+        //}
         let name = generateZombieName()
         node.name = name
         
         let zombie = Zombie(name: name, health: paramHealth, node: node)
         zombies[name] = zombie
-        
-        //guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: zombie, action: "create"), requiringSecureCoding: false)
-          //    else { fatalError("can't encode zombie") }
-        
-        //self.mcService.sendToAllPeers(data)
         
         self.sceneViewGame.scene.rootNode.addChildNode(node)
     }
@@ -77,17 +79,12 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         super.viewDidLoad()
         PauseButton.isHidden = true
         NextWave.isHidden = true
+        ReturnToBase.isHidden = true
         sceneViewGame.delegate = self
- //       mcService = previousViewController.mcService
-//        mcService.receivedDataHandler = receivedData
-        
-        self.GameOver.isHidden = true
-        // Only master generates game data, sends to slave
 
+        self.GameOver.isHidden = true
 
         _ = loadBase()
-
-           
     }
     
     
@@ -204,10 +201,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         sceneViewGame.session.pause()
-        
-        /*if isMaster {
-            self.zombieTimer.invalidate()
-        }*/
     }
 
 
@@ -217,18 +210,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
              let storyboard = UIStoryboard(name: "Main", bundle: nil)
               let vc = storyboard.instantiateViewController(withIdentifier: "PauseViewController") as! PauseViewController
         self.navigationController!.pushViewController(vc, animated: true)
-        //let viewController = PauseViewController(delegate: self)
-        //navigationController?.pushViewController(viewController, animated: true)
     }
     
-    @IBAction func exitInventoryToGame(unwindSegue: UIStoryboardSegue) {}
-    
-    //MARK: - AR Session Delegate
-    //Inform View of changes in quality of device position tracking
-    //code to update in this case goes in this functon
-    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
-        // nothing yet
-    }
         
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         let basePosition = SCNVector3(
@@ -258,7 +241,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             self.Heart2.isHidden = true
             self.Heart1.isHidden = true
         }
-        else if self.health == 0 {
+        else if self.health <= 0 {
             self.Heart3.isHidden = true
             self.Heart2.isHidden = true
             self.Heart1.isHidden = true
@@ -266,9 +249,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             self.PauseButton.isHidden = true
             self.NextWave.isHidden = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                //self.sceneViewGame?.session.pause()
-                //self.sceneViewGame?.removeFromSuperview()
-                //self.sceneViewGame = nil
                 self.zombieTimer.invalidate()
                 self.navigationController?.popToRootViewController(animated: true)
             }
@@ -330,15 +310,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             }
         }
         else if isWithinBase {
-            guard let frame = sceneViewGame.session.currentFrame else { return }
-            let camMatrix = SCNMatrix4(frame.camera.transform)
-            let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
-            
-            let bullet = SCNSphere(radius: 0.02)
-            bullet.firstMaterial?.diffuse.contents = UIColor.red
-            let bulletNode = SCNNode(geometry: bullet)
-            bulletNode.position = position
-            bulletNode.position.y -= 0.1
+            guard let frame = sceneViewGame.session.currentFrame else {return}
+            let bulletNode = loadBullet(frame)
             sceneViewGame.scene.rootNode.addChildNode(bulletNode)
             
             let shootTestResults = sceneViewGame.hitTest(center, types: .featurePoint)
@@ -350,7 +323,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                     feature.worldTransform.columns.3.x,
                     feature.worldTransform.columns.3.y,
                     feature.worldTransform.columns.3.z)
-                bulletNode.runAction(SCNAction.sequence([SCNAction.move(to: targetPosition, duration: 0.15), SCNAction.removeFromParentNode()]))
+                    bulletNode.runAction(SCNAction.sequence([SCNAction.move(to: targetPosition, duration: 0.15), SCNAction.removeFromParentNode()]))
             }
             else {
                 bulletNode.runAction(SCNAction.removeFromParentNode())
@@ -367,9 +340,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 
                 guard let zIndex = parentNode.name else {return}
                 let hitZombie = zombies[zIndex]
-                /*guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(zombie: hitZombie, action: "damage"), requiringSecureCoding: false)
-                      else { fatalError("can't encode zombie") }
-                self.mcService.sendToAllPeers(data)*/
                 
                 hitZombie?.health? -= 1
                 if hitZombie?.health == 0 {
@@ -378,10 +348,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                     
 
                     masterScore += hitZombie?.maxHealth ?? 0
-                    /*guard let data2 = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(score: masterScore), requiringSecureCoding: false)
-                        else { fatalError("can't encode score")}
-                    self.mcService.sendToAllPeers(data2)*/
-                    
                     let myScore = String(masterScore)
                     if (masterScore < 10) {
                         Score.text = "Score: 00" + myScore
@@ -399,9 +365,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         let parentNode = node?.parent
                         node?.removeFromParentNode()
                         for child in parentNode!.childNodes {
-                            child.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                            child.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "PurpleSkin")
                         }
-                        //self.removeFromParent()
                     }
                 }
                 else if hitZombie?.health == 2 {
@@ -409,9 +374,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         let parentNode = node?.parent
                         node?.removeFromParentNode()
                         for child in parentNode!.childNodes {
-                            child.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                            child.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "YellowSkin")
                         }
-                        //self.removeFromParent()
                     }
                 }
                 else if hitZombie?.health == 3 {
@@ -429,65 +393,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             node.addChildNode(loadBase())
         }
     }
-    
-    //var mapProvider: MCPeerID?
-    
-    // TODO: ADD Functionality to share the World Map data
-    /// - Tag: ReceiveData
-    /*func receivedData(_ data: Data, from peer: MCPeerID) {
-        do {
-            if let packet = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? GamePacket {
-                if let zombie = packet.zombie, packet.action == "create" {
-                    print("Creating zombie \(zombie.name!)")
-                    sceneViewGame.scene.rootNode.addChildNode(zombie.node!)
-                    zombies[zombie.node!.name!] = zombie
-                }
-                if let zombie = packet.zombie, packet.action == "damage" {
-                    print("Damaging zombie \(zombie.name!)")
-                    zombies[zombie.node!.name!]?.health? -= 1
-                    if zombies[zombie.node!.name!]?.health == 0 {
-                        let localZombie = zombies[zombie.name!]
-                        localZombie?.node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
-                        if isMaster {
-                            masterScore += zombies[zombie.node!.name!]?.maxHealth ?? 0
-                            guard let data2 = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(score: masterScore), requiringSecureCoding: false)
-                                else { fatalError("can't encode score")}
-                            self.mcService.sendToAllPeers(data2)
-                        }
-                        zombies.removeValue(forKey: zombie.name!)
-                    }
-                    else if zombies[zombie.node!.name!]?.health == 1 {
-                        zombies[zombie.node!.name!]?.node?.geometry?.firstMaterial?.diffuse.contents = UIColor.green
-                    }
-                    else if zombies[zombie.node!.name!]?.health == 2 {
-                        zombies[zombie.node!.name!]?.node?.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
-                    }
-                    else if zombies[zombie.node!.name!]?.health == 3 {
-                        zombies[zombie.node!.name!]?.node?.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
-                    }
-                }
-                if let zombie = packet.zombie, packet.action == "delete" {
-                    print("Deleting zombie \(zombie.name!)")
-                    let localZombie = zombies[zombie.name!]
-                    localZombie?.node?.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
-                    zombies.removeValue(forKey: zombie.name!)
-                }
-                if packet.health != nil {
-                    print("Updating health to \(packet.health!)")
-                    self.health = packet.health!
-                }
-                if packet.score != nil {
-                    print("Updating score to \(packet.score!)")
-                    self.masterScore = packet.score!
-                }
-            }
-            else {
-                print("unknown data received from \(peer)")
-            }
-        } catch {
-            print("can't zombie data received from \(peer)")
-        }
-    }*/
+
     private func loadBase(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
         let sceneURL = Bundle.main.url(forResource: "base copy", withExtension: "scn", subdirectory: "art.scnassets")!
         let referenceNode = SCNReferenceNode(url: sceneURL)!
@@ -497,41 +403,54 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
        
         
         return referenceNode
-        }
+    }
+    
+    private func loadBullet (_ frame: ARFrame) -> SCNNode {
+ 
+        let camMatrix = SCNMatrix4(frame.camera.transform)
+        let position = SCNVector3Make(camMatrix.m41, camMatrix.m42, camMatrix.m43)
+        
+        let bulletURL = Bundle.main.url(forResource: "bullet-model", withExtension: "scn", subdirectory: "art.scnassets")!
+        let bulletNode = SCNReferenceNode(url: bulletURL)!
+        bulletNode.load()
+        
+        bulletNode.name = "bullet"
+        bulletNode.scale = SCNVector3(x: 0.01, y: 0.01, z: 0.01)
+        bulletNode.position = position
+        bulletNode.position.y -= 0.1
+        return bulletNode
+    }
     
     // MARK: - AR session management
     private func loadZombie(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
         var sceneURL = Bundle.main.url(forResource: "", withExtension: "scn", subdirectory: "art.scnassets")!
         switch Int.random(in: 1...4) {
         case 1:
-            sceneURL = Bundle.main.url(forResource: "zombie_headless", withExtension: "scn", subdirectory: "art.scnassets")!
-            print("headless")
+            sceneURL = Bundle.main.url(forResource: "zombie_headless_180", withExtension: "scn", subdirectory: "art.scnassets")!
         case 2:
-            sceneURL = Bundle.main.url(forResource: "zombie_1_arm", withExtension: "scn", subdirectory: "art.scnassets")!
-            print("no leg")
+            sceneURL = Bundle.main.url(forResource: "zombie_1_arm_180", withExtension: "scn", subdirectory: "art.scnassets")!
         case 3:
-            sceneURL = Bundle.main.url(forResource: "zombie_1_leg", withExtension: "scn", subdirectory: "art.scnassets")!
-            print("no arm")
+            sceneURL = Bundle.main.url(forResource: "zombie_1_leg_180", withExtension: "scn", subdirectory: "art.scnassets")!
         case 4:
-            sceneURL = Bundle.main.url(forResource: "zombie", withExtension: "scn", subdirectory: "art.scnassets")!
+            sceneURL = Bundle.main.url(forResource: "walking_zombie_180", withExtension: "scn", subdirectory: "art.scnassets")!
         default:
-            sceneURL = Bundle.main.url(forResource: "zombie", withExtension: "scn", subdirectory: "art.scnassets")!
+            sceneURL = Bundle.main.url(forResource: "walking_zombie_180", withExtension: "scn", subdirectory: "art.scnassets")!
         }
         
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
         referenceNode.name = "boxNode"
-        //print("Health: \(health)")
         
         if isZombie {
             if health == 1 {
                 for child in referenceNode.childNodes {
-                    child.geometry?.firstMaterial?.diffuse.contents = UIColor.yellow
+                    child.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "PurpleSkin")
                 }
             }
             else if health == 2 {
                 for child in referenceNode.childNodes {
-                    child.geometry?.firstMaterial?.diffuse.contents = UIColor.purple
+                    child.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "YellowSkin")
+                    
                 }
             }
 
@@ -543,23 +462,13 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 previousViewController.anchorPoint.transform.columns.3.y,
                 previousViewController.anchorPoint.transform.columns.3.z
             )
-            referenceNode.look(at: basePosition, up: SCNVector3(0,1,0), localFront: basePosition)
+            
             let moveAction = SCNAction.move(to: basePosition, duration: 10)
             let deletion = SCNAction.removeFromParentNode()
             let zombieSequence = SCNAction.sequence([moveAction, deletion])
             
             referenceNode.runAction(zombieSequence, completionHandler:{
                 self.health -= 1
-                
-               /* guard let data = try? NSKeyedArchiver.archivedData(withRootObject: GamePacket(health: self.health), requiringSecureCoding: false)
-                else { fatalError("can't encode health") }
-                
-                self.mcService.sendToAllPeers(data)
-                */
-                if (self.health == 0) {
-                    //print("Game Over\n")
-                    print("Score: \(self.masterScore)")
-                }
             })
         }
         
@@ -578,8 +487,3 @@ extension GameViewController : PauseViewControllerDelegate {
     }
  }
 
-extension GameViewController : ScanViewControllerDelegate {
-    func returnToGame() {
-        sceneViewGame.session.run(sceneViewGame.session.configuration!)
-    }
-}
