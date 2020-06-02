@@ -13,6 +13,7 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var createGameButton: UIButton!
     @IBOutlet weak var joinGameButton: UIButton!
+    @IBOutlet weak var returnButton: UIButton!
     
     var data: [String] = []
     var gameInfo: [String: Int] = [:]
@@ -27,6 +28,11 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
     let BASE_SERVER_URL = "http://server162.site:59435"
     let TIMER_LENGTH: Double = 3
     
+    @IBAction func returnMenu(_ sender: UIButton) {
+        if let navController = self.navigationController {
+            navController.popViewController(animated: true)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +44,10 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
         joinGameButton.setTitleColor(UIColor.gray, for: .normal)
         
         fetchSessionList()
+        
+        returnButton.titleLabel?.font = UIFont(name: "Bloody", size: 35)
+        returnButton.titleLabel?.textColor = UIColor.red
+        
         
         refreshTimer = Timer.scheduledTimer(withTimeInterval: TIMER_LENGTH, repeats: true, block: { _ in
             self.fetchSessionList()
