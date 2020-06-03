@@ -14,7 +14,7 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
     
     let reuseIdentifier = "CellIdentifier"
     let BASE_SERVER_URL = "http://server162.site:59435"
-    var items: [IndexPath: String] = [[0, 0]: "bullet"]
+    var items: [IndexPath: [String: Any]] = [:]
     var selectedItem: IndexPath = [0, 0]
     var playerName: String!
     var gameID: Int!
@@ -74,8 +74,9 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
             items[[-1, -1]] = nil
         }
             
-        cell.label.text = items[indexPath]
-        cell.loadThumbnailImage(baseUrlString: BASE_SERVER_URL, item: items[indexPath]!, gameID: gameID!, playerName: playerName!)
+        let itemName = items[indexPath]?["item_name"] as? String
+        cell.label.text = itemName!
+        cell.loadThumbnailImage(baseUrlString: BASE_SERVER_URL, item: itemName!)
         
         if indexPath == selectedItem {
             cell.label.textColor = UIColor.red
@@ -112,7 +113,12 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
             
             // Convert HTTP Response Data to a simple String
             if let data = data, let dataString = String(data: data, encoding: .utf8) {
-                if (dataString != "Success") {
+                if (dataString == "Success") {
+                    DispatchQueue.main.async {
+                        self.fetchInventoryItems(self.gameID, self.playerName)
+                    }
+                }
+                else {
                     print("Error adding item: \(dataString)")
                 }
             }
@@ -121,9 +127,64 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
         
     }
     
+    func fetchInventoryItems(_ gameID: Int, _ playerName: String) {
+        let url = URL(string: "\(BASE_SERVER_URL)/fetch-inventory-items/\(gameID)/\(playerName)")
+        guard let requestUrl = url else { fatalError() }
+        var request = URLRequest(url: requestUrl)
+        request.httpMethod = "GET"
+
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+
+            if let error = error {
+                print(error)
+                return
+            }
+
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                    
+                    let newItems = json["items"] as? [String: Any]
+                    let existingItems = self.items.values
+
+                    
+                    for newItemValue in newItems!.values {
+                        var isNew = false
+                        let newItem = newItemValue as? [String: Any]
+                        let newName = newItem?["item_name"] as? String
+                        for existingItem in existingItems {
+                            let existingName = existingItem["item_name"] as? String
+                            if newName != existingName {
+                                isNew = true
+                                break
+                            }
+                        }
+                        
+                        if (isNew) {
+                            self.items[[-1, -1]] = newItem
+                            break
+                        }
+                    }
+                }
+            } catch let error as NSError {
+               print(error.localizedDescription)
+            }
+            
+            DispatchQueue.main.async{
+                self.collectionView.reloadData()
+            }
+        }
+        task.resume()
+        
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let scanVC = segue.destination as? ScanViewController {
-            scanVC.existingItems = [String](items.values)
+            var existingItems:[String] = []
+            for item in items.values {
+                let name = item["item_name"] as! String
+                existingItems.append(name)
+            }
+            scanVC.existingItems = existingItems
         }
     }
     
@@ -132,12 +193,7 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
 
             let spacelessItem = sourceVC.item.replacingOccurrences(of: " ", with: "-")
 
-            if !items.values.contains(spacelessItem) {
-                items[[-1, -1]] = spacelessItem
-                addToInventory(spacelessItem)
-            
-                collectionView.reloadData()
-            }
+            addToInventory(spacelessItem)
         }
     }
 

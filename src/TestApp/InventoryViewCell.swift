@@ -13,16 +13,15 @@ class InventoryViewCell: UICollectionViewCell {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     
-    func loadThumbnailImage(baseUrlString: String, item: String, gameID: Int, playerName: String) {
+
+    func loadThumbnailImage(baseUrlString: String, item: String) {
         let urlString = "\(baseUrlString)/fetch-thumbnail/\(item)"
         let url = URL(string: urlString)
         guard let requestUrl = url else { fatalError() }
         
-        print("Download Started")
         getData(from: requestUrl) { data, response, error in
             guard let data = data, error == nil else { return }
-            print(response?.suggestedFilename ?? requestUrl.lastPathComponent)
-            print("Download Finished")
+            
             DispatchQueue.main.async() {
                 self.imageView.image = UIImage(data: data)
             }

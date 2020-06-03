@@ -40,7 +40,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var masterScore: Int = 0
   
     // Inventory
-    var inventoryItems: [IndexPath: String] = [[0, 0]: "bullet"]
+    var inventoryItems: [IndexPath: [String: Any]] = [:]
     var selectedItem: IndexPath = [0, 0]
     
     //outlets
@@ -73,6 +73,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         if self.isHost {
             client.sendGameStartMessage()
         }
+        
+        fetchInventoryItems(gameID!, playerName!)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -311,6 +313,37 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     }
     
     //MARK: Inventory
+    func fetchInventoryItems(_ gameID: Int, _ playerName: String) {
+        let url = URL(string: "\(client.server)/fetch-inventory-items/\(gameID)/\(playerName)")
+        guard let requestUrl = url else { fatalError() }
+        var request = URLRequest(url: requestUrl)
+        request.httpMethod = "GET"
+
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+
+            if let error = error {
+                print(error)
+                return
+            }
+
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+
+                    if let items = json["items"] as? [String: Any] {
+                        if let initial = items["0"] as? [String: Any] {
+                            DispatchQueue.main.async{
+                                self.inventoryItems[self.selectedItem] = initial
+                            }
+                        }
+                    }
+                }
+            } catch let error as NSError {
+               print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let inventoryVC = segue.destination as? InventoryViewController {
             inventoryVC.gameID = gameID
@@ -324,7 +357,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         if let sourceVC = unwindSegue.source as? InventoryViewController {
             inventoryItems = sourceVC.items // store inventory items to load next time inventory opens
             selectedItem = sourceVC.selectedItem
-            Shooter.projectile = inventoryItems[selectedItem]
+            Shooter.projectile = inventoryItems[selectedItem]?["item_name"] as? String
         }
     }
     
