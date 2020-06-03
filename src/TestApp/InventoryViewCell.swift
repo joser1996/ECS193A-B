@@ -14,7 +14,7 @@ class InventoryViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     
     func loadThumbnailImage(baseUrlString: String, item: String, gameID: Int, playerName: String) {
-        let urlString = "\(baseUrlString)/fetch-thumbnail/\(gameID)/\(playerName)/\(item)"
+        let urlString = "\(baseUrlString)/fetch-thumbnail/\(item)"
         let url = URL(string: urlString)
         guard let requestUrl = url else { fatalError() }
         

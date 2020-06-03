@@ -19,7 +19,7 @@ class ModelNameFetcher {
         "water-bottle": "water-bottle",
         "rubiks-cube": "rubiks-cube",
         "glasses": "glasses",
-        "sunglasses": "glasses",
+        "sunglass": "glasses",
         "tv-remote": "TV_remote",
         "lamp": "lamp"
     ]
