@@ -63,9 +63,9 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             previousViewController.anchorPoint.transform.columns.3.y,
             previousViewController.anchorPoint.transform.columns.3.z
         )
-        //if (node.name != "bulletNode") {
+        if (node.name != "bulletNode") {
             node.look(at: basePosition)
-        //}
+        }
         let name = generateZombieName()
         node.name = name
         
