@@ -32,6 +32,7 @@ class GameSessionController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         
         tableView.dataSource = self
+        tableView.allowsSelection = false
         
         fetchPlayerNames()
         
