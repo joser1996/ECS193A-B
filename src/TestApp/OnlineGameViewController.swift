@@ -16,7 +16,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     //player
     var playerName: String!
     var players: [String] = []
-
+    var connectionIsAlive: Bool = true
+    
     //gameSesion
     var gameID: Int? = nil
     var gameState: GameState!
@@ -75,6 +76,27 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         }
         
         fetchInventoryItems(gameID!, playerName!)
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+    }
+    
+    @objc func appMovedToBackground() {
+        print("Moved to background")
+        client.killClient()
+        self.connectionIsAlive = false
+        self.arView.session.pause()
+    }
+    
+    @objc func appMovedToForeground() {
+        if (!self.connectionIsAlive) {
+            MusicPlayer.shared.stopSong()
+            for controller in self.navigationController!.viewControllers as Array {
+                if controller.isKind(of: FirstViewController.self) {
+                    _ = self.navigationController!.popToViewController(controller, animated: false)
+                }
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

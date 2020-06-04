@@ -620,6 +620,24 @@ class ClientSide {
         return tempDict
     }
     
+    func killClient() {
+        guard let gameID = self.gameID else {return}
+        guard let name = self.playerName else {return}
+        
+        let endPoint = "/kill-client/" + String(gameID) + "/" + name
+        let urlString = self.server + endPoint
+        guard let url = URL(string: urlString) else {return}
+        
+        let killTask = self.urlSession.dataTask(with: url) {
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+        }
+        killTask.resume()
+    }
+    
     // MARK: Zombie Stuff
     
     /*
