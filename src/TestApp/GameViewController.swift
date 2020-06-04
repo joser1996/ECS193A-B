@@ -113,7 +113,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                         zombieCount = 0
                         timerOne = 0
                         sleep = 20
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 12) {
                             if (self.health != 0) {
                                 self.PauseButton.isHidden = false
                                 self.NextWave.isHidden = false
@@ -244,18 +244,18 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         }
         
         else if self.health == 3 {
-            self.Heart1.isHidden = true
+            self.Heart5.isHidden = true
             self.Heart4.isHidden = true
         }
             
         else if self.health == 2 {
+            self.Heart5.isHidden = true
             self.Heart1.isHidden = true
-            self.Heart2.isHidden = true
             self.Heart4.isHidden = true
         }
             
         else if self.health == 1 {
-            self.Heart2.isHidden = true
+            self.Heart5.isHidden = true
             self.Heart1.isHidden = true
             self.Heart3.isHidden = true
             self.Heart4.isHidden = true
@@ -344,6 +344,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                     feature.worldTransform.columns.3.x,
                     feature.worldTransform.columns.3.y,
                     feature.worldTransform.columns.3.z)
+                    bulletNode.look(at: targetPosition)
                     bulletNode.runAction(SCNAction.sequence([SCNAction.move(to: targetPosition, duration: 0.15), SCNAction.removeFromParentNode()]))
             }
             else {
@@ -484,7 +485,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 previousViewController.anchorPoint.transform.columns.3.z
             )
             
-            let moveAction = SCNAction.move(to: basePosition, duration: 10)
+            let moveAction = SCNAction.move(to: basePosition, duration: 12)
             let deletion = SCNAction.removeFromParentNode()
             let zombieSequence = SCNAction.sequence([moveAction, deletion])
             
