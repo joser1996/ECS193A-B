@@ -86,6 +86,14 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
         
         let confirmAction = UIAlertAction(title: "Enter", style: .default) {
             (_) in
+            
+            if (alertController.textFields?[0].text == "" ||   // Check for empty fields
+                alertController.textFields?[1].text == "" ||
+                (isNewGame && alertController.textFields?[2].text == "")) {
+                self.notify("Error: please fill out all fields")
+                return
+            }
+            
             self.playerName = alertController.textFields?[0].text
             self.playerName = self.playerName.replacingOccurrences(of: " ", with: "-")
             self.gameSessionPassword = alertController.textFields?[1].text
