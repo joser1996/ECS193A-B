@@ -8,18 +8,15 @@
 //try passing the config
 import UIKit
 import ARKit
-import MultipeerConnectivity
 
 class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate{
     //MARK: Properties
     var initMap:ARWorldMap!
-    // MARK: Multipeer Implementation
-    var mcService : MultipeerSession!
     
     var previousViewController: BasePlacementController!
     var didSyncCrosshair = false
     var center = CGPoint(x: 0, y: 0)
-    var health = 3
+    var health = 5
     var isWithinBase = true
     var wave = 1
     
@@ -43,9 +40,13 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     @IBOutlet weak var Heart1: UIImageView!
     @IBOutlet weak var Heart2: UIImageView!
     @IBOutlet weak var Heart3: UIImageView!
+    @IBOutlet weak var Heart4: UIImageView!
+    @IBOutlet weak var Heart5: UIImageView!
     @IBOutlet weak var EmptyHeart1: UIImageView!
     @IBOutlet weak var EmptyHeart2: UIImageView!
     @IBOutlet weak var EmptyHeart3: UIImageView!
+    @IBOutlet weak var EmptyHeart4: UIImageView!
+    @IBOutlet weak var EmptyHeart5: UIImageView!
     
     func generateZombieName() -> String {
         let name = String(zombieIndex)
@@ -63,9 +64,13 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             previousViewController.anchorPoint.transform.columns.3.y,
             previousViewController.anchorPoint.transform.columns.3.z
         )
-        //if (node.name != "bulletNode") {
+        if (node.name != "bulletNode") {
             node.look(at: basePosition)
-        //}
+        }
+        if (node.name != "bulletNode") {
+            node.look(at: basePosition)
+        }
+        
         let name = generateZombieName()
         node.name = name
         
@@ -234,14 +239,30 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             isWithinBase = true
         }
         
-        if self.health == 2 {
-            self.Heart1.isHidden = true
+        if self.health == 4 {
+            self.Heart4.isHidden = true
         }
+        
+        else if self.health == 3 {
+            self.Heart1.isHidden = true
+            self.Heart4.isHidden = true
+        }
+            
+        else if self.health == 2 {
+            self.Heart1.isHidden = true
+            self.Heart2.isHidden = true
+            self.Heart4.isHidden = true
+        }
+            
         else if self.health == 1 {
             self.Heart2.isHidden = true
             self.Heart1.isHidden = true
+            self.Heart3.isHidden = true
+            self.Heart4.isHidden = true
         }
         else if self.health <= 0 {
+            self.Heart5.isHidden = true
+            self.Heart4.isHidden = true
             self.Heart3.isHidden = true
             self.Heart2.isHidden = true
             self.Heart1.isHidden = true
