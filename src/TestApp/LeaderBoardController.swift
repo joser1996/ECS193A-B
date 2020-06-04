@@ -19,6 +19,7 @@ class LeaderBoardController: UIViewController {
         super.viewDidLoad()
         leaderBoardTable.delegate = self
         leaderBoardTable.dataSource = self
+        leaderBoardTable.allowsSelection = false
         
         //Attempt to load a leader board
         print("Loading LeaderBoard")
