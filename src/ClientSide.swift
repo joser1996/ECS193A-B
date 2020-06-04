@@ -348,6 +348,12 @@ class ClientSide {
         node.name = key
         let zombie = Zombie(name: node.name!, health: 1, node: node)
         zombies[node.name!] = zombie
+        let basePosition = SCNVector3(
+            referenceVC.baseObj.anchorPoint.transform.columns.3.x,
+            referenceVC.baseObj.anchorPoint.transform.columns.3.y,
+            referenceVC.baseObj.anchorPoint.transform.columns.3.z
+        )
+        node.look(at: basePosition)
         referenceVC.arView.scene.rootNode.addChildNode(node)
     }
 
@@ -636,7 +642,7 @@ class ClientSide {
      Method creates zombie SCNNode that is the zombie.
      */
     func loadZombie(seedKey sk: String) -> SCNNode? {
-        guard let zScene = SCNScene(named: "art.scnassets/minecraftupdate2.dae") else {
+        guard let zScene = SCNScene(named: "art.scnassets/walking_zombie_180.dae") else {
             fatalError("Couldn't load zombie")
         }
         let parentNode = SCNNode()

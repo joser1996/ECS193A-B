@@ -106,7 +106,7 @@
 		939BE833240AFF8100B1F458 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		93AD7E1D2432B8B300E3A588 /* LeaderBoardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaderBoardController.swift; sourceTree = "<group>"; };
 		93AD7E1E2432B8B300E3A588 /* LeaderBoardViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaderBoardViewCell.swift; sourceTree = "<group>"; };
-		93C74FA223D91CFE003BF585 /* TestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		93C74FA223D91CFE003BF585 /* NTM.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NTM.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C74FA523D91CFE003BF585 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93C74FA723D91CFE003BF585 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		93C74FA923D91CFE003BF585 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -216,7 +216,7 @@
 		93C74FA323D91CFE003BF585 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				93C74FA223D91CFE003BF585 /* TestApp.app */,
+				93C74FA223D91CFE003BF585 /* NTM.app */,
 				93C74FB823D91D01003BF585 /* TestAppTests.xctest */,
 				93C74FC323D91D01003BF585 /* TestAppUITests.xctest */,
 			);
@@ -324,7 +324,7 @@
 			);
 			name = TestApp;
 			productName = TestApp;
-			productReference = 93C74FA223D91CFE003BF585 /* TestApp.app */;
+			productReference = 93C74FA223D91CFE003BF585 /* NTM.app */;
 			productType = "com.apple.product-type.application";
 		};
 		93C74FB723D91D01003BF585 /* TestAppTests */ = {
@@ -661,13 +661,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;
-				DEVELOPMENT_TEAM = 3BM743GJUH;
+				DEVELOPMENT_TEAM = L227T5HHPC;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senir.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -682,13 +682,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 7;
-				DEVELOPMENT_TEAM = 3BM743GJUH;
+				DEVELOPMENT_TEAM = L227T5HHPC;
 				INFOPLIST_FILE = TestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.senir.NTM;
+				PRODUCT_BUNDLE_IDENTIFIER = com.senior.NTM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
