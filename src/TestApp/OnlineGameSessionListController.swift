@@ -44,10 +44,7 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
         joinGameButton.setTitleColor(UIColor.gray, for: .normal)
         
         fetchSessionList()
-        
-        returnButton.titleLabel?.font = UIFont(name: "Bloody", size: 35)
-        returnButton.titleLabel?.textColor = UIColor.red
-        
+              
         
         refreshTimer = Timer.scheduledTimer(withTimeInterval: TIMER_LENGTH, repeats: true, block: { _ in
             self.fetchSessionList()

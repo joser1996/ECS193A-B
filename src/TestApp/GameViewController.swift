@@ -82,6 +82,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         PauseButton.isHidden = true
         NextWave.isHidden = true
         ReturnToBase.isHidden = true
+        userPrompts.font = UIFont(name: "Bloody", size: 30)
+        userPrompts.textColor = UIColor.red
         sceneViewGame.delegate = self
 
         self.GameOver.isHidden = true
@@ -270,18 +272,18 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         }
         
         else if self.health == 3 {
-            self.Heart5.isHidden = true
+            self.Heart1.isHidden = true
             self.Heart4.isHidden = true
         }
             
         else if self.health == 2 {
-            self.Heart5.isHidden = true
+            self.Heart2.isHidden = true
             self.Heart1.isHidden = true
             self.Heart4.isHidden = true
         }
             
         else if self.health == 1 {
-            self.Heart5.isHidden = true
+            self.Heart2.isHidden = true
             self.Heart1.isHidden = true
             self.Heart3.isHidden = true
             self.Heart4.isHidden = true
