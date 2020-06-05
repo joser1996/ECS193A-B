@@ -27,12 +27,16 @@ class GameSessionController: UIViewController, UITableViewDataSource {
     var playerNameTimer: Timer!
     var gameStateTimer: Timer!
     var gameState: GameState! = GameState.Initial
+    var client: ClientSide!
+    var connectionIsAlive = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.dataSource = self
         tableView.allowsSelection = false
+        
+        client = ClientSide(gameID: gameId, name: playerName)
         
         fetchPlayerNames()
         
@@ -67,6 +71,23 @@ class GameSessionController: UIViewController, UITableViewDataSource {
         cell.label.text = text
            
         return cell
+    }
+    
+    @objc func appMovedToBackground() {
+        print("Moved to background")
+        client.killClient()
+        self.connectionIsAlive = false
+    }
+    
+    @objc func appMovedToForeground() {
+        if (!self.connectionIsAlive) {
+            MusicPlayer.shared.stopSong()
+            for controller in self.navigationController!.viewControllers as Array {
+                if controller.isKind(of: FirstViewController.self) {
+                    _ = self.navigationController!.popToViewController(controller, animated: false)
+                }
+            }
+        }
     }
     
     @IBAction func sendStartGameSignal(_ sender: Any) {
