@@ -232,12 +232,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 self.zombieTimer.invalidate()
                 self.navigationController?.popToRootViewController(animated: true)
             }
-            let cancelAction = UIAlertAction(title: "No", style: .cancel) {(_) in }
+            let cancelAction = UIAlertAction(title: "No", style: .cancel) {(_) in
+                self.zombieTimer.invalidate()
+                self.navigationController?.popToRootViewController(animated: true)
+            }
             alertController.addTextField {(textField) in
                 textField.placeholder = "Enter Name"
                 
-                self.zombieTimer.invalidate()
-                self.navigationController?.popToRootViewController(animated: true)
+ 
             }
             
             alertController.addAction(confirmAction)
@@ -479,14 +481,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     // MARK: - AR session management
     private func loadZombie(_ x: Float = 0, _ y: Float = 0, _ z: Float = 0, _ isZombie: Bool = false, _ health: Int = 2) -> SCNNode {
         var sceneURL = Bundle.main.url(forResource: "", withExtension: "scn", subdirectory: "art.scnassets")!
-        switch Int.random(in: 1...4) {
-        case 1:
-            sceneURL = Bundle.main.url(forResource: "zombie_headless_180", withExtension: "scn", subdirectory: "art.scnassets")!
+        switch Int.random(in: 1...6) {
         case 2:
-            sceneURL = Bundle.main.url(forResource: "zombie_1_arm_180", withExtension: "scn", subdirectory: "art.scnassets")!
+            sceneURL = Bundle.main.url(forResource: "zombie_headless_180", withExtension: "scn", subdirectory: "art.scnassets")!
         case 3:
-            sceneURL = Bundle.main.url(forResource: "zombie_1_leg_180", withExtension: "scn", subdirectory: "art.scnassets")!
+            sceneURL = Bundle.main.url(forResource: "zombie_1_arm_180", withExtension: "scn", subdirectory: "art.scnassets")!
         case 4:
+            sceneURL = Bundle.main.url(forResource: "zombie_1_leg_180", withExtension: "scn", subdirectory: "art.scnassets")!
+        case 5:
             sceneURL = Bundle.main.url(forResource: "walking_zombie_180", withExtension: "scn", subdirectory: "art.scnassets")!
         default:
             sceneURL = Bundle.main.url(forResource: "walking_zombie_180", withExtension: "scn", subdirectory: "art.scnassets")!
