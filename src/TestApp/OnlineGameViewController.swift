@@ -282,6 +282,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 self.client.zombieWave[zKey]?.isDead = true
             }
             DispatchQueue.main.async {
+                MusicPlayer.shared.playZombieDying()
                 contact.nodeA.removeFromParentNode()
                 contact.nodeB.removeFromParentNode()
                 self.client.updateZombiesTask()

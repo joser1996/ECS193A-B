@@ -362,6 +362,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         else if isWithinBase {
             guard let frame = sceneViewGame.session.currentFrame else {return}
             let bulletNode = loadBullet(frame)
+            MusicPlayer.shared.shotSFX()
             sceneViewGame.scene.rootNode.addChildNode(bulletNode)
             
             let shootTestResults = sceneViewGame.hitTest(center, types: .featurePoint)
@@ -394,6 +395,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 
                 hitZombie?.health? -= 1
                 if hitZombie?.health == 0 {
+                    print("MUSIC: Playing sound")
                     MusicPlayer.shared.playZombieDying()
                     parentNode.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
                     
