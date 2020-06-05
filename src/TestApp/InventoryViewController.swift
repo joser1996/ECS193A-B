@@ -148,13 +148,13 @@ class InventoryViewController: UIViewController, UICollectionViewDataSource, UIC
 
                     
                     for newItemValue in newItems!.values {
-                        var isNew = false
+                        var isNew = true
                         let newItem = newItemValue as? [String: Any]
                         let newName = newItem?["item_name"] as? String
                         for existingItem in existingItems {
                             let existingName = existingItem["item_name"] as? String
-                            if newName != existingName {
-                                isNew = true
+                            if newName == existingName {
+                                isNew = false
                                 break
                             }
                         }
