@@ -12,6 +12,7 @@ import ARKit
 class Shooting {
     
     var projectile: String! = "bullet"
+    var animation: String! = "normal"
     let modelNames = ModelNameFetcher()
     
     func getUserVector(view: ARSCNView) -> (SCNVector3, SCNVector3) {
@@ -59,7 +60,12 @@ class Shooting {
         var nodeDirection = SCNVector3()
         nodeDirection = SCNVector3(direction.x*6, direction.y*6,direction.z*6)
         
-
+        if animation == "spin" {
+            let torqueDirection = SCNVector4(0, 0, 1, 2)
+            node.physicsBody?.centerOfMassOffset = SCNVector3(0.1, 0, 0)
+            node.physicsBody?.applyTorque(torqueDirection, asImpulse: true)
+        }
+        
         //fire
         node.physicsBody?.applyForce(nodeDirection, asImpulse: true)
         node.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.35), SCNAction.removeFromParentNode()]))

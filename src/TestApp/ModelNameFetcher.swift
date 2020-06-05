@@ -28,7 +28,6 @@ class ModelNameFetcher {
         "tv-remote": "TV_remote",
         "lamp": "lamp",
         "toilet-seat": "bowl",
-        "measuring-cup": "mug",
         "bathtub": "bowl",
         "smartphone": "smartphone"
     ]
