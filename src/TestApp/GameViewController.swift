@@ -26,7 +26,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
     var zombieTimer : Timer! = nil
     var masterScore : Int = 0
     
-    var inventoryItems : [String] = []
+    var didEndGame = false
     
     @IBOutlet weak var sceneViewGame: ARSCNView!
     @IBOutlet weak var userPrompts: UILabel!
@@ -216,6 +216,35 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         self.navigationController!.pushViewController(vc, animated: true)
     }
     
+    func saveUserScoreAndExit() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            let alertController = UIAlertController(title: "Save your score?", message: nil, preferredStyle: .alert)
+            let confirmAction = UIAlertAction(title: "Yes", style: .default) {
+                (_) in
+                if let playerName = alertController.textFields?[0].text, playerName != "" {
+                    let player = Player(name: playerName)
+                    player.score = self.masterScore
+                    let leaderboard = LeaderBoard.loadLeaderBoard()
+                    leaderboard?.addToLeaderBoardMulti([player])
+                    LeaderBoard.saveLeaderBoard(leaderBoard: leaderboard!)
+                }
+                
+                self.zombieTimer.invalidate()
+                
+                self.navigationController?.popToRootViewController(animated: true)
+            }
+            let cancelAction = UIAlertAction(title: "No", style: .cancel) {(_) in }
+            alertController.addTextField {(textField) in
+                textField.placeholder = "Enter Name"
+            }
+            
+            alertController.addAction(confirmAction)
+            alertController.addAction(cancelAction)
+            
+            self.present(alertController, animated: true)
+        }
+    }
+    
         
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         let basePosition = SCNVector3(
@@ -268,9 +297,10 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             self.GameOver.isHidden = false
             self.PauseButton.isHidden = true
             self.NextWave.isHidden = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                self.zombieTimer.invalidate()
-                self.navigationController?.popToRootViewController(animated: true)
+            
+            if (!didEndGame) {
+                didEndGame = true
+                self.saveUserScoreAndExit()
             }
         }
     }
