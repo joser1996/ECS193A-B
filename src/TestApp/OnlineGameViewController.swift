@@ -441,6 +441,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             inventoryItems = sourceVC.items // store inventory items to load next time inventory opens
             selectedItem = sourceVC.selectedItem
             Shooter.projectile = inventoryItems[selectedItem]?["item_name"] as? String
+            if let animation = inventoryItems[selectedItem]?["animation"] as? String {
+                Shooter.animation = animation
+            }
         }
     }
     
