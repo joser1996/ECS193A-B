@@ -696,6 +696,10 @@ class ClientSide {
         return nil
     }
     
+    func randomBool() -> Bool {
+        return arc4random_uniform(2) == 0
+    }
+    
     /*
      Method creates zombie SCNNode that is the zombie.
      */
@@ -726,7 +730,35 @@ class ClientSide {
         )
         
         //Movement
-        let moveAction = SCNAction.move(to: basePosition, duration: 15)
+        let baseSpeed = 15
+        var curSpeed = 0
+        if self.currentWave < 4 {//5
+            //easy
+            curSpeed = baseSpeed
+        } else if self.currentWave < 8 {//9
+            //med
+            if (self.randomBool()){
+                curSpeed = Int(round(Double(baseSpeed) * 0.75))
+            } else {
+                curSpeed = baseSpeed
+            }
+        } else if self.currentWave < 14 {//12
+            //hard
+            if (self.randomBool()) {
+                curSpeed = Int(round(Double(baseSpeed) * 0.5))
+            } else {
+                curSpeed = baseSpeed
+            }
+        } else if self.currentWave >= 14 {
+            // really hard
+            if self.randomBool() {
+                curSpeed = Int(round(Double(baseSpeed) * 0.35))
+            } else {
+                curSpeed = baseSpeed
+            }
+        }
+        
+        let moveAction = SCNAction.move(to: basePosition, duration: TimeInterval(curSpeed))
         let deletion = SCNAction.removeFromParentNode()
         let zombieSequence = SCNAction.sequence([moveAction, deletion])
         
