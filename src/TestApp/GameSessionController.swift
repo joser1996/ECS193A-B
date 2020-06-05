@@ -55,6 +55,10 @@ class GameSessionController: UIViewController, UITableViewDataSource {
         playerNameTimer = Timer.scheduledTimer(withTimeInterval: TIMER_LENGTH, repeats: true, block: { _ in
             self.fetchPlayerNames()
         })
+        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
