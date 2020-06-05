@@ -230,12 +230,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 }
                 
                 self.zombieTimer.invalidate()
-                
                 self.navigationController?.popToRootViewController(animated: true)
             }
             let cancelAction = UIAlertAction(title: "No", style: .cancel) {(_) in }
             alertController.addTextField {(textField) in
                 textField.placeholder = "Enter Name"
+                
+                self.zombieTimer.invalidate()
+                self.navigationController?.popToRootViewController(animated: true)
             }
             
             alertController.addAction(confirmAction)
