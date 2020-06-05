@@ -53,8 +53,6 @@ struct LeaderBoardCellKeys {
 
 
 
-
-
 //MARK: LeaderBoard Class
 class LeaderBoard: NSObject, NSCoding{
     
@@ -77,8 +75,6 @@ class LeaderBoard: NSObject, NSCoding{
         coder.encode(scoreBoard, forKey: LeaderBoardKeys.scoreBoard)
     }
     
-    
-    
     //MARK: Methods
     
     func addToLeaderBoardMulti(_ players: [Player]) {
@@ -99,7 +95,6 @@ class LeaderBoard: NSObject, NSCoding{
             print(cell.gameScore)
             print()
         }
-        
     }
     
     static func playerNamesString(_ cell: LeaderBoardCell) -> String {
@@ -137,17 +132,6 @@ class LeaderBoard: NSObject, NSCoding{
                 print("No Leader Board Making New One")
                 let cells: [LeaderBoardCell] = []
                 let lb = LeaderBoard(scoreBoard: cells)
-                
-                let p1: Player = Player(name: "Player1")
-                let p2: Player = Player(name: "Player2")
-                
-                p1.score = 100
-                p2.score = 75
-                
-                let team1: [Player] = [p1]
-                let team2: [Player] = [p1, p2]
-                lb.addToLeaderBoardMulti(team1)
-                lb.addToLeaderBoardMulti(team2)
                 LeaderBoard.saveLeaderBoard(leaderBoard: lb)
                 
                 sbReadData = try NSData(contentsOf: archiveURL, options: .mappedIfSafe)
