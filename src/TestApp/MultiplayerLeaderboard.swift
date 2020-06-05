@@ -38,6 +38,22 @@ class MultiPlayerLeaderBoard: NSObject{
 //        return oneName
 //    }
     
+    static func setMultiplayerScore(gameId: Int, score: Int) {
+        let url = URL(string: "\(BASE_SERVER_URL)/set-score/\(gameId)/\(score)")
+        guard let requestUrl = url else { fatalError() }
+        var request = URLRequest(url: requestUrl)
+        request.httpMethod = "GET"
+
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            if let error = error {
+                print("Error took place \(error)")
+                return
+            }
+            
+        }
+    }
+    
     func loadLeaderBoard(_ controller: LeaderBoardController! = nil) {
         let url = URL(string: "\(BASE_SERVER_URL)/get-scores")
         guard let requestUrl = url else { fatalError() }

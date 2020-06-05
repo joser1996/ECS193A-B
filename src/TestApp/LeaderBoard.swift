@@ -148,6 +148,11 @@ class LeaderBoard: NSObject, NSCoding{
         return returnVal
     }
     
+    static func clearLeaderBoard() {
+        let clear = LeaderBoard(scoreBoard: [])
+        self.saveLeaderBoard(leaderBoard: clear)
+    }
+    
 }
 
 struct LeaderBoardKeys {

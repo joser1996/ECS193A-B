@@ -13,12 +13,13 @@ class LeaderBoardController: UIViewController {
 
     @IBOutlet weak var singlePlayerButton: UIButton!
     @IBOutlet weak var MultiPlayerButton: UIButton!
+    @IBOutlet weak var clearButton: UIButton!
     @IBOutlet weak var leaderBoardTable: UITableView!
     var isSinglePlayerVisible = true
     var leaderBoard: LeaderBoard?!
     var mpLeaderBoard: MultiPlayerLeaderBoard?!
     let SELECTED_COLOR = UIColor.black
-    let UNSELECTED_COLOR = UIColor.systemGray4
+    let UNSELECTED_COLOR = UIColor.systemGray6
     
     
     override func viewDidLoad() {
@@ -46,6 +47,8 @@ class LeaderBoardController: UIViewController {
     
     @IBAction func toggleSinglePlayer(_ sender: Any) {
         isSinglePlayerVisible = true
+        singlePlayerButton.backgroundColor = SELECTED_COLOR
+        MultiPlayerButton.backgroundColor = UNSELECTED_COLOR
         leaderBoard = LeaderBoard.loadLeaderBoard()
         DispatchQueue.main.async {
             self.leaderBoardTable.reloadData()
@@ -54,8 +57,17 @@ class LeaderBoardController: UIViewController {
     
     @IBAction func toggleMultiPlayer(_ sender: Any) {
         isSinglePlayerVisible = false
+        singlePlayerButton.backgroundColor = UNSELECTED_COLOR
+        MultiPlayerButton.backgroundColor = SELECTED_COLOR
         mpLeaderBoard = MultiPlayerLeaderBoard(self)
     }
+    
+    @IBAction func clearScoreboard(_ sender: Any) {
+        LeaderBoard.clearLeaderBoard()
+        leaderBoard = LeaderBoard.loadLeaderBoard()
+        self.leaderBoardTable.reloadData()
+    }
+    
 }
 
 extension LeaderBoardController: UITableViewDataSource, UITableViewDelegate {
