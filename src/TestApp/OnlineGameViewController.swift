@@ -252,8 +252,6 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         
         if contact.nodeA.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue || contact.nodeB.physicsBody?.categoryBitMask == CollisionCategory.targetCategory.rawValue {
             
-            contact.nodeB.physicsBody?.categoryBitMask = 7
-            contact.nodeA.physicsBody?.categoryBitMask = 7
             //handle logic to differentiate b/w  targets
             
             //increment score based on target
@@ -263,24 +261,60 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 print("NO NAME !!!")
                 return
             }
+            
             var isAZombie:Bool = false
             let explosion = SCNParticleSystem(named: "Explode", inDirectory: nil)
+            
+            let zKey:String
             if nodeAName.hasPrefix("bullet") {
                 //node b is the zombie
-                guard let zKey = contact.nodeB.name else {
+                guard let zK = contact.nodeB.name else {
                     print("NodeB has no name")
                     return
                 }
-                self.client.zombieWave[zKey]?.isDead = true
+                zKey = zK
             } else {
                 //node a is the zombie
                 isAZombie = true
-                guard let zKey = contact.nodeA.name else {
+                guard let zK = contact.nodeA.name else {
                     print("NodeA has no name")
                     return
                 }
-                self.client.zombieWave[zKey]?.isDead = true
+                zKey = zK
             }
+            //decrease health
+            self.client.zombieWave[zKey]?.health -= 1
+            guard let zHealth = self.client.zombieWave[zKey]?.health else {
+                print("ZHEALTH: Can't unwrap")
+                return
+            }
+            //make sure it doesn't go below zero
+            if(zHealth < 0) {
+                //set health to zero
+                self.client.zombieWave[zKey]?.health = 0
+                //prevent handler from being called twice
+                contact.nodeB.physicsBody?.categoryBitMask = 7
+                contact.nodeA.physicsBody?.categoryBitMask = 7
+                // mark it as logically dead
+                self.client.zombieWave[zKey]?.isDead = true
+            } else {
+                //get rid of bullet
+                let nodeToRemove: SCNNode
+                if isAZombie {
+                    nodeToRemove = contact.nodeB
+                    contact.nodeB.physicsBody?.categoryBitMask = 7
+                } else {
+                    nodeToRemove = contact.nodeA
+                    contact.nodeA.physicsBody?.categoryBitMask = 7
+                }
+                DispatchQueue.main.async {
+                    //removing bullet from view to prevent another collision
+                    //with zombie that isn't one shot
+                    nodeToRemove.removeFromParentNode()
+                }
+                return
+            }
+
             DispatchQueue.main.async {
                 MusicPlayer.shared.playZombieDying()
                 contact.nodeA.removeFromParentNode()
@@ -404,4 +438,5 @@ struct ZombieSeed {
     var positionZ:Float = 0
     var hasSpawned:Bool = false
     var isDead:Bool = false
+    var health: Int = 1
 }
