@@ -95,17 +95,15 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         case .notAvailable, .limited:
             print("MappingStatus: NA or Limited")
         case .extending:
-            shareMapButton.isEnabled = (baseNode != nil)
             print("MappingStatus: Extending")
         case .mapped:
             if (baseNode != nil)
             {
-                 self.connectionLabel.text = "Press Start"
+                self.connectionLabel.text = "Press Start"
                 shareMapButton.titleLabel?.font = UIFont(name: "Bloody", size: 27)
                 shareMapButton.setTitleColor(.red, for: .normal)
                 shareMapButton.isEnabled = (baseNode != nil)
             }
-
             print("MappingStatus: Mapped")
         @unknown default:
             print("Unknown worldMappingStatus")
