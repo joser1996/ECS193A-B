@@ -124,13 +124,18 @@ class ScanViewController: UIViewController, UINavigationControllerDelegate, UIIm
                     self.addItemButton.isEnabled = false
                 }
                 else {
-                    self.classificationLabel.text = String(format: "Item found: %@", String(possibleItems[0]))
                     self.item = String(possibleItems[0])
+                    if (ModelNameFetcher().getItemModelName(String(possibleItems[0])) == nil) {
+                        self.item = ModelNameFetcher().getRandomItem()
+                    }
+                    self.classificationLabel.text = String(format: "Item found: %@", self.item!)
                     self.addItemButton.isEnabled = true
                 }
             }
             else {
-                self.classificationLabel.text = "Could not detect item."
+                self.item = ModelNameFetcher().getRandomItem()
+                self.classificationLabel.text = "Item found: \(self.item!)"
+                self.addItemButton.isEnabled = true
             }
         }
     }

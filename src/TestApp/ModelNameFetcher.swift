@@ -15,6 +15,7 @@ class ModelNameFetcher {
         "bullet": "bullet",
         "keyboard": "keyboard",
         "pencil": "pencil",
+        "pen": "pencil",
         "stop-sign": "stop-sign",
         "water-bottle": "water-bottle",
         "rubiks-cube": "rubiks-cube",
@@ -29,5 +30,10 @@ class ModelNameFetcher {
     
     func getItemModelName(_ itemName: String) -> String! {
         return modelNames[itemName]
+    }
+    
+    func getRandomItem() -> String {
+        let r = modelNames.randomElement()
+        return r?.key ?? "pencil"
     }
 }
