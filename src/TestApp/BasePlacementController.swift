@@ -37,7 +37,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         connectionLabel.font = UIFont(name: "Bloody", size: 27)
         connectionLabel.textColor = UIColor.red
         connectionLabel.text = "Place Your Base By Tapping On Screen"
-
+        promptLabel.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,6 +80,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
             baseNode = loadBase()
             DispatchQueue.main.async {
                 self.connectionLabel.text = "Map More Of The Area By Moving Camera Around"
+                self.promptLabel.isHidden = false
             }
             node.addChildNode(baseNode)
         }
@@ -93,17 +94,14 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         case .notAvailable, .limited:
             print("MappingStatus: NA or Limited")
         case .extending:
-
-            shareMapButton.isEnabled = (baseNode != nil) //|| (Player.playerCount != 0)
+            shareMapButton.isEnabled = (baseNode != nil)
             print("MappingStatus: Extending")
-            
-
         case .mapped:
             if (baseNode != nil)
             {
                  self.connectionLabel.text = "Press Start"
             }
-            shareMapButton.isEnabled = (baseNode != nil) //|| (Player.playerCount != 0)
+            shareMapButton.isEnabled = (baseNode != nil)
 
             print("MappingStatus: Mapped")
         @unknown default:
