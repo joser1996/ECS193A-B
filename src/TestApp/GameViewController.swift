@@ -83,7 +83,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         NextWave.isHidden = true
         ReturnToBase.isHidden = true
         sceneViewGame.delegate = self
-
+        MusicPlayer.shared.startSong()
         self.GameOver.isHidden = true
 
         _ = loadBase()
@@ -301,7 +301,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
             self.GameOver.isHidden = false
             self.PauseButton.isHidden = true
             self.NextWave.isHidden = true
-            
+            MusicPlayer.shared.stopSong()
             if (!didEndGame) {
                 didEndGame = true
                 self.saveUserScoreAndExit()
