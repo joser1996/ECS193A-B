@@ -29,6 +29,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var didSyncCrossHair = false
     var isSyncing:Bool = false
     var isGameOver:Bool = false
+    
     //game Objects
     var client: ClientSide!
     var baseObj: Base!

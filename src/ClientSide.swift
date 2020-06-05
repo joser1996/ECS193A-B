@@ -621,6 +621,29 @@ class ClientSide {
     }
     
     func killClient() {
+        
+        //if base hasn't been placed send dummy place-base
+        if (self.referenceVC.isPlacingBase) {
+            guard let gameID = self.gameID else {return }
+            guard let name = self.playerName else {return }
+            
+            let endPoint = "/place-base/" + String(gameID) + "/" + name
+            
+            let urlStirng = self.server + endPoint
+            guard let url = URL(string: urlStirng) else {return }
+            
+            let confirmBaseTask = self.urlSession.dataTask(with: url) {
+                (data, response, error) in
+                if let error = error {
+                    print(error)
+                    return
+                }
+            }
+            confirmBaseTask.resume()
+        }
+        
+        //then kill switch
+        
         guard let gameID = self.gameID else {return}
         guard let name = self.playerName else {return}
         
