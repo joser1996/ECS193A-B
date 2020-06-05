@@ -17,6 +17,8 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
     
     var data: [String] = []
     var gameInfo: [String: Int] = [:]
+    var client: ClientSide!
+    var connectionIsAlive = true
     
     var playerName: String!
     var gameSessionName: String!
@@ -44,7 +46,15 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
         joinGameButton.setTitleColor(UIColor.gray, for: .normal)
         
         fetchSessionList()
-              
+        
+        if let id = newGameId {
+            print(id)
+            client = ClientSide(gameID: id, name: playerName)
+        }
+        if let id = self.gameInfo[self.gameSessionName] {
+            print(id)
+            client = ClientSide(gameID: id, name: playerName)
+        }
         
         refreshTimer = Timer.scheduledTimer(withTimeInterval: TIMER_LENGTH, repeats: true, block: { _ in
             self.fetchSessionList()
@@ -76,6 +86,23 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
     
     @IBAction func joinGame(_ sender: Any) {
         getGameInfo(isNewGame: false)
+    }
+    
+    @objc func appMovedToBackground() {
+        print("Moved to background")
+        client.killClient()
+        self.connectionIsAlive = false
+    }
+    
+    @objc func appMovedToForeground() {
+        if (!self.connectionIsAlive) {
+            MusicPlayer.shared.stopSong()
+            for controller in self.navigationController!.viewControllers as Array {
+                if controller.isKind(of: FirstViewController.self) {
+                    _ = self.navigationController!.popToViewController(controller, animated: false)
+                }
+            }
+        }
     }
     
     func getGameInfo(isNewGame: Bool) {

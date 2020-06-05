@@ -26,7 +26,7 @@ class ClientSide {
         
     let referenceVC: OnlineGameViewController!
     
-    init(gameID: Int?, name: String?, vc: OnlineGameViewController) {
+    init(gameID: Int?, name: String?, vc: OnlineGameViewController? = nil) {
         self.gameID = gameID
         self.playerName = name
         self.referenceVC = vc
@@ -627,7 +627,7 @@ class ClientSide {
     func killClient() {
         
         //if base hasn't been placed send dummy place-base
-        if (self.referenceVC.isPlacingBase) {
+        if (self.referenceVC != nil && self.referenceVC.isPlacingBase) {
             guard let gameID = self.gameID else {return }
             guard let name = self.playerName else {return }
             
