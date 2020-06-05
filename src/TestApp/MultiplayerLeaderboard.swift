@@ -45,13 +45,18 @@ class MultiPlayerLeaderBoard: NSObject{
         request.httpMethod = "GET"
 
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
             if let error = error {
                 print("Error took place \(error)")
                 return
             }
             
+            if let data = data, let dataString = String(data: data, encoding: .utf8) {
+                if (dataString != "Success") {
+                    print("Error: Multiplayer score not saved")
+                }
+            }
         }
+        task.resume()
     }
     
     func loadLeaderBoard(_ controller: LeaderBoardController! = nil) {

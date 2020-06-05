@@ -167,6 +167,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         MusicPlayer.shared.stopSong()
         self.notifyUser(prompt: "Game Over")
         self.isGameOver = true
+        MultiPlayerLeaderBoard.setMultiplayerScore(gameId: gameID!, score: masterScore)
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             for controller in self.navigationController!.viewControllers as Array {
                 if controller.isKind(of: FirstViewController.self) {
