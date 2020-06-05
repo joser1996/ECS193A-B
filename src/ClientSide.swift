@@ -210,6 +210,10 @@ class ClientSide {
                         print("fail id")
                         return
                     }
+                    guard let zHealth = seed["health"] as? Int else {
+                        print("SEED: fail health")
+                        return
+                    }
                     guard let x = seed["positionX"] as? Double else {
                         print("fail x")
                         return
@@ -221,7 +225,7 @@ class ClientSide {
                         fatalError("Fail x")
                     }
 
-                    let tempSeed = ZombieSeed(angle: angle, distance: Float(distance), id: id, positionX: Float(x), positionY: Float(y), positionZ: Float(z), hasSpawned: false)
+                    let tempSeed = ZombieSeed(angle: angle, distance: Float(distance), id: id, positionX: Float(x), positionY: Float(y), positionZ: Float(z), hasSpawned: false, health: zHealth)
                     self.zombieWave[String(tempSeed.id)] = tempSeed
                 }
                 DispatchQueue.main.async {
