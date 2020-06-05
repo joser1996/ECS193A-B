@@ -12,13 +12,12 @@ class LeaderBoardViewCell: UITableViewCell {
 
     @IBOutlet weak var leaderBoardLabel: UILabel!
     
-    
-    func setCell(team: String, score: Int){
-        let names = "Players: \(team)"
-        let s = "    Score: \(score)"
-        
-        let fullLabelText = names + s
-        leaderBoardLabel.text = fullLabelText
+    func setCell(team: String, score: Int, gameName: String? = nil){
+        var gameNameString = ""
+        if let gn = gameName {
+            gameNameString = "\(gn) | "
+        }
+        leaderBoardLabel.text = "\(gameNameString)\(team) | \(score)"
     }
     
     

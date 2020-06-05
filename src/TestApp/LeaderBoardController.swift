@@ -11,12 +11,22 @@ import UIKit
 
 class LeaderBoardController: UIViewController {
 
+    @IBOutlet weak var singlePlayerButton: UIButton!
+    @IBOutlet weak var MultiPlayerButton: UIButton!
     @IBOutlet weak var leaderBoardTable: UITableView!
+    var isSinglePlayerVisible = true
     var leaderBoard: LeaderBoard?!
+    var mpLeaderBoard: MultiPlayerLeaderBoard?!
+    let SELECTED_COLOR = UIColor.black
+    let UNSELECTED_COLOR = UIColor.systemGray4
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        singlePlayerButton.backgroundColor = SELECTED_COLOR
+        MultiPlayerButton.backgroundColor = UNSELECTED_COLOR
+        
         leaderBoardTable.delegate = self
         leaderBoardTable.dataSource = self
         leaderBoardTable.allowsSelection = false
@@ -34,8 +44,18 @@ class LeaderBoardController: UIViewController {
         }
     }
     
+    @IBAction func toggleSinglePlayer(_ sender: Any) {
+        isSinglePlayerVisible = true
+        leaderBoard = LeaderBoard.loadLeaderBoard()
+        DispatchQueue.main.async {
+            self.leaderBoardTable.reloadData()
+        }
+    }
     
-
+    @IBAction func toggleMultiPlayer(_ sender: Any) {
+        isSinglePlayerVisible = false
+        mpLeaderBoard = MultiPlayerLeaderBoard(self)
+    }
 }
 
 extension LeaderBoardController: UITableViewDataSource, UITableViewDelegate {
@@ -43,26 +63,37 @@ extension LeaderBoardController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        var lb = leaderBoard?.scoreBoard.count
-        if lb == nil{
-            lb = 0
+        var count: Int!
+        if (isSinglePlayerVisible) {
+            count = leaderBoard??.scoreBoard.count
         }
-        return lb!
+        else {
+            count = mpLeaderBoard?.scoreBoard.count
+        }
+        
+        return count!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let scoreArr = self.leaderBoard?.scoreBoard
+        var scoreboard: [LeaderBoardCell]?
+        if (isSinglePlayerVisible) {
+            scoreboard = self.leaderBoard??.scoreBoard
+        }
+        else {
+            scoreboard = self.mpLeaderBoard?.scoreBoard
+        }
         
-        guard let sa = scoreArr else{
+        guard let sb = scoreboard else{
             fatalError("ScoreBoard was empty")
         }
-        let lbCell = sa[indexPath.row]
+        
+        let lbCell = sb[indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "leaderBoardCell") as! LeaderBoardViewCell
         
         let t = LeaderBoard.playerNamesString(lbCell)
-        cell.setCell(team: t, score: lbCell.gameScore)
         
+        cell.setCell(team: t, score: lbCell.gameScore, gameName: lbCell.gameName)
         
         return cell
     }

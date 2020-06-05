@@ -16,15 +16,16 @@ class LeaderBoardCell: NSObject, NSCoding {
     //MARK: Properties
     var teamName: [String] = []
     var gameScore: Int = 0
+    var gameName: String!
     //MARK: Methods
     
-    init(_ members: [Player]) {
+    init(_ members: [Player], _ gameName: String! = nil) {
         self.gameScore = 0
         for player in members {
             self.teamName.append(player.name)
             self.gameScore += player.score
         }
-        
+        self.gameName = gameName
     }
     
     //MARK: ARCHIVING
