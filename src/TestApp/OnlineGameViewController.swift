@@ -286,11 +286,12 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             }
             //decrease health
             var damage = 1
-            if let d = inventoryItems[selectedItem]?["damage"] as? Int { // Use item attributes if available
-                damage = d
+            if let d = inventoryItems[selectedItem]?["damage"] as? String { // Use item attributes if available
+                damage = Int(d)!
             }
-            print(damage)
+
             self.client.zombieWave[zKey]?.health -= damage
+
             guard let zHealth = self.client.zombieWave[zKey]?.health else {
                 print("ZHEALTH: Can't unwrap")
                 return
