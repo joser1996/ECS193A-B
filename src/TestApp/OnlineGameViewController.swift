@@ -201,6 +201,10 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             self.baseObj.basePlacing(sender: sender, arView: self.arView)
             //UI Stuff
             changePrompt(text: "Confirm Base Location")
+            
+            if baseObj.anchorPoint == nil {
+                return
+            }
             confirmBaseButton.isHidden = false
             confirmBaseButton.isEnabled = true
         } else if isSyncing {
