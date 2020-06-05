@@ -202,12 +202,13 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         if isPlacingBase {
             self.baseObj.basePlacing(sender: sender, arView: self.arView)
-            //UI Stuff
-            changePrompt(text: "Confirm Base Location")
+
             
             if baseObj.anchorPoint == nil {
                 return
             }
+            //UI Stuff
+            changePrompt(text: "Confirm Base Location")
             confirmBaseButton.isHidden = false
             confirmBaseButton.isEnabled = true
         } else if isSyncing {
