@@ -62,7 +62,7 @@ class Shooting {
         
         if animation == "spin" {
             let torqueDirection = SCNVector4(0, 0, 1, 2)
-            node.physicsBody?.centerOfMassOffset = SCNVector3(0.1, 0, 0)
+            node.physicsBody?.centerOfMassOffset = SCNVector3(0.03, 0, 0)
             node.physicsBody?.applyTorque(torqueDirection, asImpulse: true)
         }
         
