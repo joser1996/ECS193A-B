@@ -34,14 +34,15 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         MusicPlayer.shared.stopBackgroundMusic()
         sceneView.delegate = self
         shareMapButton.isEnabled = false
-        connectionLabel.font = UIFont(name: "Bloody", size: 27)
-        connectionLabel.textColor = UIColor.red
-        connectionLabel.text = "Place Your Base By Tapping On Screen"
+
         promptLabel.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        connectionLabel.font = UIFont(name: "Bloody", size: 27)
+        connectionLabel.textColor = UIColor.red
+        connectionLabel.text = "Place Your Base By Tapping On Screen"
         
         guard ARWorldTrackingConfiguration.isSupported else {
             fatalError("""
@@ -100,8 +101,10 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
             if (baseNode != nil)
             {
                  self.connectionLabel.text = "Press Start"
+                shareMapButton.titleLabel?.font = UIFont(name: "Bloody", size: 27)
+                shareMapButton.setTitleColor(.red, for: .normal)
+                shareMapButton.isEnabled = (baseNode != nil)
             }
-            shareMapButton.isEnabled = (baseNode != nil)
 
             print("MappingStatus: Mapped")
         @unknown default:

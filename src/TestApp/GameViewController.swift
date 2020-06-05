@@ -82,8 +82,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         PauseButton.isHidden = true
         NextWave.isHidden = true
         ReturnToBase.isHidden = true
-        userPrompts.font = UIFont(name: "Bloody", size: 30)
-        userPrompts.textColor = UIColor.red
         sceneViewGame.delegate = self
 
         self.GameOver.isHidden = true
@@ -199,6 +197,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
 
 
     func updatePromptLabel( prompt: String) {
+        userPrompts.font = UIFont(name: "Bloody", size: 30)
+        userPrompts.textColor = UIColor.red
         userPrompts.text = prompt
     }
     
