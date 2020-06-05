@@ -122,6 +122,8 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
                     if let convertedJsonIntoDict = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
                         if let id = convertedJsonIntoDict["gameId"] as? Int {
                             self.newGameId = id
+                        } else {
+                            print("GameSession: Failed ID")
                         }
                         if let didConnect = convertedJsonIntoDict["didConnect"] as? Int, didConnect == 0 {
                             error = "Failed to join game"

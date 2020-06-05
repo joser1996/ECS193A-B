@@ -22,7 +22,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     var gameID: Int? = nil
     var gameState: GameState!
     var zombieTimer: Timer! = nil
-
+    
     //falgs
     var isPlacingBase: Bool = true
     var isHost: Bool = false
@@ -52,6 +52,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     @IBOutlet weak var heart1: UIImageView!
     @IBOutlet weak var heart2: UIImageView!
     @IBOutlet weak var heart3: UIImageView!
+    @IBOutlet weak var scoreLabel: UILabel!
     
 
     //MARK: Controller Set up
@@ -316,6 +317,8 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             }
 
             DispatchQueue.main.async {
+                self.masterScore += 5
+                self.updateScoreLabel()
                 MusicPlayer.shared.playZombieDying()
                 contact.nodeA.removeFromParentNode()
                 contact.nodeB.removeFromParentNode()
@@ -330,6 +333,11 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         }
     }
     
+    func updateScoreLabel() {
+        var text = "Score: "
+        text = text + String(self.masterScore)
+        self.scoreLabel.text = text
+    }
     
     //MARK: AR SCNView Delegate
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
