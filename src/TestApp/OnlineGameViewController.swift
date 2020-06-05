@@ -286,7 +286,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
             }
             //decrease health
             var damage = 1
-            if let d = inventoryItems[selectedItem]?[damage] as? Int { // Use item attributes if available
+            if let d = inventoryItems[selectedItem]?["damage"] as? Int { // Use item attributes if available
                 damage = d
             }
             print(damage)
