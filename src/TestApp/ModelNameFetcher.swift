@@ -21,7 +21,10 @@ class ModelNameFetcher {
         "glasses": "glasses",
         "sunglass": "glasses",
         "tv-remote": "TV_remote",
-        "lamp": "lamp"
+        "lamp": "lamp",
+        "toilet-seat": "bowl",
+        "measuring-cup": "mug",
+        "bathtub": "bowl"
     ]
     
     func getItemModelName(_ itemName: String) -> String! {

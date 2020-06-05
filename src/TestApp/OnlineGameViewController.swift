@@ -168,6 +168,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
         MusicPlayer.shared.stopSong()
         self.notifyUser(prompt: "Game Over")
         self.isGameOver = true
+        self.setHealth(health: 0)
         MultiPlayerLeaderBoard.setMultiplayerScore(gameId: gameID!, score: masterScore)
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             for controller in self.navigationController!.viewControllers as Array {
@@ -285,7 +286,13 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
                 zKey = zK
             }
             //decrease health
-            self.client.zombieWave[zKey]?.health -= 1
+            var damage = 1
+            if let d = inventoryItems[selectedItem]?["damage"] as? String { // Use item attributes if available
+                damage = Int(d)!
+            }
+
+            self.client.zombieWave[zKey]?.health -= damage
+
             guard let zHealth = self.client.zombieWave[zKey]?.health else {
                 print("ZHEALTH: Can't unwrap")
                 return
