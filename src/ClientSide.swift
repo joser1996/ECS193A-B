@@ -661,6 +661,23 @@ class ClientSide {
         killTask.resume()
     }
     
+    func killGame() {
+        guard let gameID = self.gameID else {return}
+        
+        let endPoint = "/kill-game/" + String(gameID)
+        let urlString = self.server + endPoint
+        guard let url = URL(string: urlString) else {return}
+        
+        let killGameTask = self.urlSession.dataTask(with: url) {
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+        }
+        killGameTask.resume()
+    }
+    
     // MARK: Zombie Stuff
     
     /*

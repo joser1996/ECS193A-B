@@ -161,6 +161,9 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     
     //MARK: Game Over
     func gameOver() {
+        //killing game on server
+        self.client.killGame()
+        
         MusicPlayer.shared.stopSong()
         self.notifyUser(prompt: "Game Over")
         self.isGameOver = true
