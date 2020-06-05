@@ -234,6 +234,7 @@ class OnlineGameViewController: UIViewController, ARSCNViewDelegate, ARSessionDe
     //MARK: Confirm Base
     @IBAction func confirmBaseLocation(_ sender: UIButton) {
         //No more Base Placing
+        self.arView.debugOptions = []
         self.isPlacingBase = false
         self.confirmBaseButton.isHidden = true
         self.confirmBaseButton.isEnabled = false

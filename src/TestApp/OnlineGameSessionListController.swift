@@ -92,12 +92,29 @@ class OnlineGameSessionListController: UIViewController, UITableViewDataSource, 
             }
             
             self.playerName = alertController.textFields?[0].text
+            //Here check for aplhpa numeric
+            
+            if !self.playerName.isAlphanumeric {
+                self.notify("Error: please only use alphanumeric characters.")
+                return
+            }
+            
             self.playerName = self.playerName.replacingOccurrences(of: " ", with: "-")
             self.gameSessionPassword = alertController.textFields?[1].text
+            if !self.gameSessionPassword.isAlphanumeric {
+                self.notify("Error: please only use alphanumeric characters.")
+                return
+            }
+            
             
             var url = URL(string: "")
             if (isNewGame) {
                 self.gameSessionName = alertController.textFields?[2].text
+                if !self.gameSessionName.isAlphanumeric {
+                    self.notify("Error: please only use alphanumeric characters.")
+                    return
+                }
+                
                 self.gameSessionName = self.gameSessionName.replacingOccurrences(of: " ", with: "-")
                 url = URL(string: "\(self.BASE_SERVER_URL)/host-request/\(self.playerName!)/\(self.gameSessionName!)/\(self.gameSessionPassword!)")
             }
@@ -227,4 +244,10 @@ enum GameState {
     case Initial
     case WaitingForGame
     case ActiveGame
+}
+
+extension String {
+    var isAlphanumeric: Bool {
+        return !isEmpty && range(of: "[^a-zA-Z0-9]", options: .regularExpression) == nil
+    }
 }
