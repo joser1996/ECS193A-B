@@ -210,6 +210,10 @@ class ClientSide {
                         print("fail id")
                         return
                     }
+                    guard let zHealth = seed["health"] as? Int else {
+                        print("SEED: fail health")
+                        return
+                    }
                     guard let x = seed["positionX"] as? Double else {
                         print("fail x")
                         return
@@ -221,7 +225,7 @@ class ClientSide {
                         fatalError("Fail x")
                     }
 
-                    let tempSeed = ZombieSeed(angle: angle, distance: Float(distance), id: id, positionX: Float(x), positionY: Float(y), positionZ: Float(z), hasSpawned: false)
+                    let tempSeed = ZombieSeed(angle: angle, distance: Float(distance), id: id, positionX: Float(x), positionY: Float(y), positionZ: Float(z), hasSpawned: false, health: zHealth)
                     self.zombieWave[String(tempSeed.id)] = tempSeed
                 }
                 DispatchQueue.main.async {
@@ -621,6 +625,29 @@ class ClientSide {
     }
     
     func killClient() {
+        
+        //if base hasn't been placed send dummy place-base
+        if (self.referenceVC.isPlacingBase) {
+            guard let gameID = self.gameID else {return }
+            guard let name = self.playerName else {return }
+            
+            let endPoint = "/place-base/" + String(gameID) + "/" + name
+            
+            let urlStirng = self.server + endPoint
+            guard let url = URL(string: urlStirng) else {return }
+            
+            let confirmBaseTask = self.urlSession.dataTask(with: url) {
+                (data, response, error) in
+                if let error = error {
+                    print(error)
+                    return
+                }
+            }
+            confirmBaseTask.resume()
+        }
+        
+        //then kill switch
+        
         guard let gameID = self.gameID else {return}
         guard let name = self.playerName else {return}
         
@@ -636,6 +663,23 @@ class ClientSide {
             }
         }
         killTask.resume()
+    }
+    
+    func killGame() {
+        guard let gameID = self.gameID else {return}
+        
+        let endPoint = "/kill-game/" + String(gameID)
+        let urlString = self.server + endPoint
+        guard let url = URL(string: urlString) else {return}
+        
+        let killGameTask = self.urlSession.dataTask(with: url) {
+            (data, response, error) in
+            if let error = error {
+                print(error)
+                return
+            }
+        }
+        killGameTask.resume()
     }
     
     // MARK: Zombie Stuff
@@ -654,6 +698,10 @@ class ClientSide {
         }
         self.doneSpawning = true
         return nil
+    }
+    
+    func randomBool() -> Bool {
+        return arc4random_uniform(2) == 0
     }
     
     /*
@@ -686,7 +734,35 @@ class ClientSide {
         )
         
         //Movement
-        let moveAction = SCNAction.move(to: basePosition, duration: 15)
+        let baseSpeed = 15
+        var curSpeed = 0
+        if self.currentWave < 4 {//5
+            //easy
+            curSpeed = baseSpeed
+        } else if self.currentWave < 8 {//9
+            //med
+            if (self.randomBool()){
+                curSpeed = Int(round(Double(baseSpeed) * 0.75))
+            } else {
+                curSpeed = baseSpeed
+            }
+        } else if self.currentWave < 14 {//12
+            //hard
+            if (self.randomBool()) {
+                curSpeed = Int(round(Double(baseSpeed) * 0.5))
+            } else {
+                curSpeed = baseSpeed
+            }
+        } else if self.currentWave >= 14 {
+            // really hard
+            if self.randomBool() {
+                curSpeed = Int(round(Double(baseSpeed) * 0.35))
+            } else {
+                curSpeed = baseSpeed
+            }
+        }
+        
+        let moveAction = SCNAction.move(to: basePosition, duration: TimeInterval(curSpeed))
         let deletion = SCNAction.removeFromParentNode()
         let zombieSequence = SCNAction.sequence([moveAction, deletion])
         

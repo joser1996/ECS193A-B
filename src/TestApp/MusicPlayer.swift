@@ -13,6 +13,7 @@ class MusicPlayer {
     static let shared = MusicPlayer()
     var player: AVAudioPlayer?
     var sfxPlayer: AVAudioPlayer?
+    var zPlayer: AVAudioPlayer?
     
     func playBackgroundMusic() {
         if let bundle = Bundle.main.path(forResource: "wind", ofType: "mp3") {
@@ -88,12 +89,18 @@ class MusicPlayer {
     }
     
     func playZombieDying() {
-        if let path = Bundle.main.path(forResource: "David_Screeching", ofType: "mp3") {
+        
+        let songNames: [String] = ["DyingZombie", "David_Screeching"]
+        guard let sName = songNames.randomElement() else {
+            return
+        }
+        
+        if let path = Bundle.main.path(forResource: sName, ofType: "mp3") {
             let url = URL(fileURLWithPath: path)
             
             do{
-                player = try AVAudioPlayer(contentsOf: url)
-                guard let player = player else {return}
+                self.zPlayer = try AVAudioPlayer(contentsOf: url)
+                guard let player = zPlayer else {return}
                 player.enableRate = true
                 player.rate = 2
                 player.numberOfLoops = 0

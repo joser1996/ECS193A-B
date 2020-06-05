@@ -82,8 +82,6 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         PauseButton.isHidden = true
         NextWave.isHidden = true
         ReturnToBase.isHidden = true
-        userPrompts.font = UIFont(name: "Bloody", size: 30)
-        userPrompts.textColor = UIColor.red
         sceneViewGame.delegate = self
 
         self.GameOver.isHidden = true
@@ -199,6 +197,8 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
 
 
     func updatePromptLabel( prompt: String) {
+        userPrompts.font = UIFont(name: "Bloody", size: 30)
+        userPrompts.textColor = UIColor.red
         userPrompts.text = prompt
     }
     
@@ -230,12 +230,14 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 }
                 
                 self.zombieTimer.invalidate()
-                
                 self.navigationController?.popToRootViewController(animated: true)
             }
             let cancelAction = UIAlertAction(title: "No", style: .cancel) {(_) in }
             alertController.addTextField {(textField) in
                 textField.placeholder = "Enter Name"
+                
+                self.zombieTimer.invalidate()
+                self.navigationController?.popToRootViewController(animated: true)
             }
             
             alertController.addAction(confirmAction)
@@ -362,6 +364,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
         else if isWithinBase {
             guard let frame = sceneViewGame.session.currentFrame else {return}
             let bulletNode = loadBullet(frame)
+            MusicPlayer.shared.shotSFX()
             sceneViewGame.scene.rootNode.addChildNode(bulletNode)
             
             let shootTestResults = sceneViewGame.hitTest(center, types: .featurePoint)
@@ -394,6 +397,7 @@ class GameViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate
                 
                 hitZombie?.health? -= 1
                 if hitZombie?.health == 0 {
+                    print("MUSIC: Playing sound")
                     MusicPlayer.shared.playZombieDying()
                     parentNode.runAction(SCNAction.sequence([SCNAction.wait(duration: 0.1), SCNAction.removeFromParentNode()]))
                     
