@@ -75,6 +75,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
     
  
     // MARK: - SCNView Delegates
+    //node corresponding to anchor has been added
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if let name = anchor.name, name.hasPrefix("cube") {
             anchorPoint = anchor
@@ -87,9 +88,7 @@ class BasePlacementController: UIViewController, ARSCNViewDelegate, ARSessionDel
         }
     }
     
-    
-
-    
+        
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         switch frame.worldMappingStatus {
         case .notAvailable, .limited:
